@@ -1,0 +1,14 @@
+rules_version = '2';
+
+// Firebase Storage - לעתיד, אם נרצה להעלות PDFs דרך admin panel
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /newsletters/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

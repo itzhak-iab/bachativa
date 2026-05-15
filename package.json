@@ -1,0 +1,17 @@
+{
+  "name": "bachativa",
+  "version": "1.0.0",
+  "description": "אתר \"בחטיבה\" — הפרסומים השבועיים של חטיבת חשמונאים",
+  "private": true,
+  "scripts": {
+    "seed": "node scripts/seed-firestore.js",
+    "deploy": "firebase deploy",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "deploy:firestore": "firebase deploy --only firestore",
+    "serve": "firebase emulators:start --only hosting,firestore"
+  },
+  "devDependencies": {
+    "firebase-admin": "^12.3.0",
+    "firebase-tools": "^13.15.0"
+  }
+}

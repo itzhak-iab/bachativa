@@ -1,0 +1,31 @@
+rules_version = '2';
+
+// כללי גישה ל-Firestore עבור bachativa.com
+// קריאה ציבורית בלבד - כתיבה רק דרך Admin SDK (סקריפט seed או admin panel עתידי)
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // newsletters - גיליוני "בחטיבה"
+    match /newsletters/{newsletterId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // magazines - גיליוני המגזין (עתידי)
+    match /magazines/{magazineId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // videos - סרטונים (שיח לוחמים, על קידוש השם)
+    match /videos/{videoId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

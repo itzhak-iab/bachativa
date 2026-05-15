@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>״בחטיבה״ | הפרסומים השבועיים של חטיבת חשמונאים</title>
+    <meta name="description" content="״בחטיבה״ - העלון השבועי של חטיבת החשמונאים. עלוני בחטיבה, סדרות סרטונים ומגזינים.">
+    <meta property="og:title" content="״בחטיבה״ | חטיבת חשמונאים">
+    <meta property="og:description" content="הפרסומים השבועיים של חטיבת החשמונאים - עלוני בחטיבה, סדרות סרטונים ומגזינים.">
+    <meta property="og:image" content="https://bachativa.com/images/og-image.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bachativa.com/">
+    <meta property="og:locale" content="he_IL">
+    <link rel="canonical" href="https://bachativa.com/">
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Google Analytics GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DLNEH3K485"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-DLNEH3K485');
+    </script>
+
+    <style>
+        :root {
+            --primary: #1a2a5e;
+            --primary-dark: #111d42;
+            --primary-light: #243573;
+            --gold: #c8a45c;
+            --gold-light: #d4b87a;
+            --gold-dark: #b08f4a;
+            --bg-light: #f5f3ef;
+            --bg-white: #ffffff;
+            --text-dark: #1a1a2e;
+            --text-muted: #6b7280;
+            --text-light: #9ca3af;
+            --border: #e5e7eb;
+            --shadow: 0 4px 24px rgba(26, 42, 94, 0.10);
+            --shadow-hover: 0 8px 40px rgba(26, 42, 94, 0.18);
+            --radius: 12px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Heebo', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.7;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--primary);
+            border-bottom: 3px solid var(--gold);
+            padding: 0 2rem;
+        }
+        .navbar-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 68px;
+        }
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #fff;
+        }
+        .navbar-brand img {
+            height: 44px;
+            width: 44px;
+            object-fit: contain;
+        }
+        .navbar-brand-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--gold);
+        }
+        .navbar-brand-sub {
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.65);
+            font-weight: 300;
+        }
+        .navbar-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            list-style: none;
+        }
+        .navbar-links a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            padding: 7px 14px;
+            border-radius: 8px;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .navbar-links a:hover,
+        .navbar-links a.active {
+            color: var(--gold);
+            background: rgba(200,164,92,0.1);
+        }
+        .navbar-links .btn-home {
+            background: var(--gold);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .navbar-links .btn-home:hover {
+            background: var(--gold-light);
+        }
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+        .mobile-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--gold);
+            margin: 6px 0;
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, rgba(15,29,59,0.9), rgba(26,42,74,0.85)),
+                        url('images/group-flags.jpg') center/cover no-repeat;
+            padding: 60px 2rem 50px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        .hero h1 span { color: var(--gold); }
+        .hero p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.7);
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .hero-divider {
+            width: 80px;
+            height: 3px;
+            background: var(--gold);
+            margin: 24px auto 0;
+            border-radius: 3px;
+        }
+
+        /* ===== INFO BAR ===== */
+        .info-bar {
+            background: var(--primary);
+            padding: 12px 2rem;
+            border-bottom: 1px solid rgba(200,164,92,0.2);
+        }
+        .info-bar-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+        .info-bar a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-size: 0.88rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+        .info-bar a:hover { color: var(--gold); }
+        .info-bar .wa-svg { vertical-align: middle; flex-shrink: 0; }
+
+        /* ===== TABS ===== */
+        .tabs-section {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 16px 2rem 0;
+        }
+        .tabs-wrapper {
+            background: var(--bg-white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 6px;
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+        }
+        .tabs-wrapper::-webkit-scrollbar { display: none; }
+        .tab-btn {
+            flex: 1;
+            min-width: max-content;
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-family: 'Heebo', sans-serif;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: var(--transition);
+            white-space: nowrap;
+            text-align: center;
+        }
+        .tab-btn:hover {
+            background: var(--bg-light);
+            color: var(--primary);
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: var(--gold);
+        }
+        .tab-icon {
+            display: inline-block;
+            margin-left: 6px;
+            font-size: 1rem;
+        }
+
+        /* ===== CONTENT ===== */
+        .content-area {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 20px 2rem 80px;
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            margin-bottom: 20px;
+        }
+        .section-header h2 {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* ===== ISSUE CARDS — COVER IMAGE STYLE ===== */
+        .issues-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 24px;
+        }
+
+        .issue-card {
+            background: var(--bg-white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1px solid var(--border);
+        }
+        .issue-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--gold);
+        }
+
+        .issue-cover {
+            width: 100%;
+            aspect-ratio: 0.707;
+            overflow: hidden;
+            position: relative;
+        }
+        .issue-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .issue-card:hover .issue-cover img {
+            transform: scale(1.05);
+        }
+        .issue-cover .issue-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(17,29,66,0.85) 0%, transparent 50%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 16px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .issue-card:hover .issue-overlay {
+            opacity: 1;
+        }
+        .issue-overlay .view-label {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        .issue-info {
+            padding: 14px 16px;
+            text-align: center;
+        }
+        .issue-info .issue-label {
+            display: inline-block;
+            background: rgba(26,42,94,0.08);
+            color: var(--primary);
+            padding: 2px 10px;
+            border-radius: 50px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .issue-info h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+        .issue-info .parsha-name {
+            color: var(--gold-dark);
+            font-weight: 600;
+            font-size: 0.88rem;
+        }
+
+        /* ===== ISSUE MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-overlay.active { display: flex; }
+
+        .modal-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-cover {
+            width: 100%;
+            max-height: 340px;
+            overflow: hidden;
+        }
+        .modal-cover img {
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .modal-body {
+            padding: 28px 24px;
+            text-align: center;
+        }
+        .modal-body h3 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+        .modal-body .modal-parsha {
+            color: var(--gold-dark);
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .modal-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Heebo', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        .modal-btn-he {
+            background: var(--primary);
+            color: var(--gold);
+        }
+        .modal-btn-he:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+        .modal-btn-en {
+            background: var(--gold);
+            color: var(--primary);
+        }
+        .modal-btn-en:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+        }
+        .modal-btn-download {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            font-weight: 500;
+            font-size: 0.88rem;
+            padding: 10px 20px;
+        }
+        .modal-btn-download:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .modal-close {
+            margin-top: 16px;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-family: 'Heebo', sans-serif;
+        }
+        .modal-close:hover { color: var(--text-dark); }
+
+        /* ===== PDF VIEWER MODAL ===== */
+        .pdf-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .pdf-overlay.active { display: flex; }
+        .pdf-container {
+            background: var(--bg-white);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 960px;
+            height: 88vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .pdf-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: var(--primary);
+            color: #fff;
+        }
+        .pdf-header h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+        .pdf-header-btns {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .pdf-header-btns a {
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.8rem;
+            padding: 6px 14px;
+            border: 1px solid rgba(200,164,92,0.4);
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .pdf-header-btns a:hover {
+            background: rgba(200,164,92,0.15);
+        }
+        .pdf-close {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pdf-close:hover { background: rgba(255,255,255,0.2); }
+        .pdf-frame {
+            flex: 1;
+            overflow: hidden;
+        }
+        .pdf-frame iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ===== VIDEO CARDS ===== */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        .video-card {
+            background: var(--bg-white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border);
+        }
+        .video-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--gold);
+        }
+        .video-thumb {
+            position: relative;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .play-btn {
+            width: 56px;
+            height: 56px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(200,164,92,0.4);
+            transition: var(--transition);
+        }
+        .video-card:hover .play-btn { transform: scale(1.1); }
+        .play-btn svg { width: 22px; height: 22px; fill: var(--primary); margin-right: -2px; }
+        .episode-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--gold);
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+        .video-body { padding: 18px; }
+        .video-body h4 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+        .video-body p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; }
+
+        /* ===== MAGAZINE CARDS ===== */
+        .magazine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        .magazine-card {
+            background: var(--bg-white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border);
+        }
+        .magazine-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--gold);
+        }
+        .magazine-cover {
+            height: 280px;
+            background: linear-gradient(160deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .magazine-cover .mag-title {
+            color: var(--gold);
+            font-size: 1.3rem;
+            font-weight: 800;
+            text-align: center;
+        }
+        .magazine-body { padding: 18px; }
+        .magazine-body h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
+        .magazine-body .mag-date { color: var(--text-light); font-size: 0.82rem; margin-bottom: 4px; }
+        .magazine-body p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin-bottom: 14px; }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--primary-dark);
+            border-top: 3px solid var(--gold);
+            padding: 40px 2rem 20px;
+        }
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .footer-brand img { height: 40px; width: 40px; object-fit: contain; }
+        .footer-brand-text { color: rgba(255,255,255,0.8); font-size: 0.88rem; }
+        .footer-brand-text strong { color: var(--gold); display: block; font-size: 0.95rem; }
+        .footer-links { display: flex; gap: 20px; list-style: none; }
+        .footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.82rem; transition: var(--transition); }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-bottom {
+            max-width: 1280px;
+            margin: 20px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.78rem;
+        }
+        .footer-bottom a { color: var(--gold); text-decoration: none; }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 28px;
+            left: 28px;
+            width: 44px;
+            height: 44px;
+            background: var(--primary);
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 500;
+        }
+        .back-to-top.visible { opacity: 1; visibility: visible; }
+        .back-to-top:hover { background: var(--gold); color: var(--primary); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .navbar-links {
+                display: none;
+                position: absolute;
+                top: 68px;
+                right: 0;
+                left: 0;
+                background: var(--primary);
+                flex-direction: column;
+                padding: 12px;
+                border-top: 1px solid rgba(255,255,255,0.1);
+            }
+            .navbar-links.open { display: flex; }
+            .mobile-toggle { display: block; }
+            .hero { padding: 44px 1.5rem 40px; }
+            .hero h1 { font-size: 2rem; }
+            .tabs-section { padding: 12px 1rem 0; }
+            .tab-btn { padding: 9px 12px; font-size: 0.82rem; }
+            .content-area { padding: 16px 1rem 50px; }
+            .issues-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+            .issue-info { padding: 10px 12px; }
+            .issue-info h4 { font-size: 0.85rem; }
+            .modal-card { max-width: 100%; }
+            .modal-cover { max-height: 260px; }
+            .footer-inner { flex-direction: column; text-align: center; }
+            .footer-links { flex-wrap: wrap; justify-content: center; }
+            .pdf-container { height: 92vh; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.7rem; }
+            .tab-icon { display: none; }
+            .issues-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        }
+
+        /* Loading state */
+        .issues-loading {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+        .issues-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner">
+            <a href="/" class="navbar-brand">
+                <img src="images/logo.png" alt="לוגו">
+                <div>
+                    <span class="navbar-brand-title">״בחטיבה״</span><br>
+                    <span class="navbar-brand-sub">הפרסומים השבועיים של חטיבת חשמונאים</span>
+                </div>
+            </a>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="תפריט">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="navbar-links" id="navLinks">
+                <li><a href="#newsletter" data-tab="newsletter">עלון בחטיבה</a></li>
+                <li><a href="#magazine" data-tab="magazine">מגזין בחטיבה</a></li>
+                <li><a href="#warriors" data-tab="warriors">שיח לוחמים</a></li>
+                <li><a href="#kiddush" data-tab="kiddush">על קידוש השם</a></li>
+                <li><a href="https://chashmonayim.org" class="btn-home">לאתר העמותה</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>״<span>בחטיבה</span>״</h1>
+        <p>הפרסומים השבועיים של חטיבת החשמונאים</p>
+        <div class="hero-divider"></div>
+    </section>
+
+    <!-- INFO BAR -->
+    <div class="info-bar">
+        <div class="info-bar-inner">
+            <a href="https://chat.whatsapp.com/GtnA5TVKyn1GpxQwiiSIdb" target="_blank">
+                <svg class="wa-svg" width="18" height="18" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                ״בחטיבה״ בווצאפ
+            </a>
+            <a href="mailto:bachativa@gmail.com">
+                <span style="font-size:1.1rem">&#9993;</span>
+                להערות והארות: bachativa@gmail.com
+            </a>
+        </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs-section">
+        <div class="tabs-wrapper">
+            <button class="tab-btn active" data-tab="newsletter">
+                <span class="tab-icon">&#128240;</span> עלון ״בחטיבה״
+            </button>
+            <button class="tab-btn" data-tab="magazine">
+                <span class="tab-icon">&#128214;</span> מגזין בחטיבה
+            </button>
+            <button class="tab-btn" data-tab="warriors">
+                <span class="tab-icon">&#127909;</span> שיח לוחמים
+            </button>
+            <button class="tab-btn" data-tab="kiddush">
+                <span class="tab-icon">&#127909;</span> על קידוש השם
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <main class="content-area">
+
+        <!-- TAB 1: Newsletter -->
+        <div class="tab-content active" id="tab-newsletter">
+            <div class="section-header">
+                <h2>עלון ״בחטיבה״</h2>
+                <p>העלון השבועי של חטיבת החשמונאים — לחצו על גיליון כדי לצפות בעברית או באנגלית</p>
+            </div>
+
+            <div class="issues-grid" id="issuesGrid">
+                <!-- Newsletters rendered dynamically from Firestore. Fallback list is in the script below. -->
+                <div class="issues-loading" id="issuesLoading">טוען גיליונות…</div>
+            </div>
+        </div>
+
+        <!-- TAB 2: Magazine -->
+        <div class="tab-content" id="tab-magazine">
+            <div class="section-header">
+                <h2>מגזין בחטיבה</h2>
+                <p>כתבות מעמיקות, ראיונות ותוכן מיוחד מחטיבת החשמונאים</p>
+            </div>
+            <div class="magazine-grid">
+                <div class="magazine-card">
+                    <div class="magazine-cover"><div class="mag-title">מגזין<br>בחטיבה</div></div>
+                    <div class="magazine-body">
+                        <h4>מגזין בחטיבה - גיליון ראשון</h4>
+                        <div class="mag-date">בקרוב...</div>
+                        <p>הגיליון הראשון של המגזין — סיפורם של לוחמי החטיבה, ראיונות עומק וכתבות מיוחדות.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: Warriors Dialogue -->
+        <div class="tab-content" id="tab-warriors">
+            <div class="section-header">
+                <h2>סדרת סרטונים ״שיח לוחמים״</h2>
+                <p>שיחות אישיות עם לוחמי ומפקדי חטיבת החשמונאים</p>
+            </div>
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-thumb">
+                        <div class="episode-badge">פרק 1</div>
+                        <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+                    </div>
+                    <div class="video-body">
+                        <h4>המפקד והלוחם</h4>
+                        <p>שיחה אישית על מנהיגות בקרב, על האתגרים הייחודיים של מפקד חרדי ועל בניית אמון.</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumb">
+                        <div class="episode-badge">פרק 2</div>
+                        <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+                    </div>
+                    <div class="video-body">
+                        <h4>שמירת הזהות בשדה הקרב</h4>
+                        <p>לוחמים מספרים על השמירה על אורח חיים חרדי בתנאי שטח מאתגרים.</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumb">
+                        <div class="episode-badge">פרק 3</div>
+                        <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+                    </div>
+                    <div class="video-body">
+                        <h4>מהישיבה לקרבי</h4>
+                        <p>המעבר מספסל הלימודים לשדה הקרב — סיפורים אישיים על הגיוס והצמיחה.</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumb">
+                        <div class="episode-badge">פרק 4</div>
+                        <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+                    </div>
+                    <div class="video-body">
+                        <h4>אחווה חשמונאית</h4>
+                        <p>על הקשר המיוחד בין לוחמי החטיבה, על ערבות הדדית ורגעי חיבור אמיתי.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: Al Kiddush Hashem -->
+        <div class="tab-content" id="tab-kiddush">
+            <div class="section-header">
+                <h2>סדרת סרטונים ״על קידוש השם״</h2>
+                <p>סדרה ייחודית העוסקת בערך המסירות, ההקרבה וקידוש השם</p>
+            </div>
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-thumb">
+                        <div class="episode-badge">פרק 1</div>
+                        <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+                    </div>
+                    <div class="video-body">
+                        <h4>מסירות נפש</h4>
+                        <p>על המשמעות העמוקה של מסירות נפש בהקשר הצבאי והתורני.</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumb">
+                        <div class="episode-badge">פרק 2</div>
+                        <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+                    </div>
+                    <div class="video-body">
+                        <h4>קדושת המחנה</h4>
+                        <p>כיצד שומרים על קדושת המחנה במציאות צבאית — הלכה למעשה.</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumb">
+                        <div class="episode-badge">פרק 3</div>
+                        <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+                    </div>
+                    <div class="video-body">
+                        <h4>לוחמים ומאמינים</h4>
+                        <p>עדויות אישיות של לוחמים על רגעי אמונה בזמן לחימה.</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumb">
+                        <div class="episode-badge">פרק 4</div>
+                        <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+                    </div>
+                    <div class="video-body">
+                        <h4>השליחות שלנו</h4>
+                        <p>על הייעוד הכפול של הלוחם החרדי — שליחות ביטחונית ורוחנית.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ISSUE MODAL (select language) -->
+    <div class="modal-overlay" id="issueModal">
+        <div class="modal-card">
+            <div class="modal-cover">
+                <img id="modalCoverImg" src="" alt="שער הגיליון">
+            </div>
+            <div class="modal-body">
+                <h3 id="modalIssueTitle">עלון בחטיבה</h3>
+                <div class="modal-parsha" id="modalParsha"></div>
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-he" id="modalBtnHe" onclick="viewPDF('he')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        צפה בעלון — עברית
+                    </button>
+                    <button class="modal-btn modal-btn-en" id="modalBtnEn" onclick="viewPDF('en')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        Read in English
+                    </button>
+                </div>
+                <button class="modal-close" onclick="closeIssueModal()">✕ סגור</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PDF VIEWER MODAL -->
+    <div class="pdf-overlay" id="pdfViewer">
+        <div class="pdf-container">
+            <div class="pdf-header">
+                <h3 id="pdfTitle">עלון בחטיבה</h3>
+                <div class="pdf-header-btns">
+                    <a id="pdfDownload" href="#" download>⬇ הורד PDF</a>
+                    <button class="pdf-close" onclick="closePdfViewer()">&times;</button>
+                </div>
+            </div>
+            <div class="pdf-frame">
+                <iframe id="pdfFrame" src=""></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <img src="images/logo.png" alt="לוגו">
+                <div class="footer-brand-text">
+                    <strong>עמותת החשמונאים</strong>
+                    ידידי ובוגרי חטיבת החשמונאים
+                </div>
+            </div>
+            <ul class="footer-links">
+                <li><a href="https://chashmonayim.org">דף הבית</a></li>
+                <li><a href="https://chashmonayim.org#programs">תוכניות</a></li>
+                <li><a href="https://chashmonayim.org#media">כתבות</a></li>
+                <li><a href="https://chashmonayim.org#donate">תרומה</a></li>
+            </ul>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 עמותת ״רוח חשמונאית״ (ע״ר 580814234) | כל הזכויות שמורות.
+            <br>נבנה ע״י <a href="https://chashmonayim.org">IAB Smart AI Solutions</a>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" aria-label="חזרה למעלה">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
+
+    <!-- Firebase SDK (compat build for simplicity, no bundler required) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        // ============================================================
+        // FALLBACK NEWSLETTER LIST — used if Firestore is unreachable
+        // (also used as the seed source for Firestore — see scripts/seed-firestore.js)
+        // ============================================================
+        var FALLBACK_NEWSLETTERS = [
+            { issueNumber: 36, parsha: 'במדבר',   coverUrl: 'newsletters/covers/cover-36.jpg', pdfHeUrl: 'newsletters/bachativa-issue-36-he.pdf', pdfEnUrl: 'newsletters/BaChativa-Issue36-English.pdf' },
+            { issueNumber: 31, parsha: 'משפטים',  coverUrl: 'newsletters/covers/cover-31.jpg', pdfHeUrl: 'newsletters/newsletter-31-mishpatim.pdf', pdfEnUrl: '' },
+            { issueNumber: 30, parsha: 'יתרו',    coverUrl: 'newsletters/covers/cover-30.jpg', pdfHeUrl: 'newsletters/newsletter-30-yitro.pdf', pdfEnUrl: '' },
+            { issueNumber: 29, parsha: 'בשלח',    coverUrl: 'newsletters/covers/cover-29.jpg', pdfHeUrl: 'newsletters/newsletter-29-beshalach.pdf', pdfEnUrl: '' },
+            { issueNumber: 28, parsha: 'בא',      coverUrl: 'newsletters/covers/cover-28.jpg', pdfHeUrl: 'newsletters/newsletter-28-bo.pdf', pdfEnUrl: '' },
+            { issueNumber: 27, parsha: 'וארא',    coverUrl: 'newsletters/covers/cover-27.jpg', pdfHeUrl: 'newsletters/newsletter-27-vaera.pdf', pdfEnUrl: '' },
+            { issueNumber: 26, parsha: 'שמות',    coverUrl: 'newsletters/covers/cover-26.jpg', pdfHeUrl: 'newsletters/newsletter-26-shemot.pdf', pdfEnUrl: '' }
+        ];
+
+        // Current issue data (set when modal opens)
+        var currentIssue = { num: 0, pdfHe: '', pdfEn: '' };
+
+        // ============================================================
+        // RENDER NEWSLETTERS GRID
+        // ============================================================
+        function renderNewsletters(items) {
+            var grid = document.getElementById('issuesGrid');
+            if (!items || items.length === 0) {
+                grid.innerHTML = '<div class="issues-empty">לא נמצאו גיליונות.</div>';
+                return;
+            }
+            // Sort newest first
+            items.sort(function(a, b) { return (b.issueNumber || 0) - (a.issueNumber || 0); });
+
+            var html = '';
+            for (var i = 0; i < items.length; i++) {
+                var n = items[i];
+                var pdfHe = (n.pdfHeUrl || '').replace(/'/g, "\\'");
+                var pdfEn = (n.pdfEnUrl || '').replace(/'/g, "\\'");
+                var parsha = (n.parsha || '').replace(/'/g, "\\'");
+                html += '<div class="issue-card" onclick="openIssue(' + n.issueNumber + ', \'' + parsha + '\', \'' + pdfHe + '\', \'' + pdfEn + '\')">'
+                      + '<div class="issue-cover">'
+                      + '<img src="' + (n.coverUrl || '') + '" alt="גיליון ' + n.issueNumber + '" loading="lazy">'
+                      + '<div class="issue-overlay"><span class="view-label">לחץ לצפייה</span></div>'
+                      + '</div>'
+                      + '<div class="issue-info">'
+                      + '<span class="issue-label">גיליון ' + n.issueNumber + '</span>'
+                      + '<h4>עלון בחטיבה</h4>'
+                      + '<div class="parsha-name">פרשת ' + (n.parsha || '') + '</div>'
+                      + '</div>'
+                      + '</div>';
+            }
+            grid.innerHTML = html;
+        }
+
+        // ============================================================
+        // LOAD NEWSLETTERS — try Firestore, fall back to embedded list
+        // ============================================================
+        (function loadNewsletters() {
+            var hasFirebase = typeof firebase !== 'undefined'
+                              && window.FIREBASE_CONFIG
+                              && window.FIREBASE_CONFIG.apiKey;
+
+            if (!hasFirebase) {
+                console.warn('[bachativa] Firebase not configured — using fallback list.');
+                renderNewsletters(FALLBACK_NEWSLETTERS);
+                return;
+            }
+
+            try {
+                firebase.initializeApp(window.FIREBASE_CONFIG);
+                var db = firebase.firestore();
+                db.collection('newsletters')
+                  .where('published', '==', true)
+                  .orderBy('issueNumber', 'desc')
+                  .get()
+                  .then(function(snap) {
+                      if (snap.empty) {
+                          renderNewsletters(FALLBACK_NEWSLETTERS);
+                          return;
+                      }
+                      var items = [];
+                      snap.forEach(function(doc) { items.push(doc.data()); });
+                      renderNewsletters(items);
+                  })
+                  .catch(function(err) {
+                      console.warn('[bachativa] Firestore fetch failed, using fallback:', err);
+                      renderNewsletters(FALLBACK_NEWSLETTERS);
+                  });
+            } catch (e) {
+                console.warn('[bachativa] Firebase init failed:', e);
+                renderNewsletters(FALLBACK_NEWSLETTERS);
+            }
+        })();
+
+        // ============================================================
+        // OPEN ISSUE MODAL
+        // ============================================================
+        function openIssue(num, parsha, pdfHe, pdfEn) {
+            currentIssue = { num: num, pdfHe: pdfHe, pdfEn: pdfEn };
+            document.getElementById('modalCoverImg').src = 'newsletters/covers/cover-' + num + '.jpg';
+            document.getElementById('modalIssueTitle').textContent = 'עלון בחטיבה — גיליון ' + num;
+            document.getElementById('modalParsha').textContent = 'פרשת ' + parsha;
+
+            // Show/hide English button
+            var enBtn = document.getElementById('modalBtnEn');
+            enBtn.style.display = pdfEn ? 'flex' : 'none';
+
+            document.getElementById('issueModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // GA event
+            if (typeof gtag === 'function') {
+                gtag('event', 'open_issue', { issue_number: num, parsha: parsha });
+            }
+        }
+
+        function closeIssueModal() {
+            document.getElementById('issueModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // View PDF
+        function viewPDF(lang) {
+            var url = lang === 'en' ? currentIssue.pdfEn : currentIssue.pdfHe;
+            if (!url) return;
+
+            var title = 'עלון בחטיבה — גיליון ' + currentIssue.num;
+            if (lang === 'en') title += ' (English)';
+
+            document.getElementById('pdfTitle').textContent = title;
+            document.getElementById('pdfDownload').href = url;
+            document.getElementById('pdfFrame').src = url;
+
+            closeIssueModal();
+            document.getElementById('pdfViewer').classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            if (typeof gtag === 'function') {
+                gtag('event', 'view_pdf', { issue_number: currentIssue.num, language: lang });
+            }
+        }
+
+        function closePdfViewer() {
+            document.getElementById('pdfViewer').classList.remove('active');
+            document.getElementById('pdfFrame').src = '';
+            document.body.style.overflow = '';
+        }
+
+        // Close modals on overlay click
+        document.getElementById('issueModal').addEventListener('click', function(e) {
+            if (e.target === this) closeIssueModal();
+        });
+        document.getElementById('pdfViewer').addEventListener('click', function(e) {
+            if (e.target === this) closePdfViewer();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePdfViewer();
+                closeIssueModal();
+            }
+        });
+
+        // Tab Navigation
+        (function() {
+            var tabBtns = document.querySelectorAll('.tab-btn');
+            var tabContents = document.querySelectorAll('.tab-content');
+            var navLinks = document.querySelectorAll('.navbar-links a[data-tab]');
+
+            function activateTab(tabId) {
+                tabBtns.forEach(function(btn) {
+                    btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+                });
+                tabContents.forEach(function(content) {
+                    content.classList.toggle('active', content.id === 'tab-' + tabId);
+                });
+                navLinks.forEach(function(link) {
+                    link.classList.toggle('active', link.getAttribute('data-tab') === tabId);
+                });
+            }
+            tabBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() { activateTab(this.getAttribute('data-tab')); });
+            });
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    var tab = this.getAttribute('data-tab');
+                    if (tab) {
+                        e.preventDefault();
+                        activateTab(tab);
+                        document.querySelector('.tabs-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        document.getElementById('navLinks').classList.remove('open');
+                    }
+                });
+            });
+        })();
+
+        // Mobile menu
+        document.getElementById('mobileToggle').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+
+        // Navbar shadow
+        window.addEventListener('scroll', function() {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        // Back to top
+        var btt = document.getElementById('backToTop');
+        window.addEventListener('scroll', function() { btt.classList.toggle('visible', window.scrollY > 400); });
+        btt.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+        // Hash tab
+        (function() {
+            var hash = window.location.hash.replace('#', '');
+            if (['newsletter','warriors','kiddush','magazine'].indexOf(hash) !== -1) {
+                var btn = document.querySelector('.tab-btn[data-tab="' + hash + '"]');
+                if (btn) btn.click();
+            }
+        })();
+    </script>
+
+</body>
+</html>
