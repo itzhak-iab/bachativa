@@ -1,20 +1,10 @@
-// =====================================================================
-// Firebase Web Config — מתעדכן אחרי יצירת פרויקט Firebase
-// =====================================================================
-// כדי לאפס: היכנס ל-Firebase Console → Project Settings → General →
-// Your apps → Web app → SDK setup and configuration → Config
-// העתק את הערכים לכאן.
-//
-// בזמן שהשדות ריקים, האתר ייפול-חזרה לרשימה המוטמעת ב-index.html
-// ולכן האתר עובד מהיום הראשון גם בלי Firebase.
-// =====================================================================
-
+// Firebase Web Config — auto-populated after project creation
 window.FIREBASE_CONFIG = {
-  apiKey: "",
-  authDomain: "bachativa.firebaseapp.com",
-  projectId: "bachativa",
-  storageBucket: "bachativa.firebasestorage.app",
-  messagingSenderId: "",
-  appId: "",
-  measurementId: "G-DLNEH3K485"
+  apiKey: "AIzaSyDpzE_vIGGgq1MGTzS7tAdSqK6ZmxAeTKw",
+  authDomain: "bachativa-site.firebaseapp.com",
+  projectId: "bachativa-site",
+  storageBucket: "bachativa-site.firebasestorage.app",
+  messagingSenderId: "235136831793",
+  appId: "1:235136831793:web:cc5249ab86be7cb6e3e010",
+  measurementId: "G-VTDY0ZRBL3"
 };
