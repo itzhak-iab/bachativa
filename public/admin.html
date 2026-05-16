@@ -231,19 +231,35 @@
       <input type="hidden" id="artLanguage">
       <div class="field-row">
         <div class="field"><label>סוג סקציה</label><select id="artType">
-          <option value="cover">שער</option>
-          <option value="question-torah">שאלה בתורה</option>
-          <option value="glimpse-torah">הצצה לתורה</option>
-          <option value="brigade-news">חדשות החטיבה</option>
-          <option value="warrior-view">מבט הלוחם</option>
-          <option value="warrior-interview">ראיון לוחם</option>
-          <option value="journey-time">מסע בזמן</option>
-          <option value="chassidic-story">סיפור חסידי</option>
-          <option value="article">כתבה כללית</option>
-          <option value="interview">ראיון</option>
-          <option value="torah">דבר תורה</option>
-          <option value="photo-of-week">תמונת השבוע</option>
-          <option value="gallery">גלריה</option>
+          <optgroup label="סקציות העלון השבועי (לפי הסדר)">
+            <option value="editor-word">דבר המערכת</option>
+            <option value="commander-word">דבר המפקד</option>
+            <option value="torah-greats">משולחנם של גדולי ישראל</option>
+            <option value="warrior-song">שירת הלוחם</option>
+            <option value="question-camp">שאלה במחנה</option>
+            <option value="yeshivish-field">ישיבישער בשטח</option>
+            <option value="faces-story">פנים שמספרות סיפור</option>
+            <option value="parsha-glimpse">הצצה לפרשת השבוע</option>
+            <option value="idf-lingo">שפה צה״לית</option>
+            <option value="steigen">שטייגען בחטיבה</option>
+            <option value="brigade-news">חדשות החטיבה</option>
+            <option value="idf-news">חדשות צה״ל</option>
+            <option value="warrior-diary">מיומנו של לוחם</option>
+            <option value="shabbat-story">סיפור לשבת</option>
+            <option value="life-brigade">החיים בחטיבה</option>
+            <option value="journey-time">מסע בזמן</option>
+            <option value="soldier-map">חייל על המפה</option>
+            <option value="halacha-army">הלכה בצבא</option>
+            <option value="humor">צחוק בצד</option>
+          </optgroup>
+          <optgroup label="אחר">
+            <option value="article">כתבה כללית</option>
+            <option value="interview">ראיון</option>
+            <option value="torah">דבר תורה</option>
+            <option value="photo-of-week">תמונת השבוע</option>
+            <option value="gallery">גלריה</option>
+            <option value="cover">שער</option>
+          </optgroup>
         </select></div>
         <div class="field"><label>סדר (מספר עמוד)</label><input type="number" id="artOrder" value="1" min="1"></div>
       </div>
