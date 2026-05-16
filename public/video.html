@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">סרטון | בחטיבה</title>
+<meta name="description" id="pageDesc" content="סרטון מסדרות הוידאו של חטיבת חשמונאים">
+<meta property="og:type" content="video.other">
+<meta property="og:title" id="ogTitle" content="סרטון | בחטיבה">
+<meta property="og:description" id="ogDesc" content="">
+<meta property="og:image" id="ogImage" content="https://bachativa.com/images/og-image.jpg">
+<link rel="icon" type="image/png" href="/images/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Frank+Ruhl+Libre:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/theme.css">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DLNEH3K485"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date()); gtag('config', 'G-DLNEH3K485');
+</script>
+
+<style>
+  .video-page { max-width: 920px; margin: 2rem auto; padding: 0 1.5rem; }
+  .video-eyebrow { color: var(--olive); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .video-page h1 { font-family: 'Frank Ruhl Libre', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.12; color: var(--olive-darkest); margin-bottom: 0.7rem; font-weight: 900; }
+  .video-frame-wrap {
+    background: #000; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    aspect-ratio: 16/9; margin: 1.5rem 0;
+  }
+  .video-frame-wrap iframe, .video-frame-wrap video {
+    width: 100%; height: 100%; border: none; display: block;
+  }
+  .video-desc { font-size: 1.05rem; line-height: 1.75; color: var(--text); margin-bottom: 1.5rem; }
+  .video-meta { display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap; padding-bottom: 1rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; color: var(--text-light); font-size: 0.9rem; }
+  .video-footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 2px solid var(--gold); }
+  .not-found { text-align: center; padding: 4rem 1rem; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="/" class="navbar-brand">
+      <img src="/images/logo.png" alt="חטיבת חשמונאים">
+      <div class="navbar-brand-text">
+        <span class="navbar-brand-title">בחטיבה</span>
+        <span class="navbar-brand-sub">חטיבת חשמונאים</span>
+      </div>
+    </a>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="תפריט"><span></span><span></span><span></span></button>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="/">בית</a></li>
+      <li><a href="/archive">ארכיון</a></li>
+      <li><a href="https://chashmonayim.org" target="_blank" rel="noopener" class="btn-gold" style="padding:0.45rem 1rem;border-radius:6px;color:var(--olive-darkest);text-decoration:none;font-weight:700;">לאתר עמותת החשמונאים ←</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div id="videoContent">
+  <div class="loading" style="margin-top:4rem;"><div class="spinner"></div></div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="/images/logo.png" alt="חטיבת חשמונאים">
+      <div class="footer-brand-text"><strong>עמותת החשמונאים</strong>ידידי ובוגרי חטיבת החשמונאים</div>
+    </div>
+    <ul class="footer-links">
+      <li><a href="/">בית</a></li>
+      <li><a href="/archive">ארכיון</a></li>
+      <li><a href="https://chashmonayim.org" target="_blank" rel="noopener">אתר עמותת החשמונאים</a></li>
+      <li><a href="mailto:bachativa@gmail.com">צור קשר</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">&copy; 2026 עמותת החשמונאים | כל הזכויות שמורות</div>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+<script src="/firebase-config.js"></script>
+<script>
+  firebase.initializeApp(window.FIREBASE_CONFIG);
+  const db = firebase.firestore();
+
+  const SERIES_LABELS = { warriors: 'שיח לוחמים', kiddush: 'על קידוש השם' };
+  const SERIES_HASH = { warriors: '#warriors', kiddush: '#kiddush' };
+
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function getIdFromPath() {
+    const m = location.pathname.match(/\/video\/([^/]+)$/);
+    if (m) return decodeURIComponent(m[1]);
+    return new URLSearchParams(location.search).get('id');
+  }
+
+  // Convert YouTube/Vimeo URL to embed URL
+  function toEmbed(url) {
+    if (!url) return null;
+    // YouTube
+    let m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    if (m) return { type:'iframe', src: `https://www.youtube.com/embed/${m[1]}?rel=0` };
+    // Vimeo
+    m = url.match(/vimeo\.com\/(\d+)/);
+    if (m) return { type:'iframe', src: `https://player.vimeo.com/video/${m[1]}` };
+    // direct mp4/etc.
+    if (/\.(mp4|webm|ogv)(\?|$)/i.test(url)) return { type:'video', src: url };
+    // fallback: embed as iframe (may not work)
+    return { type:'iframe', src: url };
+  }
+
+  async function loadVideo() {
+    const id = getIdFromPath();
+    const c = document.getElementById('videoContent');
+    if (!id) { c.innerHTML = '<div class="not-found"><h2>לא צוין סרטון</h2><a href="/">חזרה לבית</a></div>'; return; }
+    let v;
+    try {
+      const doc = await db.collection('videos').doc(id).get();
+      if (!doc.exists) { c.innerHTML = '<div class="not-found"><h2>הסרטון לא נמצא</h2><a href="/">חזרה לבית</a></div>'; return; }
+      v = { id: doc.id, ...doc.data() };
+    } catch (e) { c.innerHTML = '<div class="not-found"><h2>שגיאה</h2><p>'+esc(e.message)+'</p></div>'; return; }
+
+    document.getElementById('pageTitle').textContent = `${v.title} | בחטיבה`;
+    document.getElementById('pageDesc').setAttribute('content', v.description || '');
+    document.getElementById('ogTitle').setAttribute('content', v.title);
+    document.getElementById('ogDesc').setAttribute('content', v.description || '');
+    if (v.thumbnailUrl) document.getElementById('ogImage').setAttribute('content', v.thumbnailUrl);
+
+    if (typeof gtag === 'function') gtag('event', 'view_video', { video_id: id, title: v.title });
+
+    const embed = toEmbed(v.videoUrl);
+    let player = '';
+    if (embed) {
+      if (embed.type === 'iframe') {
+        player = `<iframe src="${esc(embed.src)}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+      } else {
+        player = `<video controls src="${esc(embed.src)}" poster="${esc(v.thumbnailUrl || '')}"></video>`;
+      }
+    } else {
+      player = '<div style="color:#fff;text-align:center;padding:2rem;">סרטון לא זמין כרגע</div>';
+    }
+
+    const seriesLabel = SERIES_LABELS[v.seriesKey] || 'סרטון';
+    const seriesLink = SERIES_HASH[v.seriesKey] ? `<a href="/${SERIES_HASH[v.seriesKey]}">${esc(seriesLabel)}</a>` : esc(seriesLabel);
+
+    c.innerHTML = `
+      <article class="video-page">
+        <div class="video-eyebrow">${seriesLink}</div>
+        <h1>${esc(v.title)}</h1>
+        <div class="video-meta">
+          ${v.episodeNumber ? `<span>פרק ${esc(v.episodeNumber)}</span>` : ''}
+          ${v.duration ? `<span>· ${esc(v.duration)}</span>` : ''}
+        </div>
+        <div class="video-frame-wrap">${player}</div>
+        ${v.description ? `<div class="video-desc">${esc(v.description).replace(/\n/g,'<br>')}</div>` : ''}
+        <div class="video-footer">
+          <a href="/${SERIES_HASH[v.seriesKey] || ''}" class="btn btn-outline">← לכל הסדרה</a>
+        </div>
+      </article>`;
+  }
+
+  document.getElementById('mobileToggle').addEventListener('click', () =>
+    document.getElementById('navLinks').classList.toggle('open'));
+
+  loadVideo();
+</script>
+</body>
+</html>

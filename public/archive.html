@@ -3,11 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ארכיון העלונים | בחטיבה</title>
-<meta name="description" content="ארכיון כל גיליוני העלון השבועי של חטיבת חשמונאים">
-<link rel="icon" type="image/png" href="images/logo.png">
+<title>ארכיון העלונים | בחטיבה — חטיבת חשמונאים</title>
+<meta name="description" content="ארכיון מלא של גיליוני ״בחטיבה״ — העלון השבועי של חטיבת חשמונאים. כל הגיליונות, כל הפרשות.">
+<meta name="keywords" content="בחטיבה ארכיון, עלון חשמונאים, חטיבת חשמונאים עלון, פרשת השבוע">
+<meta property="og:title" content="ארכיון העלונים | בחטיבה">
+<meta property="og:description" content="כל גיליוני העלון השבועי של חטיבת חשמונאים במקום אחד">
+<meta property="og:url" content="https://bachativa.com/archive">
+<meta property="og:image" content="https://bachativa.com/images/og-image.jpg">
+<link rel="canonical" href="https://bachativa.com/archive">
+<link rel="icon" type="image/png" href="/images/logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Frank+Ruhl+Libre:wght@700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="/theme.css">
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DLNEH3K485"></script>
 <script>
@@ -17,65 +23,23 @@
 </script>
 
 <style>
-  .archive-header {
-    background: linear-gradient(135deg, var(--olive-darkest), var(--olive));
-    color: #fff;
-    padding: 2.5rem 1.5rem;
-    text-align: center;
-  }
-  .archive-header h1 {
-    font-family: 'Frank Ruhl Libre', serif;
-    font-size: 2.5rem;
-    margin-bottom: 0.4rem;
-  }
+  .archive-header { background: linear-gradient(135deg, var(--olive-darkest), var(--olive)); color: #fff; padding: 2.5rem 1.5rem; text-align: center; }
+  .archive-header h1 { font-family: 'Frank Ruhl Libre', serif; font-size: 2.5rem; margin-bottom: 0.4rem; }
   .archive-header p { opacity: 0.85; font-size: 1.05rem; }
 
-  .archive-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2rem;
-  }
-  .archive-card {
-    background: #fff;
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    cursor: pointer;
-    text-decoration: none;
-    color: inherit;
-    display: block;
-  }
+  .archive-section { margin: 2rem auto; max-width: 1280px; padding: 0 1.5rem; }
+  .archive-section h2 { color: var(--olive-darkest); font-family: 'Frank Ruhl Libre', serif; font-size: 1.6rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--gold); }
+
+  .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem; }
+  .archive-card { background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); text-decoration: none; color: inherit; display: block; position: relative; }
   .archive-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-  .archive-cover { aspect-ratio: 0.707; overflow: hidden; background: var(--cream); }
+  .archive-cover { aspect-ratio: 0.707; overflow: hidden; background: var(--cream); position: relative; }
   .archive-cover img { width: 100%; height: 100%; object-fit: cover; }
+  .archive-cover .pdf-badge { position: absolute; top: 0.5rem; right: 0.5rem; background: var(--gold); color: var(--olive-darkest); padding: 0.15rem 0.5rem; border-radius: 3px; font-size: 0.7rem; font-weight: 700; }
   .archive-info { padding: 0.8rem 1rem 1rem; text-align: center; }
   .archive-info .num { font-size: 0.78rem; color: var(--olive); font-weight: 700; letter-spacing: 0.05em; }
   .archive-info h3 { font-family: 'Frank Ruhl Libre', serif; font-size: 1.1rem; color: var(--olive-darkest); margin: 0.2rem 0; }
-  .archive-info .parsha { color: var(--text-muted); font-size: 0.85rem; }
-
-  /* Modal */
-  .pdf-modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-    display: none; align-items: center; justify-content: center; z-index: 1000; padding: 1rem;
-  }
-  .pdf-modal-overlay.active { display: flex; }
-  .pdf-modal-card {
-    background: #fff; border-radius: var(--radius); max-width: 380px; width: 100%; padding: 1.5rem; text-align: center;
-  }
-  .pdf-modal-card img { width: 110px; aspect-ratio: 0.707; object-fit: cover; margin: 0 auto 1rem; border-radius: var(--radius-sm); box-shadow: var(--shadow); }
-  .pdf-modal-card h3 { font-family: 'Frank Ruhl Libre', serif; color: var(--olive-darkest); margin-bottom: 0.3rem; }
-  .pdf-modal-card .parsha { color: var(--gold-dark); font-weight: 700; margin-bottom: 1rem; }
-  .pdf-modal-actions { display: flex; flex-direction: column; gap: 0.5rem; }
-
-  .pdf-viewer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; z-index: 2000; flex-direction: column; }
-  .pdf-viewer-overlay.active { display: flex; }
-  .pdf-viewer-header { background: var(--olive-darkest); color: #fff; padding: 0.8rem 1rem; display: flex; justify-content: space-between; align-items: center; }
-  .pdf-viewer-header h3 { font-size: 1rem; }
-  .pdf-viewer-header button, .pdf-viewer-header a { background: var(--gold); color: var(--olive-darkest); border: none; padding: 0.4rem 0.9rem; border-radius: 4px; cursor: pointer; text-decoration: none; font-family: inherit; font-weight: 600; font-size: 0.85rem; }
-  .pdf-viewer-body { flex: 1; }
-  .pdf-viewer-body iframe { width: 100%; height: 100%; border: none; background: #444; }
+  .archive-info .type { color: var(--text-muted); font-size: 0.82rem; }
 </style>
 </head>
 <body>
@@ -83,150 +47,115 @@
 <nav class="navbar">
   <div class="navbar-inner">
     <a href="/" class="navbar-brand">
-      <img src="images/logo.png" alt="לוגו">
-      <div class="navbar-brand-text"><span class="navbar-brand-title">״בחטיבה״</span><span class="navbar-brand-sub">חטיבת חשמונאים</span></div>
+      <img src="/images/logo.png" alt="חטיבת חשמונאים">
+      <div class="navbar-brand-text">
+        <span class="navbar-brand-title">בחטיבה</span>
+        <span class="navbar-brand-sub">חטיבת חשמונאים</span>
+      </div>
     </a>
-    <button class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></button>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="תפריט"><span></span><span></span><span></span></button>
     <ul class="navbar-links" id="navLinks">
       <li><a href="/">בית</a></li>
       <li><a href="/archive" class="active">ארכיון</a></li>
-      <li><a href="https://chashmonayim.org" target="_blank">אתר העמותה</a></li>
+      <li><a href="https://chashmonayim.org" target="_blank" rel="noopener" class="btn-gold" style="padding:0.45rem 1rem;border-radius:6px;color:var(--olive-darkest);text-decoration:none;font-weight:700;">לאתר עמותת החשמונאים ←</a></li>
     </ul>
   </div>
 </nav>
 
 <header class="archive-header">
-  <h1>ארכיון העלונים</h1>
-  <p>כל גיליוני ״בחטיבה״ במקום אחד</p>
+  <h1>ארכיון בחטיבה</h1>
+  <p>כל הגיליונות והתכנים במקום אחד</p>
 </header>
 
-<main>
-  <div class="archive-grid" id="archiveGrid">
-    <div class="loading"><div class="spinner"></div></div>
-  </div>
-</main>
+<section class="archive-section" id="newslettersSection">
+  <h2>📰 עלוני בחטיבה (שבועי)</h2>
+  <div class="archive-grid" id="newslettersGrid"><div class="loading"><div class="spinner"></div></div></div>
+</section>
 
-<!-- Issue chooser modal -->
-<div class="pdf-modal-overlay" id="pdfModal" onclick="if(event.target===this) closeModal()">
-  <div class="pdf-modal-card">
-    <img id="mCover" src="">
-    <h3 id="mTitle">גיליון</h3>
-    <div class="parsha" id="mParsha"></div>
-    <div class="pdf-modal-actions">
-      <button class="btn" id="mBtnHe" onclick="openPdf('he')">צפה — עברית</button>
-      <button class="btn btn-outline" id="mBtnEn" onclick="openPdf('en')" style="display:none;">Read — English</button>
-      <button class="btn btn-outline btn-sm" onclick="closeModal()">סגור</button>
-    </div>
-  </div>
-</div>
-
-<!-- PDF viewer modal -->
-<div class="pdf-viewer-overlay" id="pdfViewer">
-  <div class="pdf-viewer-header">
-    <h3 id="pvTitle">גיליון</h3>
-    <div style="display:flex;gap:0.5rem;">
-      <a id="pvDownload" href="#" download>⬇ הורד</a>
-      <button onclick="closeViewer()">✕ סגור</button>
-    </div>
-  </div>
-  <div class="pdf-viewer-body"><iframe id="pvFrame" src=""></iframe></div>
-</div>
+<section class="archive-section" id="magazinesSection" style="display:none;">
+  <h2>📖 מגזין בחטיבה (חודשי)</h2>
+  <div class="archive-grid" id="magazinesGrid"></div>
+</section>
 
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <img src="images/logo.png" alt="לוגו">
+      <img src="/images/logo.png" alt="חטיבת חשמונאים">
       <div class="footer-brand-text"><strong>עמותת החשמונאים</strong>ידידי ובוגרי חטיבת החשמונאים</div>
     </div>
     <ul class="footer-links">
       <li><a href="/">בית</a></li>
       <li><a href="/archive">ארכיון</a></li>
-      <li><a href="https://chashmonayim.org">אתר העמותה</a></li>
+      <li><a href="https://chashmonayim.org" target="_blank" rel="noopener">אתר עמותת החשמונאים</a></li>
+      <li><a href="mailto:bachativa@gmail.com">צור קשר</a></li>
     </ul>
   </div>
-  <div class="footer-bottom">&copy; 2026 עמותת ״רוח חשמונאית״</div>
+  <div class="footer-bottom">&copy; 2026 עמותת החשמונאים | כל הזכויות שמורות</div>
 </footer>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js"></script>
+<script src="/firebase-config.js"></script>
 <script>
   firebase.initializeApp(window.FIREBASE_CONFIG);
   const db = firebase.firestore();
 
+  // Legacy newsletters (before CMS) — still available for backward compatibility
   const FALLBACK = [
-    { issueNumber: 36, parsha: 'במדבר',   coverUrl: 'newsletters/covers/cover-36.jpg', pdfHeUrl: 'newsletters/bachativa-issue-36-he.pdf', pdfEnUrl: 'newsletters/BaChativa-Issue36-English.pdf' },
+    { issueNumber: 36, parsha: 'במדבר',   coverUrl: 'newsletters/covers/cover-36.jpg', pdfHeUrl: 'newsletters/bachativa-issue-36-he.pdf' },
     { issueNumber: 31, parsha: 'משפטים',  coverUrl: 'newsletters/covers/cover-31.jpg', pdfHeUrl: 'newsletters/newsletter-31-mishpatim.pdf' },
     { issueNumber: 30, parsha: 'יתרו',    coverUrl: 'newsletters/covers/cover-30.jpg', pdfHeUrl: 'newsletters/newsletter-30-yitro.pdf' },
     { issueNumber: 29, parsha: 'בשלח',    coverUrl: 'newsletters/covers/cover-29.jpg', pdfHeUrl: 'newsletters/newsletter-29-beshalach.pdf' },
     { issueNumber: 28, parsha: 'בא',      coverUrl: 'newsletters/covers/cover-28.jpg', pdfHeUrl: 'newsletters/newsletter-28-bo.pdf' },
     { issueNumber: 27, parsha: 'וארא',    coverUrl: 'newsletters/covers/cover-27.jpg', pdfHeUrl: 'newsletters/newsletter-27-vaera.pdf' },
-    { issueNumber: 26, parsha: 'שמות',    coverUrl: 'newsletters/covers/cover-26.jpg', pdfHeUrl: 'newsletters/newsletter-26-shemot.pdf' },
+    { issueNumber: 26, parsha: 'שמות',    coverUrl: 'newsletters/covers/cover-26.jpg', pdfHeUrl: 'newsletters/newsletter-26-shemot.pdf' }
   ];
 
-  let current = null;
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+  function renderCard(item, isLegacy) {
+    const href = isLegacy
+      ? `/issue/legacy-${item.issueNumber}`
+      : `/issue/${item.id}`;
+    const cover = item.coverUrl ? `<img src="${esc(item.coverUrl)}" alt="גיליון ${item.issueNumber}" loading="lazy">` : '';
+    const pdfBadge = item.pdfHeUrl ? '<span class="pdf-badge">PDF</span>' : '';
+    const typeLabel = item.type === 'magazine' ? 'מגזין' : 'עלון';
+    return `
+      <a class="archive-card" href="${href}">
+        <div class="archive-cover">${cover}${pdfBadge}</div>
+        <div class="archive-info">
+          <div class="num">גיליון ${esc(item.issueNumber)}</div>
+          <h3>${esc(item.parsha ? 'פרשת ' + item.parsha : (item.title || ''))}</h3>
+          <div class="type">${typeLabel}</div>
+        </div>
+      </a>`;
+  }
 
   async function loadArchive() {
-    let issues = [];
+    let newsletters = [], magazines = [];
     try {
       const snap = await db.collection('issues').where('published','==',true).orderBy('issueNumber','desc').get();
-      snap.forEach(d => issues.push({ id: d.id, ...d.data() }));
-    } catch (e) { console.warn('issues load failed', e); }
-    if (issues.length === 0) issues = FALLBACK;
-    render(issues);
+      snap.forEach(d => {
+        const x = { id: d.id, ...d.data() };
+        if (x.type === 'magazine') magazines.push(x); else newsletters.push(x);
+      });
+    } catch (e) { console.warn(e); }
+
+    // Always show the legacy newsletters too (they're physical PDFs not in CMS)
+    if (newsletters.length === 0) {
+      // Only legacy
+      document.getElementById('newslettersGrid').innerHTML = FALLBACK.map(n => renderCard({...n, isLegacy:true}, true)).join('');
+    } else {
+      const all = newsletters.concat(FALLBACK.filter(f => !newsletters.find(n => n.issueNumber === f.issueNumber)));
+      document.getElementById('newslettersGrid').innerHTML = all.map(n => renderCard(n, !n.id)).join('');
+    }
+
+    if (magazines.length > 0) {
+      document.getElementById('magazinesSection').style.display = 'block';
+      document.getElementById('magazinesGrid').innerHTML = magazines.map(m => renderCard(m, false)).join('');
+    }
   }
 
-  function render(items) {
-    const grid = document.getElementById('archiveGrid');
-    grid.innerHTML = items.map(n => `
-      <a class="archive-card" onclick="event.preventDefault(); openIssue(${escAttr(JSON.stringify(n))})">
-        <div class="archive-cover">
-          ${n.coverUrl ? `<img src="${esc(n.coverUrl)}" alt="גיליון ${n.issueNumber}" loading="lazy">` : ''}
-        </div>
-        <div class="archive-info">
-          <div class="num">גיליון ${n.issueNumber}</div>
-          <h3>${esc(n.parsha ? 'פרשת ' + n.parsha : '')}</h3>
-        </div>
-      </a>`).join('');
-  }
-
-  function escAttr(s) { return s.replace(/'/g, '&apos;'); }
-
-  function openIssue(item) {
-    current = item;
-    document.getElementById('mCover').src = item.coverUrl || '';
-    document.getElementById('mTitle').textContent = 'גיליון ' + item.issueNumber;
-    document.getElementById('mParsha').textContent = item.parsha ? 'פרשת ' + item.parsha : '';
-    document.getElementById('mBtnEn').style.display = item.pdfEnUrl ? 'inline-block' : 'none';
-    document.getElementById('pdfModal').classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeModal() {
-    document.getElementById('pdfModal').classList.remove('active');
-    document.body.style.overflow = '';
-  }
-  function openPdf(lang) {
-    const url = lang === 'en' ? current.pdfEnUrl : current.pdfHeUrl;
-    if (!url) return;
-    document.getElementById('pvTitle').textContent = 'גיליון ' + current.issueNumber + (lang === 'en' ? ' (English)' : '');
-    document.getElementById('pvDownload').href = url;
-    document.getElementById('pvFrame').src = url;
-    closeModal();
-    document.getElementById('pdfViewer').classList.add('active');
-    document.body.style.overflow = 'hidden';
-    if (typeof gtag === 'function') gtag('event', 'view_pdf', { issue_number: current.issueNumber, language: lang });
-  }
-  function closeViewer() {
-    document.getElementById('pdfViewer').classList.remove('active');
-    document.getElementById('pvFrame').src = '';
-    document.body.style.overflow = '';
-  }
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeModal(); closeViewer(); }
-  });
   document.getElementById('mobileToggle').addEventListener('click', () =>
     document.getElementById('navLinks').classList.toggle('open'));
 

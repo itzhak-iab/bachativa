@@ -36,6 +36,7 @@
     "rewrites": [
       { "source": "/article/**", "destination": "/article.html" },
       { "source": "/issue/**",   "destination": "/issue.html"   },
+      { "source": "/video/**",   "destination": "/video.html"   },
       { "source": "/print/**",   "destination": "/print.html"   },
       { "source": "/archive",    "destination": "/archive.html" },
       { "source": "/admin",      "destination": "/admin.html"   },
