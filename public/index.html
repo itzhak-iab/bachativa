@@ -3,22 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>״בחטיבה״ — המגזין השבועי של חטיבת חשמונאים | עלון, סרטונים ומגזין</title>
-<meta name="description" content="״בחטיבה״ – המגזין השבועי של חטיבת החשמונאים. עלוני בחטיבה, מגזין בחטיבה, סדרת ״שיח לוחמים״, סדרת ״על קידוש השם״ ועוד תכנים ייחודיים.">
+<title>״בחטיבה״ — חטיבת חשמונאים | עלון, מגזין וסדרות וידאו</title>
+<meta name="description" content="״בחטיבה״ – המגזין השבועי של חטיבת חשמונאים. עלוני בחטיבה, מגזין בחטיבה, סדרת ״שיח לוחמים״, סדרת ״על קידוש השם״ ועוד תכנים ייחודיים.">
 <meta name="keywords" content="בחטיבה, חטיבת חשמונאים, חטיבת החשמונאים, חשמונאים, עמותת החשמונאים, ספר מסע חשמונאים, לוחמים חרדים, חיילים חרדים, צה״ל חרדים, שיח לוחמים, על קידוש השם">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="he_IL">
 <meta property="og:site_name" content="בחטיבה — חטיבת חשמונאים">
-<meta property="og:title" content="״בחטיבה״ — המגזין השבועי של חטיבת חשמונאים">
-<meta property="og:description" content="עלון שבועי, מגזין, סדרות וידאו ותכנים ייחודיים מחטיבת החשמונאים">
+<meta property="og:title" content="״בחטיבה״ — חטיבת חשמונאים">
+<meta property="og:description" content="המגזין השבועי של חטיבת חשמונאים — עלון, מגזין וסדרות וידאו">
 <meta property="og:url" content="https://bachativa.com/">
 <meta property="og:image" content="https://bachativa.com/images/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://bachativa.com/">
-<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/images/logo-192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Frank+Ruhl+Libre:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192" href="/images/logo-192.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=2">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;800;900&family=Frank+Ruhl+Libre:wght@700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/theme.css">
 
 <script type="application/ld+json">
@@ -32,7 +32,7 @@
     "@type": "Organization",
     "name": "עמותת החשמונאים",
     "url": "https://chashmonayim.org",
-    "logo": "https://bachativa.com/images/logo.png"
+    "logo": "https://bachativa.com/images/logo.png?v=2"
   },
   "inLanguage": "he-IL"
 }
@@ -46,11 +46,21 @@
 </script>
 
 <style>
-  .hero { background: linear-gradient(135deg, var(--olive-darkest), var(--olive)); color: #fff; padding: 3rem 1.5rem 3.5rem; text-align: center; }
-  .hero h1 { font-family: 'Frank Ruhl Libre', serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; line-height: 1; margin-bottom: 0.3rem; letter-spacing: -0.02em; }
-  .hero h1 .quote-mark { color: var(--gold); font-weight: 400; }
-  .hero p { font-size: 1.05rem; opacity: 0.88; max-width: 600px; margin: 0.5rem auto 0; }
-  .hero-divider { width: 80px; height: 3px; background: var(--gold); margin: 1.2rem auto 0; }
+  /* HERO uses the wide logo image so the font matches the brand exactly */
+  .hero {
+    background: var(--olive-darkest);
+    padding: 0;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .hero img.hero-logo {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    display: block;
+    background: var(--olive-darkest);
+  }
 
   .info-bar { background: var(--cream); border-bottom: 1px solid var(--border); padding: 0.65rem 1rem; font-size: 0.88rem; }
   .info-bar-inner { max-width: 1280px; margin: 0 auto; display: flex; justify-content: center; gap: 1.8rem; flex-wrap: wrap; }
@@ -58,48 +68,16 @@
   .info-bar a:hover { color: var(--red); }
 
   /* Section tabs */
-  .section-tabs {
-    background: #fff;
-    border-bottom: 2px solid var(--olive);
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-  }
-  .section-tabs-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    display: flex;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
+  .section-tabs { background: #fff; border-bottom: 2px solid var(--olive); position: sticky; top: 0; z-index: 50; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
+  .section-tabs-inner { max-width: 1280px; margin: 0 auto; display: flex; overflow-x: auto; scrollbar-width: none; }
   .section-tabs-inner::-webkit-scrollbar { display: none; }
-  .section-tab {
-    background: transparent;
-    border: none;
-    padding: 1rem 1.3rem;
-    cursor: pointer;
-    font-family: inherit;
-    font-weight: 600;
-    font-size: 1rem;
-    color: var(--text-muted);
-    border-bottom: 3px solid transparent;
-    margin-bottom: -2px;
-    transition: var(--transition);
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
+  .section-tab { background: transparent; border: none; padding: 1rem 1.3rem; cursor: pointer; font-family: inherit; font-weight: 600; font-size: 1rem; color: var(--text-muted); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: var(--transition); white-space: nowrap; display: flex; align-items: center; gap: 0.4rem; }
   .section-tab:hover { color: var(--olive); background: var(--cream-soft); }
   .section-tab.active { color: var(--olive-darkest); border-bottom-color: var(--gold); background: var(--cream); }
-  .section-tab .icon { font-size: 1.05rem; }
 
   .pane { display: none; }
   .pane.active { display: block; }
 
-  /* Featured (top story) */
   .featured { background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); display: grid; grid-template-columns: 1.4fr 1fr; margin-bottom: 2.5rem; }
   .featured-image { aspect-ratio: 16/10; overflow: hidden; position: relative; background: var(--cream); }
   .featured-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
@@ -131,45 +109,22 @@
   .issue-strip strong { color: var(--cream); font-size: 1.1rem; }
   .issue-strip-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 
-  /* Video grid */
   .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.5rem; }
   .video-card { background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); display: block; text-decoration: none; color: inherit; }
   .video-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
   .video-thumb { aspect-ratio: 16/9; background: var(--olive-darkest); position: relative; overflow: hidden; }
   .video-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0.92; transition: opacity .3s; }
   .video-card:hover .video-thumb img { opacity: 1; }
-  .video-thumb .play {
-    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-    pointer-events: none;
-  }
-  .video-thumb .play svg {
-    width: 64px; height: 64px;
-    background: rgba(178,36,26,0.92); border-radius: 50%;
-    padding: 16px; box-shadow: 0 4px 14px rgba(0,0,0,0.35);
-    transition: transform .25s;
-  }
+  .video-thumb .play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+  .video-thumb .play svg { width: 64px; height: 64px; background: rgba(178,36,26,0.92); border-radius: 50%; padding: 16px; box-shadow: 0 4px 14px rgba(0,0,0,0.35); transition: transform .25s; }
   .video-card:hover .video-thumb .play svg { transform: scale(1.1); }
-  .video-thumb .episode {
-    position: absolute; top: 0.7rem; right: 0.7rem;
-    background: var(--gold); color: var(--olive-darkest);
-    padding: 0.2rem 0.7rem; border-radius: 4px;
-    font-weight: 700; font-size: 0.78rem;
-  }
-  .video-thumb .duration {
-    position: absolute; bottom: 0.6rem; left: 0.6rem;
-    background: rgba(0,0,0,0.75); color: #fff;
-    padding: 0.15rem 0.5rem; border-radius: 3px;
-    font-size: 0.75rem;
-  }
+  .video-thumb .episode { position: absolute; top: 0.7rem; right: 0.7rem; background: var(--gold); color: var(--olive-darkest); padding: 0.2rem 0.7rem; border-radius: 4px; font-weight: 700; font-size: 0.78rem; }
+  .video-thumb .duration { position: absolute; bottom: 0.6rem; left: 0.6rem; background: rgba(0,0,0,0.75); color: #fff; padding: 0.15rem 0.5rem; border-radius: 3px; font-size: 0.75rem; }
   .video-body { padding: 1rem 1.1rem 1.2rem; }
   .video-body h3 { font-family: 'Frank Ruhl Libre', serif; font-size: 1.15rem; color: var(--olive-darkest); margin-bottom: 0.4rem; }
   .video-body p { color: var(--text-muted); font-size: 0.9rem; }
 
-  .series-hero {
-    background: linear-gradient(135deg, var(--olive-dark), var(--olive));
-    color: #fff; padding: 1.8rem 1.5rem; border-radius: var(--radius);
-    margin-bottom: 1.5rem;
-  }
+  .series-hero { background: linear-gradient(135deg, var(--olive-dark), var(--olive)); color: #fff; padding: 1.8rem 1.5rem; border-radius: var(--radius); margin-bottom: 1.5rem; }
   .series-hero h2 { font-family: 'Frank Ruhl Libre', serif; font-size: 1.7rem; margin-bottom: 0.3rem; }
   .series-hero p { opacity: 0.88; }
 
@@ -177,21 +132,24 @@
   .coming-soon h3 { font-family: 'Frank Ruhl Libre', serif; color: var(--olive-darkest); font-size: 1.8rem; margin-bottom: 0.5rem; }
   .coming-soon p { color: var(--text-muted); max-width: 500px; margin: 0 auto; }
 
+  /* Logo bigger in navbar */
+  .navbar-brand img { height: 56px; width: 56px; }
+
   @media (max-width: 768px) {
     .featured { grid-template-columns: 1fr; }
     .featured-body { padding: 1.2rem; }
-    .hero { padding: 2rem 1rem 2.5rem; }
     .section-tab { padding: 0.7rem 0.9rem; font-size: 0.9rem; }
+    .navbar-brand img { height: 44px; width: 44px; }
   }
 </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
+<!-- NAVBAR — clean: just logo + 2 links -->
 <nav class="navbar">
   <div class="navbar-inner">
     <a href="/" class="navbar-brand">
-      <img src="/images/logo.png" alt="חטיבת חשמונאים">
+      <img src="/images/logo.png?v=2" alt="חטיבת חשמונאים">
       <div class="navbar-brand-text">
         <span class="navbar-brand-title">בחטיבה</span>
         <span class="navbar-brand-sub">חטיבת חשמונאים</span>
@@ -201,17 +159,13 @@
     <ul class="navbar-links" id="navLinks">
       <li><a href="/" class="active">בית</a></li>
       <li><a href="/archive">ארכיון</a></li>
-      <li><a href="#" id="langToggle" style="font-weight:700;">EN ⇄</a></li>
-      <li><a href="https://chashmonayim.org" target="_blank" rel="noopener" class="btn-gold" style="padding:0.45rem 1rem;border-radius:6px;color:var(--olive-darkest);text-decoration:none;font-weight:700;">לאתר עמותת החשמונאים ←</a></li>
     </ul>
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- HERO: actual brand logo image (matches the typography 100%) -->
 <section class="hero">
-  <h1><span class="quote-mark">״</span>בחטיבה<span class="quote-mark">״</span></h1>
-  <p>המגזין השבועי של חטיבת חשמונאים — עלון שבועי, מגזין, סדרות וידאו ותכנים ייחודיים</p>
-  <div class="hero-divider"></div>
+  <img class="hero-logo" src="/images/logo-wide.jpg?v=2" alt="בחטיבה — חטיבת חשמונאים">
 </section>
 
 <!-- INFO BAR -->
@@ -231,17 +185,14 @@
 <!-- TABS -->
 <div class="section-tabs">
   <div class="section-tabs-inner">
-    <button class="section-tab active" data-pane="newsletter" onclick="switchPane('newsletter')"><span class="icon">📰</span>עלון בחטיבה</button>
-    <button class="section-tab" data-pane="magazine" onclick="switchPane('magazine')"><span class="icon">📖</span>מגזין בחטיבה</button>
-    <button class="section-tab" data-pane="warriors" onclick="switchPane('warriors')"><span class="icon">🎬</span>שיח לוחמים</button>
-    <button class="section-tab" data-pane="kiddush" onclick="switchPane('kiddush')"><span class="icon">🎬</span>על קידוש השם</button>
+    <button class="section-tab active" data-pane="newsletter" onclick="switchPane('newsletter')">📰 עלון בחטיבה</button>
+    <button class="section-tab" data-pane="magazine" onclick="switchPane('magazine')">📖 מגזין בחטיבה</button>
+    <button class="section-tab" data-pane="warriors" onclick="switchPane('warriors')">🎬 שיח לוחמים</button>
+    <button class="section-tab" data-pane="kiddush" onclick="switchPane('kiddush')">🎬 על קידוש השם</button>
   </div>
 </div>
 
-<!-- MAIN -->
 <main>
-
-  <!-- Newsletter pane -->
   <div class="pane active" id="pane-newsletter">
     <div class="issue-strip" id="issueStrip" style="display:none;">
       <div><strong id="issueStripTitle">גיליון</strong><br><span id="issueStripSub" style="font-size:.9rem;opacity:.85;"></span></div>
@@ -259,14 +210,12 @@
     </div>
   </div>
 
-  <!-- Magazine pane -->
   <div class="pane" id="pane-magazine">
     <div id="magazineContent">
       <div class="loading"><div class="spinner"></div></div>
     </div>
   </div>
 
-  <!-- Warriors series pane -->
   <div class="pane" id="pane-warriors">
     <div class="series-hero">
       <h2>שיח לוחמים</h2>
@@ -277,7 +226,6 @@
     </div>
   </div>
 
-  <!-- Kiddush series pane -->
   <div class="pane" id="pane-kiddush">
     <div class="series-hero">
       <h2>על קידוש השם</h2>
@@ -287,14 +235,12 @@
       <div class="loading"><div class="spinner"></div></div>
     </div>
   </div>
-
 </main>
 
-<!-- FOOTER -->
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <img src="/images/logo.png" alt="חטיבת חשמונאים">
+      <img src="/images/logo.png?v=2" alt="חטיבת חשמונאים">
       <div class="footer-brand-text">
         <strong>עמותת החשמונאים</strong>
         ידידי ובוגרי חטיבת החשמונאים
@@ -329,7 +275,7 @@
     { issueNumber: 26, parsha: 'שמות',    coverUrl: 'newsletters/covers/cover-26.jpg', pdfHeUrl: 'newsletters/newsletter-26-shemot.pdf' }
   ];
 
-  const TYPE_LABELS = { article:'כתבה', interview:'ראיון', torah:'דבר תורה', 'photo-of-week':'תמונת השבוע', gallery:'גלריה' };
+  const TYPE_LABELS = { 'cover':'שער', 'question-torah':'שאלה בתורה', 'glimpse-torah':'הצצה לתורה', 'brigade-news':'חדשות החטיבה', 'warrior-view':'מבט הלוחם', 'warrior-interview':'ראיון לוחם', 'journey-time':'מסע בזמן', 'chassidic-story':'סיפור חסידי', article:'כתבה', interview:'ראיון', torah:'דבר תורה', 'photo-of-week':'תמונת השבוע', gallery:'גלריה' };
 
   function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
   function excerpt(html, n) { const t = String(html||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim(); return t.length>n? t.slice(0,n).trim()+'…' : t; }
@@ -343,46 +289,29 @@
     document.querySelectorAll('.section-tab').forEach(t => t.classList.toggle('active', t.dataset.pane === p));
     document.querySelectorAll('.pane').forEach(pn => pn.classList.toggle('active', pn.id === 'pane-' + p));
     location.hash = p === 'newsletter' ? '' : '#' + p;
-    if (typeof gtag === 'function') gtag('event', 'switch_pane', { pane: p });
   }
 
-  // Read lang from query param, default 'he'
-  const LANG = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'he';
-  // Update lang toggle target
-  (function() {
-    const t = document.getElementById('langToggle');
-    if (t) { t.textContent = LANG === 'en' ? 'עברית ⇄' : 'EN ⇄'; t.href = '/?lang=' + (LANG === 'en' ? 'he' : 'en'); }
-  })();
-
-  // ===== Newsletter loader =====
   async function loadNewsletter() {
-    let latestIssue = null;
-    let articles = [];
+    let latestIssue = null, articles = [];
     try {
-      // Try filtered by language first, fall back to any language if no results
-      let snap = await db.collection('issues').where('type','==','newsletter').where('language','==',LANG).where('published','==',true).orderBy('issueNumber','desc').limit(1).get();
-      if (snap.empty) {
-        snap = await db.collection('issues').where('published','==',true).orderBy('issueNumber','desc').limit(1).get();
-      }
+      let snap = await db.collection('issues').where('type','==','newsletter').where('published','==',true).orderBy('issueNumber','desc').limit(1).get();
       if (!snap.empty) latestIssue = { id: snap.docs[0].id, ...snap.docs[0].data() };
-    } catch (e) { console.warn('issues query failed', e); }
+    } catch (e) { console.warn(e); }
 
     if (latestIssue) {
       try {
         const aSnap = await db.collection('articles').where('issueId','==',latestIssue.id).where('published','==',true).orderBy('order','asc').get();
         aSnap.forEach(d => articles.push({ id: d.id, ...d.data() }));
-      } catch (e) { console.warn('articles query failed', e); }
+      } catch (e) { console.warn(e); }
 
       const strip = document.getElementById('issueStrip');
       document.getElementById('issueStripTitle').textContent = `גיליון ${latestIssue.issueNumber} — פרשת ${latestIssue.parsha || ''}`;
       document.getElementById('issueStripSub').textContent = latestIssue.date ? new Date(latestIssue.date).toLocaleDateString('he-IL') : '';
       document.getElementById('issueLink').href = '/issue/' + latestIssue.id;
       if (latestIssue.pdfHeUrl) {
-        document.getElementById('issuePdf').href = '/' + latestIssue.pdfHeUrl.replace(/^\//,'');
+        document.getElementById('issuePdf').href = latestIssue.pdfHeUrl.startsWith('http')||latestIssue.pdfHeUrl.startsWith('/')?latestIssue.pdfHeUrl:'/'+latestIssue.pdfHeUrl;
         document.getElementById('issuePdf').style.display = '';
-      } else {
-        document.getElementById('issuePdf').style.display = 'none';
-      }
+      } else document.getElementById('issuePdf').style.display = 'none';
       strip.style.display = 'flex';
     }
 
@@ -391,7 +320,7 @@
     if (articles.length > 1) {
       document.getElementById('moreHeader').style.display = 'flex';
       renderGrid('articlesGrid', articles.slice(1));
-    } else { document.getElementById('articlesGrid').innerHTML = ''; }
+    } else document.getElementById('articlesGrid').innerHTML = '';
   }
 
   function renderFeatured(a) {
@@ -430,8 +359,7 @@
   function renderArchiveFallback() {
     document.getElementById('moreHeader').style.display = 'flex';
     document.getElementById('moreHeader').querySelector('h2').textContent = 'ארכיון העלונים';
-    const grid = document.getElementById('articlesGrid');
-    grid.innerHTML = FALLBACK_NEWSLETTERS.map(n => `
+    document.getElementById('articlesGrid').innerHTML = FALLBACK_NEWSLETTERS.map(n => `
       <article class="article-card">
         <a href="/issue/legacy-${n.issueNumber}" class="article-card-image">
           <img src="${esc(n.coverUrl)}" alt="גיליון ${n.issueNumber}" loading="lazy">
@@ -453,21 +381,15 @@
     }
   }
 
-  // ===== Magazine pane =====
   async function loadMagazine() {
     const c = document.getElementById('magazineContent');
     let issues = [];
     try {
-      let snap = await db.collection('issues').where('type','==','magazine').where('language','==',LANG).where('published','==',true).orderBy('issueNumber','desc').limit(6).get();
-      if (snap.empty) snap = await db.collection('issues').where('type','==','magazine').where('published','==',true).orderBy('issueNumber','desc').limit(6).get();
+      const snap = await db.collection('issues').where('type','==','magazine').where('published','==',true).orderBy('issueNumber','desc').limit(6).get();
       snap.forEach(d => issues.push({ id: d.id, ...d.data() }));
     } catch (e) { console.warn(e); }
     if (issues.length === 0) {
-      c.innerHTML = `
-        <div class="coming-soon">
-          <h3>מגזין בחטיבה</h3>
-          <p>הגיליון הראשון של המגזין בדרך — סיפורים מעמיקים, ראיונות עומק וכתבות מיוחדות. בקרוב באוויר.</p>
-        </div>`;
+      c.innerHTML = `<div class="coming-soon"><h3>מגזין בחטיבה</h3><p>הגיליון הראשון של המגזין בדרך — סיפורים מעמיקים, ראיונות עומק וכתבות מיוחדות. בקרוב באוויר.</p></div>`;
       return;
     }
     c.innerHTML = '<div class="articles-grid">' + issues.map(i => `
@@ -478,13 +400,11 @@
         </a>
         <div class="article-card-body">
           <h3>${esc(i.title || ('מגזין בחטיבה — גיליון ' + i.issueNumber))}</h3>
-          <p class="article-card-excerpt">${esc(i.subtitle || '')}</p>
-          ${i.pdfHeUrl ? `<div class="article-card-meta"><a class="btn btn-outline btn-sm" href="${esc(i.pdfHeUrl)}" target="_blank">⬇ PDF</a></div>` : ''}
+          <p class="article-card-excerpt">${esc(i.subtitle || i.parsha || '')}</p>
         </div>
       </article>`).join('') + '</div>';
   }
 
-  // ===== Video series =====
   async function loadSeries(seriesKey, gridId) {
     const grid = document.getElementById(gridId);
     let videos = [];
@@ -493,7 +413,7 @@
       snap.forEach(d => videos.push({ id: d.id, ...d.data() }));
     } catch (e) { console.warn(e); }
     if (videos.length === 0) {
-      grid.innerHTML = `<div class="coming-soon" style="grid-column:1/-1;"><h3>בקרוב</h3><p>הסרטונים יתווספו כאן. עקבו אחר עדכונים.</p></div>`;
+      grid.innerHTML = `<div class="coming-soon" style="grid-column:1/-1;"><h3>בקרוב</h3><p>הסרטונים יתווספו כאן.</p></div>`;
       return;
     }
     grid.innerHTML = videos.map(v => `
@@ -511,21 +431,11 @@
       </a>`).join('');
   }
 
-  // ===== Init =====
-  loadNewsletter();
-  loadMagazine();
-  loadSeries('warriors', 'warriorsGrid');
-  loadSeries('kiddush', 'kiddushGrid');
+  loadNewsletter(); loadMagazine();
+  loadSeries('warriors', 'warriorsGrid'); loadSeries('kiddush', 'kiddushGrid');
 
-  // Init tab from hash
-  (function() {
-    const h = (location.hash || '').replace('#','');
-    if (['magazine','warriors','kiddush'].includes(h)) switchPane(h);
-  })();
-
-  // Mobile menu
-  document.getElementById('mobileToggle').addEventListener('click', () =>
-    document.getElementById('navLinks').classList.toggle('open'));
+  (function() { const h = (location.hash||'').replace('#',''); if (['magazine','warriors','kiddush'].includes(h)) switchPane(h); })();
+  document.getElementById('mobileToggle').addEventListener('click', () => document.getElementById('navLinks').classList.toggle('open'));
 </script>
 
 </body>
