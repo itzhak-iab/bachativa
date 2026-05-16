@@ -1,29 +1,35 @@
 rules_version = '2';
 
 // כללי גישה ל-Firestore עבור bachativa.com
-// קריאה ציבורית בלבד - כתיבה רק דרך Admin SDK (סקריפט seed או admin panel עתידי)
+// קריאה ציבורית; כתיבה רק למיילים מורשים מאומתים דרך Firebase Auth
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // newsletters - גיליוני "בחטיבה"
-    match /newsletters/{newsletterId} {
-      allow read: if true;
-      allow write: if false;
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email.lower() in [
+          'i.barkai7@gmail.com',
+          'bachativa@gmail.com'
+        ];
     }
 
-    // magazines - גיליוני המגזין (עתידי)
-    match /magazines/{magazineId} {
+    match /newsletters/{id} {
       allow read: if true;
-      allow write: if false;
+      allow write: if isAdmin();
     }
 
-    // videos - סרטונים (שיח לוחמים, על קידוש השם)
-    match /videos/{videoId} {
+    match /magazines/{id} {
       allow read: if true;
-      allow write: if false;
+      allow write: if isAdmin();
     }
 
-    // default deny
+    match /videos/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

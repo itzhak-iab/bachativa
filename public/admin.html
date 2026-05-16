@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ניהול | בחטיבה</title>
+<meta name="robots" content="noindex,nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1a2a5e;
+    --primary-dark: #111d42;
+    --gold: #c8a45c;
+    --bg: #f5f3ef;
+    --card: #ffffff;
+    --border: #e5e7eb;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --danger: #dc2626;
+    --success: #059669;
+    --shadow: 0 4px 24px rgba(26,42,94,.10);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Heebo',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+  .topbar { background:var(--primary); color:#fff; padding:1rem 2rem; border-bottom:3px solid var(--gold); display:flex; align-items:center; justify-content:space-between; }
+  .topbar h1 { font-size:1.3rem; font-weight:700; }
+  .topbar h1 span { color:var(--gold); }
+  .topbar-actions { display:flex; gap:.6rem; align-items:center; }
+  .topbar a, .topbar button { background:transparent; color:#fff; border:1px solid rgba(255,255,255,.3); padding:.5rem 1rem; border-radius:6px; cursor:pointer; font-family:inherit; font-size:.85rem; text-decoration:none; }
+  .topbar a:hover, .topbar button:hover { background:rgba(255,255,255,.1); }
+
+  main { max-width:1100px; margin:2rem auto; padding:0 1.5rem; }
+
+  /* Auth screen */
+  .auth-card { max-width:420px; margin:4rem auto; background:var(--card); padding:2.5rem; border-radius:14px; box-shadow:var(--shadow); }
+  .auth-card h2 { color:var(--primary); margin-bottom:.4rem; }
+  .auth-card p { color:var(--muted); font-size:.92rem; margin-bottom:1.5rem; }
+  .auth-tabs { display:flex; gap:.5rem; margin-bottom:1.2rem; }
+  .auth-tabs button { flex:1; padding:.6rem; background:transparent; border:1px solid var(--border); border-radius:6px; cursor:pointer; font-family:inherit; color:var(--muted); }
+  .auth-tabs button.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+  .field { margin-bottom:1rem; }
+  .field label { display:block; font-size:.85rem; font-weight:600; margin-bottom:.3rem; color:var(--text); }
+  .field input, .field textarea, .field select { width:100%; padding:.6rem .8rem; border:1px solid var(--border); border-radius:6px; font-family:inherit; font-size:.95rem; }
+  .field input:focus, .field textarea:focus, .field select:focus { outline:none; border-color:var(--primary); }
+  .field-row { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; }
+  .field-checkbox { display:flex; align-items:center; gap:.5rem; margin-bottom:1rem; }
+  .field-checkbox input { width:auto; }
+  .btn { background:var(--primary); color:#fff; border:none; padding:.7rem 1.4rem; border-radius:6px; cursor:pointer; font-family:inherit; font-weight:600; font-size:.95rem; }
+  .btn:hover { background:var(--primary-dark); }
+  .btn:disabled { opacity:.5; cursor:not-allowed; }
+  .btn-secondary { background:#fff; color:var(--primary); border:1px solid var(--primary); }
+  .btn-danger { background:var(--danger); color:#fff; }
+  .btn-sm { padding:.4rem .8rem; font-size:.85rem; }
+  .btn-row { display:flex; gap:.5rem; }
+
+  .msg { padding:.6rem .9rem; border-radius:6px; margin-bottom:1rem; font-size:.9rem; }
+  .msg-err { background:#fef2f2; color:var(--danger); border:1px solid #fecaca; }
+  .msg-ok { background:#ecfdf5; color:var(--success); border:1px solid #a7f3d0; }
+  .msg-info { background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; }
+
+  /* Dashboard */
+  .header-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; }
+  .header-row h2 { color:var(--primary); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1rem; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1rem; box-shadow:0 2px 6px rgba(0,0,0,.04); }
+  .card h3 { color:var(--primary); font-size:1.05rem; margin-bottom:.2rem; }
+  .card .parsha { color:var(--gold); font-weight:600; font-size:.92rem; margin-bottom:.5rem; }
+  .card .meta { font-size:.82rem; color:var(--muted); margin-bottom:.8rem; }
+  .card .links { display:flex; gap:.4rem; font-size:.78rem; margin-bottom:.8rem; flex-wrap:wrap; }
+  .card .links a { color:var(--primary); text-decoration:underline; }
+  .card .actions { display:flex; gap:.4rem; }
+  .badge { display:inline-block; padding:.15rem .5rem; border-radius:4px; font-size:.72rem; font-weight:600; }
+  .badge-pub { background:#ecfdf5; color:var(--success); }
+  .badge-draft { background:#fef3c7; color:#92400e; }
+
+  /* Modal */
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; z-index:100; padding:1rem; }
+  .modal-overlay.active { display:flex; }
+  .modal { background:#fff; border-radius:12px; padding:1.5rem; max-width:560px; width:100%; max-height:90vh; overflow-y:auto; }
+  .modal h2 { color:var(--primary); margin-bottom:1rem; }
+  .modal-actions { display:flex; gap:.5rem; justify-content:flex-end; margin-top:1rem; }
+
+  .empty { text-align:center; padding:3rem 1rem; color:var(--muted); }
+  .loading { text-align:center; padding:2rem; color:var(--muted); }
+  .hidden { display:none !important; }
+
+  @media (max-width:600px) {
+    .field-row { grid-template-columns:1fr; }
+    main { padding:0 1rem; margin-top:1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>״<span>בחטיבה</span>״ <span style="color:#fff;font-size:.85rem;opacity:.7;margin-right:.5rem;">ניהול</span></h1>
+  <div class="topbar-actions" id="topbarActions"></div>
+</div>
+
+<main>
+
+  <!-- AUTH SCREEN -->
+  <div id="authScreen">
+    <div class="auth-card">
+      <h2>כניסת מנהל</h2>
+      <p>גישה למערכת ניהול הגיליונות. רק כתובת מייל מורשית יכולה להיכנס.</p>
+
+      <div class="auth-tabs">
+        <button id="loginTab" class="active" onclick="switchAuthTab('login')">התחברות</button>
+        <button id="signupTab" onclick="switchAuthTab('signup')">הרשמה ראשונה</button>
+      </div>
+
+      <div id="authMsg"></div>
+
+      <form id="authForm" onsubmit="handleAuth(event)">
+        <div class="field">
+          <label>מייל</label>
+          <input type="email" id="authEmail" required autocomplete="email">
+        </div>
+        <div class="field">
+          <label>סיסמה (לפחות 6 תווים)</label>
+          <input type="password" id="authPassword" required minlength="6" autocomplete="current-password">
+        </div>
+        <button class="btn" type="submit" id="authSubmit" style="width:100%;">התחבר</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="hidden">
+    <div class="header-row">
+      <h2>גיליונות</h2>
+      <button class="btn" onclick="openEditor()">+ גיליון חדש</button>
+    </div>
+
+    <div id="dashMsg"></div>
+    <div id="newslettersGrid" class="grid">
+      <div class="loading">טוען…</div>
+    </div>
+  </div>
+
+</main>
+
+<!-- EDITOR MODAL -->
+<div class="modal-overlay" id="editorModal">
+  <div class="modal">
+    <h2 id="editorTitle">גיליון חדש</h2>
+    <div id="editorMsg"></div>
+    <form id="editorForm" onsubmit="saveNewsletter(event)">
+      <input type="hidden" id="editId" value="">
+
+      <div class="field-row">
+        <div class="field">
+          <label>מספר גיליון</label>
+          <input type="number" id="fIssueNumber" required min="1">
+        </div>
+        <div class="field">
+          <label>פרשה (בלי "פרשת")</label>
+          <input type="text" id="fParsha" required placeholder="למשל: במדבר">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>נתיב תמונת שער</label>
+        <input type="text" id="fCoverUrl" required placeholder="newsletters/covers/cover-37.jpg">
+      </div>
+
+      <div class="field">
+        <label>נתיב PDF בעברית</label>
+        <input type="text" id="fPdfHeUrl" required placeholder="newsletters/bachativa-issue-37-he.pdf">
+      </div>
+
+      <div class="field">
+        <label>נתיב PDF באנגלית <span style="color:var(--muted);font-weight:400;">(אופציונלי)</span></label>
+        <input type="text" id="fPdfEnUrl" placeholder="newsletters/BaChativa-Issue37-English.pdf">
+      </div>
+
+      <div class="field">
+        <label>כותרת</label>
+        <input type="text" id="fTitle" value="עלון בחטיבה">
+      </div>
+
+      <div class="field-checkbox">
+        <input type="checkbox" id="fPublished" checked>
+        <label for="fPublished">פורסם (יוצג באתר)</label>
+      </div>
+
+      <div class="msg msg-info" style="font-size:.85rem;">
+        <strong>טיפ:</strong> העלה את קבצי ה-PDF וה-cover ל-<code>public/newsletters/</code> ו-<code>public/newsletters/covers/</code> ב-repo
+        (<a href="https://github.com/itzhak-iab/bachativa" target="_blank">itzhak-iab/bachativa</a>),
+        עשה commit + push, ואז GitHub Action / firebase deploy יעלה אותם אוטומטית.
+        כאן כותבים רק את הנתיבים הסופיים.
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeEditor()">בטל</button>
+        <button type="submit" class="btn" id="saveBtn">שמור</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+
+<script>
+  // ============================================================
+  // Allowed admin emails — only these can write to Firestore
+  // (must match firestore.rules)
+  // ============================================================
+  const ADMIN_EMAILS = ['i.barkai7@gmail.com', 'bachativa@gmail.com'];
+
+  let authMode = 'login'; // 'login' or 'signup'
+  let currentUser = null;
+  let editingId = null;
+
+  // Init Firebase
+  firebase.initializeApp(window.FIREBASE_CONFIG);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  auth.onAuthStateChanged(user => {
+    currentUser = user;
+    renderTopbar();
+    if (user && ADMIN_EMAILS.includes((user.email || '').toLowerCase())) {
+      showDashboard();
+    } else if (user) {
+      // Logged in but not admin
+      showMsg('authMsg', 'err', 'משתמש זה אינו מורשה לניהול. צא והיכנס עם מייל מורשה.');
+      auth.signOut();
+    } else {
+      showAuth();
+    }
+  });
+
+  function renderTopbar() {
+    const el = document.getElementById('topbarActions');
+    if (currentUser && ADMIN_EMAILS.includes((currentUser.email || '').toLowerCase())) {
+      el.innerHTML = `<span style="font-size:.85rem;opacity:.85;">${currentUser.email}</span> <a href="/">לאתר</a> <button onclick="logout()">יציאה</button>`;
+    } else {
+      el.innerHTML = `<a href="/">לאתר</a>`;
+    }
+  }
+
+  function switchAuthTab(mode) {
+    authMode = mode;
+    document.getElementById('loginTab').classList.toggle('active', mode === 'login');
+    document.getElementById('signupTab').classList.toggle('active', mode === 'signup');
+    document.getElementById('authSubmit').textContent = mode === 'login' ? 'התחבר' : 'הרשם';
+    document.getElementById('authMsg').innerHTML = '';
+    document.getElementById('authPassword').autocomplete = mode === 'login' ? 'current-password' : 'new-password';
+  }
+
+  function showMsg(elId, kind, text) {
+    document.getElementById(elId).innerHTML = `<div class="msg msg-${kind}">${text}</div>`;
+  }
+  function clearMsg(elId) {
+    document.getElementById(elId).innerHTML = '';
+  }
+
+  async function handleAuth(e) {
+    e.preventDefault();
+    const email = document.getElementById('authEmail').value.trim().toLowerCase();
+    const password = document.getElementById('authPassword').value;
+    if (!ADMIN_EMAILS.includes(email)) {
+      showMsg('authMsg', 'err', 'מייל זה אינו מורשה. הוסף את המייל שלך לרשימה ADMIN_EMAILS ב-admin.html ועדכן את firestore.rules.');
+      return;
+    }
+    const btn = document.getElementById('authSubmit');
+    btn.disabled = true;
+    try {
+      if (authMode === 'signup') {
+        await auth.createUserWithEmailAndPassword(email, password);
+      } else {
+        await auth.signInWithEmailAndPassword(email, password);
+      }
+    } catch (err) {
+      const errMap = {
+        'auth/user-not-found': 'משתמש לא קיים — לחץ "הרשמה ראשונה"',
+        'auth/wrong-password': 'סיסמה שגויה',
+        'auth/invalid-credential': 'פרטי כניסה לא נכונים',
+        'auth/email-already-in-use': 'משתמש כבר קיים — לחץ "התחברות"',
+        'auth/weak-password': 'הסיסמה חלשה מדי (לפחות 6 תווים)',
+      };
+      showMsg('authMsg', 'err', errMap[err.code] || err.message);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  function logout() { auth.signOut(); }
+
+  function showAuth() {
+    document.getElementById('authScreen').classList.remove('hidden');
+    document.getElementById('dashboard').classList.add('hidden');
+  }
+  function showDashboard() {
+    document.getElementById('authScreen').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
+    loadNewsletters();
+  }
+
+  // ============================================================
+  // CRUD on newsletters
+  // ============================================================
+  async function loadNewsletters() {
+    const grid = document.getElementById('newslettersGrid');
+    grid.innerHTML = '<div class="loading">טוען…</div>';
+    try {
+      const snap = await db.collection('newsletters').orderBy('issueNumber', 'desc').get();
+      if (snap.empty) {
+        grid.innerHTML = '<div class="empty">אין גיליונות עדיין. לחץ "+ גיליון חדש" כדי להוסיף.</div>';
+        return;
+      }
+      let html = '';
+      snap.forEach(doc => {
+        const n = doc.data();
+        const id = doc.id;
+        const enLink = n.pdfEnUrl ? `<a href="/${n.pdfEnUrl}" target="_blank">EN</a>` : '';
+        html += `
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem;">
+              <h3>גיליון ${n.issueNumber}</h3>
+              <span class="badge ${n.published ? 'badge-pub' : 'badge-draft'}">${n.published ? 'פורסם' : 'טיוטה'}</span>
+            </div>
+            <div class="parsha">פרשת ${n.parsha || ''}</div>
+            <div class="meta">${n.title || 'עלון בחטיבה'}</div>
+            <div class="links">
+              <a href="/${n.coverUrl}" target="_blank">שער</a>
+              <a href="/${n.pdfHeUrl}" target="_blank">HE</a>
+              ${enLink}
+            </div>
+            <div class="actions">
+              <button class="btn btn-sm" onclick="editNewsletter('${id}')">ערוך</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteNewsletter('${id}', ${n.issueNumber})">מחק</button>
+            </div>
+          </div>`;
+      });
+      grid.innerHTML = html;
+    } catch (err) {
+      grid.innerHTML = `<div class="msg msg-err">שגיאה בטעינה: ${err.message}</div>`;
+    }
+  }
+
+  function openEditor(data, id) {
+    editingId = id || null;
+    document.getElementById('editorTitle').textContent = id ? `עריכת גיליון ${data.issueNumber}` : 'גיליון חדש';
+    document.getElementById('editId').value = id || '';
+    document.getElementById('fIssueNumber').value = data?.issueNumber || '';
+    document.getElementById('fParsha').value = data?.parsha || '';
+    document.getElementById('fCoverUrl').value = data?.coverUrl || '';
+    document.getElementById('fPdfHeUrl').value = data?.pdfHeUrl || '';
+    document.getElementById('fPdfEnUrl').value = data?.pdfEnUrl || '';
+    document.getElementById('fTitle').value = data?.title || 'עלון בחטיבה';
+    document.getElementById('fPublished').checked = data ? !!data.published : true;
+    clearMsg('editorMsg');
+    document.getElementById('editorModal').classList.add('active');
+  }
+  function closeEditor() {
+    document.getElementById('editorModal').classList.remove('active');
+    editingId = null;
+  }
+
+  async function editNewsletter(id) {
+    try {
+      const doc = await db.collection('newsletters').doc(id).get();
+      if (!doc.exists) return alert('הגיליון לא נמצא');
+      openEditor(doc.data(), id);
+    } catch (err) {
+      alert('שגיאה: ' + err.message);
+    }
+  }
+
+  async function saveNewsletter(e) {
+    e.preventDefault();
+    const data = {
+      issueNumber: parseInt(document.getElementById('fIssueNumber').value, 10),
+      parsha: document.getElementById('fParsha').value.trim(),
+      coverUrl: document.getElementById('fCoverUrl').value.trim(),
+      pdfHeUrl: document.getElementById('fPdfHeUrl').value.trim(),
+      pdfEnUrl: document.getElementById('fPdfEnUrl').value.trim(),
+      title: document.getElementById('fTitle').value.trim() || 'עלון בחטיבה',
+      published: document.getElementById('fPublished').checked,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    };
+    const btn = document.getElementById('saveBtn');
+    btn.disabled = true;
+    try {
+      const id = editingId || String(data.issueNumber);
+      if (!editingId) {
+        data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      }
+      await db.collection('newsletters').doc(id).set(data, { merge: true });
+      closeEditor();
+      showMsg('dashMsg', 'ok', editingId ? 'הגיליון עודכן' : 'גיליון נוסף');
+      setTimeout(() => clearMsg('dashMsg'), 3000);
+      loadNewsletters();
+    } catch (err) {
+      showMsg('editorMsg', 'err', 'שגיאה: ' + err.message);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  async function deleteNewsletter(id, issueNumber) {
+    if (!confirm(`למחוק את גיליון ${issueNumber}?`)) return;
+    try {
+      await db.collection('newsletters').doc(id).delete();
+      showMsg('dashMsg', 'ok', `גיליון ${issueNumber} נמחק`);
+      setTimeout(() => clearMsg('dashMsg'), 3000);
+      loadNewsletters();
+    } catch (err) {
+      showMsg('dashMsg', 'err', 'שגיאה במחיקה: ' + err.message);
+    }
+  }
+
+  // Close modal on overlay click
+  document.getElementById('editorModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('editorModal')) closeEditor();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeEditor();
+  });
+</script>
+
+</body>
+</html>
