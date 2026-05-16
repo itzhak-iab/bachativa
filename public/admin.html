@@ -196,16 +196,16 @@
       <div class="field"><label>תמונת שער</label>
         <div class="img-up">
           <input type="hidden" id="newIssueCoverUrl">
-          <label class="preview" id="newIssueCoverPreview"><span>לחץ או גרור תמונה</span></label>
-          <input type="file" accept="image/*" onchange="uploadImage(event,'issue-cover','newIssueCoverUrl','newIssueCoverPreview')">
+          <label class="preview" for="newIssueCoverFile" id="newIssueCoverPreview"><span>לחץ או גרור תמונה</span></label>
+          <input type="file" id="newIssueCoverFile" accept="image/*" onchange="uploadImage(event,'issue-cover','newIssueCoverUrl','newIssueCoverPreview')">
           <div class="progress"><div class="progress-bar"></div></div>
         </div>
       </div>
       <div class="field"><label>PDF של העלון/מגזין (אופציונלי)</label>
         <div class="img-up">
           <input type="hidden" id="newIssuePdf">
-          <label class="preview" id="newIssuePdfPreview" style="min-height:60px;"><span>📄 העלה PDF</span></label>
-          <input type="file" accept="application/pdf" onchange="uploadPdf(event,'issue-pdf','newIssuePdf','newIssuePdfPreview')">
+          <label class="preview" for="newIssuePdfFile" id="newIssuePdfPreview" style="min-height:60px;"><span>📄 העלה PDF</span></label>
+          <input type="file" id="newIssuePdfFile" accept="application/pdf" onchange="uploadPdf(event,'issue-pdf','newIssuePdf','newIssuePdfPreview')">
           <div class="progress"><div class="progress-bar"></div></div>
         </div>
       </div>
@@ -259,8 +259,8 @@
       <div class="field"><label>תמונה ראשית</label>
         <div class="img-up">
           <input type="hidden" id="artMainImageUrl">
-          <label class="preview" id="artMainImagePreview"><span>לחץ או גרור תמונה</span></label>
-          <input type="file" accept="image/*" onchange="uploadImage(event,'art-main','artMainImageUrl','artMainImagePreview')">
+          <label class="preview" for="artMainImageFile" id="artMainImagePreview"><span>לחץ או גרור תמונה</span></label>
+          <input type="file" id="artMainImageFile" accept="image/*" onchange="uploadImage(event,'art-main','artMainImageUrl','artMainImagePreview')">
           <div class="progress"><div class="progress-bar"></div></div>
         </div>
       </div>
@@ -278,8 +278,8 @@
       </div>
       <div class="field"><label>גלריית תמונות נוספות</label>
         <div class="img-up">
-          <label class="preview" style="min-height:80px;"><span>+ הוסף תמונות לגלריה</span></label>
-          <input type="file" accept="image/*" multiple onchange="uploadGallery(event)">
+          <label class="preview" for="artGalleryFile" style="min-height:80px;"><span>+ הוסף תמונות לגלריה</span></label>
+          <input type="file" id="artGalleryFile" accept="image/*" multiple onchange="uploadGallery(event)">
           <div class="progress"><div class="progress-bar"></div></div>
         </div>
         <div class="gallery-thumbs" id="artGalleryThumbs"></div>
@@ -304,8 +304,8 @@
       <div class="field"><label>תמונת פרופיל</label>
         <div class="img-up">
           <input type="hidden" id="authorPhotoUrl">
-          <label class="preview" id="authorPhotoPreview"><span>לחץ או גרור תמונה</span></label>
-          <input type="file" accept="image/*" onchange="uploadImage(event,'author','authorPhotoUrl','authorPhotoPreview')">
+          <label class="preview" for="authorPhotoFile" id="authorPhotoPreview"><span>לחץ או גרור תמונה</span></label>
+          <input type="file" id="authorPhotoFile" accept="image/*" onchange="uploadImage(event,'author','authorPhotoUrl','authorPhotoPreview')">
           <div class="progress"><div class="progress-bar"></div></div>
         </div>
       </div>
@@ -341,16 +341,16 @@
       <div class="field"><label>או העלאת קובץ וידאו (עד 10MB)</label>
         <div class="img-up">
           <input type="hidden" id="videoFileUrl">
-          <label class="preview" id="videoFilePreview" style="min-height:60px;"><span>🎬 העלה וידאו</span></label>
-          <input type="file" accept="video/*" onchange="uploadVideoFile(event)">
+          <label class="preview" for="videoFileInput" id="videoFilePreview" style="min-height:60px;"><span>🎬 העלה וידאו</span></label>
+          <input type="file" id="videoFileInput" accept="video/*" onchange="uploadVideoFile(event)">
           <div class="progress"><div class="progress-bar"></div></div>
         </div>
       </div>
       <div class="field"><label>תמונת תצוגה (Thumbnail)</label>
         <div class="img-up">
           <input type="hidden" id="videoThumbUrl">
-          <label class="preview" id="videoThumbPreview"><span>לחץ או גרור תמונה</span></label>
-          <input type="file" accept="image/*" onchange="uploadImage(event,'video-thumb','videoThumbUrl','videoThumbPreview')">
+          <label class="preview" for="videoThumbFile" id="videoThumbPreview"><span>לחץ או גרור תמונה</span></label>
+          <input type="file" id="videoThumbFile" accept="image/*" onchange="uploadImage(event,'video-thumb','videoThumbUrl','videoThumbPreview')">
           <div class="progress"><div class="progress-bar"></div></div>
         </div>
         <div class="help-text">YouTube: ננסה לקחת אוטומטית אם לא תעלה ידנית.</div>
@@ -381,27 +381,55 @@ const db = firebase.firestore();
 const storage = firebase.storage();
 
 // ============================================================
-// 8 standard newsletter sections (HE + EN versions of names)
+// Full weekly newsletter structure (19 standard sections)
+// — matches the existing printed/Word format
 // ============================================================
 const NEWSLETTER_SECTIONS = [
-  { type:'cover',              order:1, he:'שער',             en:'Cover' },
-  { type:'question-torah',     order:2, he:'שאלה בתורה',      en:'A Question in Torah' },
-  { type:'glimpse-torah',      order:3, he:'הצצה לתורה',      en:'A Glimpse into Torah' },
-  { type:'brigade-news',       order:4, he:'חדשות החטיבה',    en:'Brigade News' },
-  { type:'warrior-view',       order:5, he:'מבט הלוחם',       en:'From a Warrior\'s View' },
-  { type:'warrior-interview',  order:6, he:'ראיון לוחם',      en:'Soldier Interview' },
-  { type:'journey-time',       order:7, he:'מסע בזמן',        en:'Journey in Time' },
-  { type:'chassidic-story',    order:8, he:'סיפור חסידי',     en:'A Chassidic Story' },
+  { type:'editor-word',     order:1,  he:'דבר המערכת',                  en:'Editor\'s Word' },
+  { type:'commander-word',  order:2,  he:'דבר המפקד',                   en:'Commander\'s Word' },
+  { type:'torah-greats',    order:3,  he:'משולחנם של גדולי ישראל',      en:'From the Table of Torah Greats' },
+  { type:'warrior-song',    order:4,  he:'שירת הלוחם',                  en:'The Warrior\'s Song' },
+  { type:'question-camp',   order:5,  he:'שאלה במחנה',                  en:'A Question in Camp' },
+  { type:'yeshivish-field', order:6,  he:'ישיבישער בשטח',               en:'Yeshivish in the Field' },
+  { type:'faces-story',     order:7,  he:'פנים שמספרות סיפור',          en:'Faces That Tell a Story' },
+  { type:'parsha-glimpse',  order:8,  he:'הצצה לפרשת השבוע',            en:'A Glimpse into the Parsha' },
+  { type:'idf-lingo',       order:9,  he:'שפה צה״לית',                  en:'IDF Lingo' },
+  { type:'steigen',         order:10, he:'שטייגען בחטיבה',              en:'Steigen in the Brigade' },
+  { type:'brigade-news',    order:11, he:'חדשות החטיבה',                en:'Brigade News' },
+  { type:'idf-news',        order:12, he:'חדשות צה״ל',                  en:'IDF News' },
+  { type:'warrior-diary',   order:13, he:'מיומנו של לוחם',              en:'From a Warrior\'s Diary' },
+  { type:'shabbat-story',   order:14, he:'סיפור לשבת',                  en:'A Shabbat Story' },
+  { type:'life-brigade',    order:15, he:'החיים בחטיבה',                en:'Life in the Brigade' },
+  { type:'journey-time',    order:16, he:'מסע בזמן',                    en:'Journey in Time' },
+  { type:'soldier-map',     order:17, he:'חייל על המפה',                en:'A Soldier on the Map' },
+  { type:'halacha-army',    order:18, he:'הלכה בצבא',                   en:'Halacha in the Army' },
+  { type:'humor',           order:19, he:'צחוק בצד',                    en:'Joke Aside' },
 ];
 const MAGAZINE_SECTIONS = [
-  { type:'article',  order:1, he:'כתבת השער',       en:'Cover Feature' },
-  { type:'interview',order:2, he:'ראיון העומק',      en:'In-Depth Interview' },
-  { type:'article',  order:3, he:'דמות בחטיבה',     en:'A Brigade Profile' },
-  { type:'gallery',  order:4, he:'תמונות מהחטיבה',  en:'Photos from the Field' },
+  { type:'article',   order:1, he:'כתבת השער',        en:'Cover Feature' },
+  { type:'interview', order:2, he:'ראיון העומק',       en:'In-Depth Interview' },
+  { type:'article',   order:3, he:'דמות בחטיבה',      en:'A Brigade Profile' },
+  { type:'gallery',   order:4, he:'תמונות מהחטיבה',   en:'Photos from the Field' },
 ];
 
-const TYPE_LABELS_HE = { 'cover':'שער','question-torah':'שאלה בתורה','glimpse-torah':'הצצה לתורה','brigade-news':'חדשות החטיבה','warrior-view':'מבט הלוחם','warrior-interview':'ראיון לוחם','journey-time':'מסע בזמן','chassidic-story':'סיפור חסידי','article':'כתבה','interview':'ראיון','torah':'דבר תורה','photo-of-week':'תמונת השבוע','gallery':'גלריה' };
-const TYPE_LABELS_EN = { 'cover':'Cover','question-torah':'Question in Torah','glimpse-torah':'Glimpse into Torah','brigade-news':'Brigade News','warrior-view':'From a Warrior\'s View','warrior-interview':'Soldier Interview','journey-time':'Journey in Time','chassidic-story':'Chassidic Story','article':'Article','interview':'Interview','torah':'Torah','photo-of-week':'Photo of the Week','gallery':'Gallery' };
+const TYPE_LABELS_HE = {
+  'editor-word':'דבר המערכת','commander-word':'דבר המפקד','torah-greats':'משולחנם של גדולי ישראל',
+  'warrior-song':'שירת הלוחם','question-camp':'שאלה במחנה','yeshivish-field':'ישיבישער בשטח',
+  'faces-story':'פנים שמספרות סיפור','parsha-glimpse':'הצצה לפרשת השבוע','idf-lingo':'שפה צה״לית',
+  'steigen':'שטייגען בחטיבה','brigade-news':'חדשות החטיבה','idf-news':'חדשות צה״ל',
+  'warrior-diary':'מיומנו של לוחם','shabbat-story':'סיפור לשבת','life-brigade':'החיים בחטיבה',
+  'journey-time':'מסע בזמן','soldier-map':'חייל על המפה','halacha-army':'הלכה בצבא','humor':'צחוק בצד',
+  'cover':'שער','article':'כתבה','interview':'ראיון','torah':'דבר תורה','photo-of-week':'תמונת השבוע','gallery':'גלריה',
+};
+const TYPE_LABELS_EN = {
+  'editor-word':'Editor\'s Word','commander-word':'Commander\'s Word','torah-greats':'From Torah Greats',
+  'warrior-song':'The Warrior\'s Song','question-camp':'Question in Camp','yeshivish-field':'Yeshivish in the Field',
+  'faces-story':'Faces That Tell a Story','parsha-glimpse':'Glimpse into the Parsha','idf-lingo':'IDF Lingo',
+  'steigen':'Steigen in the Brigade','brigade-news':'Brigade News','idf-news':'IDF News',
+  'warrior-diary':'From a Warrior\'s Diary','shabbat-story':'A Shabbat Story','life-brigade':'Life in the Brigade',
+  'journey-time':'Journey in Time','soldier-map':'A Soldier on the Map','halacha-army':'Halacha in the Army','humor':'Joke Aside',
+  'cover':'Cover','article':'Article','interview':'Interview','torah':'Torah','photo-of-week':'Photo of the Week','gallery':'Gallery',
+};
 
 let authMode = 'login', currentUser = null;
 let allIssues = [], allArticles = [], allAuthors = [], allVideos = [];
