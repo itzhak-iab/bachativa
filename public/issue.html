@@ -5,10 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="pageTitle">גיליון | בחטיבה</title>
 <meta name="description" id="pageDesc" content="גיליון של ״בחטיבה״ — חטיבת חשמונאים">
-<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/images/logo-192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Frank+Ruhl+Libre:wght@400;700;900&display=swap" rel="stylesheet">
+<meta property="og:type" content="article">
+<meta property="og:title" id="ogTitle" content="">
+<meta property="og:description" id="ogDesc" content="">
+<meta property="og:image" id="ogImage" content="https://bachativa.com/images/og-image.jpg">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=3">
+<link rel="icon" type="image/png" sizes="192x192" href="/images/logo-192.png?v=3">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=3">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cinzel:wght@400;600;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=EB+Garamond:wght@400;500;600&family=Heebo:wght@400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/theme.css">
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DLNEH3K485"></script>
@@ -19,36 +23,349 @@
 </script>
 
 <style>
-  .issue-hero { background: linear-gradient(135deg, var(--olive-darkest), var(--olive)); color: #fff; padding: 2.8rem 1.5rem; text-align: center; }
-  .issue-hero .eyebrow { color: var(--gold); font-size: 0.9rem; letter-spacing: 0.15em; font-weight: 600; }
-  .issue-hero h1 { font-family: 'Frank Ruhl Libre', serif; font-size: clamp(2rem, 5vw, 3.5rem); margin: 0.4rem 0; }
-  .issue-hero .parsha { font-size: 1.2rem; opacity: 0.9; }
-  .issue-hero .actions { margin-top: 1.5rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
-  .featured { background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); display: grid; grid-template-columns: 1.4fr 1fr; margin-bottom: 2.5rem; }
-  .featured-image { aspect-ratio: 16/10; overflow: hidden; background: var(--cream); }
-  .featured-image img { width: 100%; height: 100%; object-fit: cover; }
-  .featured-body { padding: 2rem 1.8rem; display: flex; flex-direction: column; justify-content: center; }
-  .featured h2 { font-family: 'Frank Ruhl Libre', serif; font-size: 2rem; color: var(--olive-darkest); margin-bottom: 0.6rem; }
-  .featured h2 a { color: inherit; text-decoration: none; }
-  .featured h2 a:hover { color: var(--red); }
-  .articles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px,1fr)); gap: 1.5rem; }
-  .article-card { background:#fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); }
-  .article-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
-  .article-card-image { aspect-ratio: 16/9; overflow: hidden; background: var(--cream); position: relative; }
-  .article-card-image img { width:100%; height:100%; object-fit:cover; }
-  .article-card-image .tag { position: absolute; top: 0.7rem; right: 0.7rem; background: rgba(74,78,46,0.92); color: #fff; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.72rem; font-weight: 600; }
-  .article-card-body { padding: 1rem 1.1rem 1.1rem; }
-  .article-card h3 { font-family: 'Frank Ruhl Libre', serif; font-size: 1.15rem; color: var(--olive-darkest); margin-bottom: 0.4rem; }
-  .article-card h3 a { color: inherit; text-decoration: none; }
-  .article-card h3 a:hover { color: var(--red); }
-  .article-card-excerpt { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+  /* =====================================================================
+     ISSUE PAGE — magazine-style design system
+     ===================================================================== */
+  .bulletin-root {
+    --navy: #1a2a4a;
+    --navy-deep: #0f1d3b;
+    --gold: #a37416;
+    --gold-light: #c89b3c;
+    --gold-deep: #7a5610;
+    --cream: #fbf6ec;
+    --cream-warm: #fdfaf3;
+    --burgundy: #6b1f2d;
+    --bordeaux: #8a1c2c;
+    --olive: #4a5234;
+    --olive-deep: #3d4d2a;
+    --sand: #efe6d2;
+    --paper: #fdfcf7;
+    --ink: #1f1d18;
+    --rule: #c5b083;
+    --terracotta: #b15238;
+    --royal-teal: #1e5a6f;
+    --forest: #2c4a32;
+    --mustard: #d4a02e;
+
+    font-family: 'EB Garamond', 'Cormorant Garamond', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink);
+    background: var(--paper);
+  }
+
+  /* === ISSUE HEADER (masthead) === */
+  .issue-masthead {
+    background: linear-gradient(135deg, var(--navy-deep), var(--navy));
+    color: var(--cream);
+    border-bottom: 4px solid var(--gold);
+    padding: 1.6rem 1.2rem 1.8rem;
+    text-align: center;
+  }
+  .issue-masthead .eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .issue-masthead h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .issue-masthead h1 .accent { color: var(--gold-light); font-style: italic; font-weight: 400; }
+  .issue-masthead .meta {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(251,246,236,0.7);
+    margin-top: 0.7rem;
+  }
+  .issue-masthead .meta span { margin: 0 0.5rem; }
+  .issue-masthead .actions { margin-top: 1.2rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
+  .issue-masthead .actions a {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    background: var(--gold); color: var(--navy-deep);
+    padding: 0.45rem 1rem; border-radius: 3px;
+    font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 1.5px; font-weight: 600;
+    text-decoration: none; text-transform: uppercase;
+  }
+  .issue-masthead .actions a.outline {
+    background: transparent; color: var(--cream); border: 1px solid var(--gold-light);
+  }
+
+  /* === TABLE OF CONTENTS NAV === */
+  .toc-strip {
+    background: var(--cream);
+    border-bottom: 1px solid var(--rule);
+    padding: 0.8rem 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+  }
+  .toc-strip-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0.4rem;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .toc-strip a {
+    flex-shrink: 0;
+    font-family: 'EB Garamond', serif;
+    font-size: 14px;
+    color: var(--navy);
+    text-decoration: none;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .toc-strip a:hover { background: var(--sand); border-color: var(--rule); }
+
+  /* === BULLETIN SECTIONS (per article) === */
+  main.bulletin-main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  .bulletin-section {
+    background: var(--paper);
+    border-top: 1px solid var(--rule);
+    padding: 2.5rem 0 2rem;
+    scroll-margin-top: 80px;
+  }
+  .bulletin-section:first-child { border-top: none; padding-top: 2rem; }
+
+  .section-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--gold-deep);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    color: var(--navy);
+    font-size: clamp(28px, 4.5vw, 42px);
+    line-height: 1.05;
+    margin: 0 0 6px;
+    letter-spacing: -0.5px;
+  }
+  .section-title .accent { color: var(--bordeaux); font-style: italic; font-weight: 400; }
+  .section-title .accent-gold { color: var(--gold-deep); font-style: italic; font-weight: 400; }
+  .subhead {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 22px;
+    margin: 1rem 0 0.4rem;
+    line-height: 1.3;
+  }
+  .byline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--gold-deep);
+    font-size: 17px;
+    margin: 0.4rem 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .byline img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--gold); }
+  .byline strong { color: var(--navy); font-style: normal; font-weight: 600; }
+
+  /* Body prose */
+  .prose {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+  .prose p { margin-bottom: 1rem; }
+  .prose p:first-of-type::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 4em;
+    font-weight: 900;
+    color: var(--gold);
+    float: right;
+    line-height: 0.85;
+    margin-left: 0.4rem;
+    margin-top: 0.15rem;
+  }
+  .prose h2, .prose h3 { font-family: 'Cormorant Garamond', serif; color: var(--navy); margin: 1.6rem 0 0.5rem; }
+  .prose h2 { font-size: 1.6rem; font-weight: 700; }
+  .prose h3 { font-size: 1.3rem; font-weight: 600; }
+  .prose strong { color: var(--navy); font-weight: 700; }
+  .prose blockquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    line-height: 1.4;
+    color: var(--navy);
+    border-top: 2px solid var(--gold);
+    border-bottom: 2px solid var(--gold);
+    padding: 1rem 0;
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+  .prose ul, .prose ol { padding-right: 1.4rem; margin-bottom: 1rem; }
+  .prose li { margin-bottom: 0.3rem; }
+  .prose img { max-width: 100%; height: auto; margin: 1.2rem auto; display: block; border-radius: 2px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+  /* Hero image inside a section */
+  .section-image {
+    margin: 1rem 0;
+  }
+  .section-image img { width: 100%; height: auto; display: block; border-radius: 2px; }
+  .section-image .caption {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--gold-deep);
+    padding-top: 0.4rem;
+    text-align: center;
+  }
+
+  /* Pull quote */
+  .pull-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.3;
+    color: var(--navy);
+    border-top: 2px solid var(--gold);
+    border-bottom: 2px solid var(--gold);
+    padding: 14px 0;
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+
+  /* Gallery */
+  .section-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.6rem;
+    margin: 1rem 0;
+  }
+  .section-gallery img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 2px; cursor: pointer; }
+
+  /* === PER-SECTION VARIATIONS === */
+  /* Editor's Word — formal opening */
+  #section-editor-word { background: var(--cream-warm); border-radius: 2px; padding: 2rem 1.8rem; margin-top: 1rem; }
+  #section-editor-word .section-eyebrow { color: var(--bordeaux); }
+
+  /* Commander's Word — green accent */
+  #section-commander-word .section-eyebrow { color: var(--forest); }
+  #section-commander-word .section-title .accent { color: var(--forest); }
+
+  /* From Torah Greats — distinguished */
+  #section-torah-greats { background: linear-gradient(180deg, var(--cream-warm), var(--paper)); }
+  #section-torah-greats .section-eyebrow { color: var(--burgundy); }
+
+  /* Warrior's Song — poetry */
+  #section-warrior-song .prose,
+  #section-warrior-song .prose p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--navy);
+    text-align: center;
+  }
+  #section-warrior-song .prose p:first-of-type::first-letter { float: none; font-size: inherit; color: inherit; margin: 0; }
+
+  /* Question in Camp — Q&A */
+  #section-question-camp { background: var(--mustard); background: #f6e6b8; padding: 2rem 1.8rem; border-radius: 2px; }
+  #section-question-camp .section-eyebrow { color: var(--burgundy); }
+
+  /* Yeshivish in Field — playful */
+  #section-yeshivish-field .section-title .accent { color: var(--terracotta); }
+
+  /* Faces That Tell a Story — memorial */
+  #section-faces-story { background: var(--sand); padding: 2rem 1.8rem; border-radius: 2px; }
+  #section-faces-story .section-eyebrow { color: var(--burgundy); letter-spacing: 4px; }
+  #section-faces-story .section-title { color: var(--burgundy); }
+
+  /* Glimpse into Parsha */
+  #section-parsha-glimpse .section-eyebrow { color: var(--royal-teal); }
+  #section-parsha-glimpse .section-title .accent { color: var(--royal-teal); }
+
+  /* IDF Lingo — compact */
+  #section-idf-lingo { background: var(--cream); padding: 2rem 1.8rem; border-radius: 2px; }
+  #section-idf-lingo .section-eyebrow { color: var(--olive-deep); }
+  #section-idf-lingo .prose { font-family: 'Heebo', sans-serif; font-size: 16px; }
+
+  /* Steigen */
+  #section-steigen .section-title .accent { color: var(--gold-deep); }
+
+  /* Brigade News + IDF News */
+  #section-brigade-news, #section-idf-news {
+    background: linear-gradient(180deg, var(--cream-warm), var(--paper));
+    padding: 2rem 1.8rem;
+    border-radius: 2px;
+  }
+  #section-brigade-news .section-eyebrow,
+  #section-idf-news .section-eyebrow { color: var(--terracotta); }
+  #section-brigade-news .section-title,
+  #section-idf-news .section-title { color: var(--navy-deep); }
+
+  /* Warrior's Diary */
+  #section-warrior-diary .section-eyebrow { color: var(--olive-deep); }
+
+  /* Shabbat Story */
+  #section-shabbat-story { background: var(--cream-warm); padding: 2rem 1.8rem; border-radius: 2px; }
+  #section-shabbat-story .section-eyebrow { color: var(--burgundy); }
+
+  /* Life in the Brigade — interview */
+  #section-life-brigade .section-title .accent { color: var(--gold-deep); }
+
+  /* Journey in Time — heritage */
+  #section-journey-time { background: linear-gradient(180deg, #e6dfc4, var(--paper)); padding: 2rem 1.8rem; border-radius: 2px; }
+  #section-journey-time .section-eyebrow { color: var(--bordeaux); letter-spacing: 4px; }
+  #section-journey-time .section-title { color: var(--bordeaux); }
+
+  /* Soldier on Map */
+  #section-soldier-map .section-eyebrow { color: var(--royal-teal); }
+
+  /* Halacha in Army */
+  #section-halacha-army { background: #f8f4e8; padding: 2rem 1.8rem; border-radius: 2px; }
+  #section-halacha-army .section-eyebrow { color: var(--burgundy); letter-spacing: 3px; }
+
+  /* Joke aside / humor */
+  #section-humor { background: #fef9e7; padding: 2rem 1.8rem; border-radius: 2px; text-align: center; }
+  #section-humor .section-title { color: var(--terracotta); }
+
+  /* === Empty / draft notice === */
+  .empty-section {
+    color: var(--gold-deep);
+    font-style: italic;
+    text-align: center;
+    padding: 1rem;
+    background: rgba(195,176,131,0.1);
+    border-radius: 2px;
+    font-size: 14px;
+  }
 
   /* PDF embed for legacy issues */
-  .pdf-embed-wrap { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 1rem; margin-top: 1.5rem; }
-  .pdf-embed-wrap iframe { width: 100%; height: 80vh; border: 1px solid var(--border); border-radius: var(--radius-sm); display: block; }
-  .legacy-note { background: var(--cream); padding: 1rem 1.2rem; border-radius: var(--radius-sm); margin: 1rem 0; color: var(--olive-dark); font-size: 0.92rem; border-right: 3px solid var(--gold); }
+  .pdf-embed-wrap { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 1rem; margin: 1.5rem auto; max-width: 1100px; }
+  .pdf-embed-wrap iframe { width: 100%; height: 85vh; border: 1px solid var(--border); border-radius: var(--radius-sm); display: block; }
+  .legacy-note { background: var(--cream); padding: 1rem 1.2rem; border-radius: 4px; margin: 1rem auto; color: var(--olive-dark); font-size: 0.92rem; border-right: 3px solid var(--gold); max-width: 1100px; }
 
-  @media (max-width: 768px) { .featured { grid-template-columns: 1fr; } .featured-body { padding: 1.2rem; } .pdf-embed-wrap iframe { height: 70vh; } }
+  @media (max-width: 600px) {
+    .bulletin-section { padding: 1.8rem 0 1.5rem; }
+    .section-title { font-size: 26px; }
+    .pdf-embed-wrap iframe { height: 70vh; }
+  }
 </style>
 </head>
 <body>
@@ -70,8 +387,8 @@
   </div>
 </nav>
 
-<div id="container">
-  <div class="loading" style="margin-top:4rem;"><div class="spinner"></div></div>
+<div class="bulletin-root" id="container">
+  <div class="loading" style="margin-top:4rem;text-align:center;color:var(--gold-deep);"><div class="spinner"></div></div>
 </div>
 
 <footer class="footer">
@@ -97,7 +414,6 @@
   firebase.initializeApp(window.FIREBASE_CONFIG);
   const db = firebase.firestore();
 
-  // Legacy newsletters lookup
   const LEGACY = {
     36: { issueNumber:36, parsha:'במדבר',  coverUrl:'/newsletters/covers/cover-36.jpg', pdfHeUrl:'/newsletters/bachativa-issue-36-he.pdf', pdfEnUrl:'/newsletters/BaChativa-Issue36-English.pdf' },
     31: { issueNumber:31, parsha:'משפטים', coverUrl:'/newsletters/covers/cover-31.jpg', pdfHeUrl:'/newsletters/newsletter-31-mishpatim.pdf' },
@@ -108,10 +424,27 @@
     26: { issueNumber:26, parsha:'שמות',   coverUrl:'/newsletters/covers/cover-26.jpg', pdfHeUrl:'/newsletters/newsletter-26-shemot.pdf' }
   };
 
-  const TYPE_LABELS = { article:'כתבה', interview:'ראיון', torah:'דבר תורה', 'photo-of-week':'תמונת השבוע', gallery:'גלריה' };
+  const TYPE_LABELS_HE = {
+    'editor-word':'דבר המערכת','commander-word':'דבר המפקד','torah-greats':'משולחנם של גדולי ישראל',
+    'warrior-song':'שירת הלוחם','question-camp':'שאלה במחנה','yeshivish-field':'ישיבישער בשטח',
+    'faces-story':'פנים שמספרות סיפור','parsha-glimpse':'הצצה לפרשת השבוע','idf-lingo':'שפה צה״לית',
+    'steigen':'שטייגען בחטיבה','brigade-news':'חדשות החטיבה','idf-news':'חדשות צה״ל',
+    'warrior-diary':'מיומנו של לוחם','shabbat-story':'סיפור לשבת','life-brigade':'החיים בחטיבה',
+    'journey-time':'מסע בזמן','soldier-map':'חייל על המפה','halacha-army':'הלכה בצבא','humor':'צחוק בצד',
+    'cover':'שער','article':'כתבה','interview':'ראיון','torah':'דבר תורה','photo-of-week':'תמונת השבוע','gallery':'גלריה'
+  };
+  const TYPE_LABELS_EN = {
+    'editor-word':'Editor\'s Word','commander-word':'Commander\'s Word','torah-greats':'From Torah Greats',
+    'warrior-song':'The Warrior\'s Song','question-camp':'A Question in Camp','yeshivish-field':'Yeshivish in the Field',
+    'faces-story':'Faces That Tell a Story','parsha-glimpse':'Glimpse into the Parsha','idf-lingo':'IDF Lingo',
+    'steigen':'Steigen in the Brigade','brigade-news':'Brigade News','idf-news':'IDF News',
+    'warrior-diary':'From a Warrior\'s Diary','shabbat-story':'A Shabbat Story','life-brigade':'Life in the Brigade',
+    'journey-time':'Journey in Time','soldier-map':'A Soldier on the Map','halacha-army':'Halacha in the Army','humor':'Joke Aside',
+    'cover':'Cover','article':'Article','interview':'Interview','torah':'Torah','photo-of-week':'Photo of the Week','gallery':'Gallery'
+  };
 
   function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-  function excerpt(html, n) { const t = String(html||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim(); return t.length>n? t.slice(0,n).trim()+'…' : t; }
+  function clean(html) { return String(html||'').replace(/<script[\s\S]*?<\/script>/gi,'').replace(/\son\w+="[^"]*"/gi,''); }
 
   function getIdFromPath() {
     const m = location.pathname.match(/\/issue\/([^/]+)$/);
@@ -121,47 +454,94 @@
 
   function renderLegacyIssue(issue) {
     document.getElementById('pageTitle').textContent = `גיליון ${issue.issueNumber} — פרשת ${issue.parsha} | בחטיבה`;
-    const enBtn = issue.pdfEnUrl ? `<a class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,0.5);" href="${esc(issue.pdfEnUrl)}" target="_blank">⬇ English PDF</a>` : '';
+    const enBtn = issue.pdfEnUrl ? `<a class="outline" href="${esc(issue.pdfEnUrl)}" target="_blank">⬇ English PDF</a>` : '';
     document.getElementById('container').innerHTML = `
-      <section class="issue-hero">
-        <div class="eyebrow">עלון השבועי של חטיבת חשמונאים</div>
-        <h1>גיליון ${esc(issue.issueNumber)}</h1>
-        <div class="parsha">פרשת ${esc(issue.parsha)}</div>
+      <header class="issue-masthead">
+        <div class="eyebrow">B "H · בס"ד</div>
+        <h1>״<span class="accent">בחטיבה</span>״</h1>
+        <div class="meta"><span>גיליון ${esc(issue.issueNumber)}</span> · <span>פרשת ${esc(issue.parsha)}</span></div>
         <div class="actions">
-          <a class="btn btn-gold" href="${esc(issue.pdfHeUrl)}" target="_blank">⬇ הורד PDF</a>
+          <a href="${esc(issue.pdfHeUrl)}" target="_blank">⬇ הורד PDF</a>
           ${enBtn}
         </div>
-      </section>
-      <main>
-        <div class="legacy-note">
-          זהו גיליון מהארכיון שטרם הומר לפורמט אינטרנטי מלא. ה-PDF המקורי מוטמע כאן למטה.
-          הגיליונות החדשים יוצגו כמגזין דיגיטלי עם כתבות נפרדות.
-        </div>
+      </header>
+      <main class="bulletin-main">
+        <div class="legacy-note">זהו גיליון מהארכיון. ה-PDF המקורי מוטמע למטה. גיליונות חדשים יוצגו במלואם כעיתון אינטרנטי.</div>
         <div class="pdf-embed-wrap">
           <iframe src="${esc(issue.pdfHeUrl)}" title="עלון בחטיבה גיליון ${esc(issue.issueNumber)}"></iframe>
         </div>
       </main>`;
   }
 
+  // Auto-detect poetry in body: short consecutive lines without HTML tags
+  function isLikelyPoetry(body) {
+    const text = String(body||'').replace(/<[^>]+>/g,'\n').trim();
+    const lines = text.split('\n').filter(l => l.trim());
+    if (lines.length < 4) return false;
+    const shortLines = lines.filter(l => l.length < 80);
+    return shortLines.length / lines.length > 0.7;
+  }
+
+  function renderBody(a) {
+    // If section is the warrior-song type, render as poetry preserving line breaks
+    if (a.type === 'warrior-song' || a.type === 'humor') {
+      const txt = String(a.body||'').trim();
+      if (!txt) return '<div class="empty-section">תוכן יתווסף בקרוב</div>';
+      if (/<\w+/.test(txt)) return `<div class="prose">${clean(txt)}</div>`;
+      // Auto-break lines
+      const html = txt.split(/\n\s*\n/).map(p =>
+        '<div class="stanza" style="margin-bottom:1rem;">' + esc(p).replace(/\n/g,'<br>') + '</div>'
+      ).join('');
+      return `<div class="prose" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;line-height:1.6;color:var(--navy);text-align:center;">${html}</div>`;
+    }
+    return `<div class="prose">${clean(a.body || '<div class="empty-section">תוכן יתווסף בקרוב</div>')}</div>`;
+  }
+
+  function renderSection(a, lang) {
+    const tlab = (lang === 'en' ? TYPE_LABELS_EN : TYPE_LABELS_HE)[a.type] || a.type;
+    const byline = a.authorName
+      ? `<div class="byline">${a.authorPhotoUrl?`<img src="${esc(a.authorPhotoUrl)}" alt="">`:''}<span>מאת <strong>${esc(a.authorName)}</strong>${a.authorRole?` · ${esc(a.authorRole)}`:''}</span></div>`
+      : '';
+    const heroImage = a.mainImageUrl ? `
+      <div class="section-image">
+        <img src="${esc(a.mainImageUrl)}" alt="${esc(a.title)}" loading="lazy">
+        ${a.mainImageCaption?`<div class="caption">${esc(a.mainImageCaption)}</div>`:''}
+      </div>` : '';
+    const subhead = a.subtitle ? `<h3 class="subhead">${esc(a.subtitle)}</h3>` : '';
+    const gallery = (a.gallery && a.gallery.length) ? `
+      <div class="section-gallery">
+        ${a.gallery.map(g => `<img src="${esc(g.url||g)}" alt="${esc(g.caption||'')}" loading="lazy" onclick="window.open(this.src,'_blank')">`).join('')}
+      </div>` : '';
+    return `
+      <section class="bulletin-section" id="section-${esc(a.type)}">
+        <div class="section-eyebrow">${esc(tlab)}</div>
+        <h2 class="section-title">${esc(a.title)}</h2>
+        ${byline}
+        ${subhead}
+        ${heroImage}
+        ${renderBody(a)}
+        ${gallery}
+      </section>`;
+  }
+
   async function loadIssue() {
     const id = getIdFromPath();
     const c = document.getElementById('container');
-    if (!id) { c.innerHTML = '<div class="empty" style="margin-top:3rem;">לא צוין גיליון. <a href="/archive">לארכיון</a></div>'; return; }
+    if (!id) { c.innerHTML = '<div class="empty" style="margin-top:3rem;padding:2rem;text-align:center;">לא צוין גיליון. <a href="/archive">לארכיון</a></div>'; return; }
 
-    // Legacy issue?
     if (id.startsWith('legacy-')) {
       const num = parseInt(id.slice(7), 10);
       if (LEGACY[num]) { renderLegacyIssue(LEGACY[num]); return; }
-      c.innerHTML = '<div class="empty" style="margin-top:3rem;">הגיליון לא נמצא.</div>';
+      c.innerHTML = '<div class="empty" style="margin-top:3rem;padding:2rem;text-align:center;">הגיליון לא נמצא.</div>';
       return;
     }
 
     let issue;
     try {
       const doc = await db.collection('issues').doc(id).get();
-      if (!doc.exists) { c.innerHTML = '<div class="empty" style="margin-top:3rem;">הגיליון לא נמצא. <a href="/archive">לארכיון</a></div>'; return; }
+      if (!doc.exists) { c.innerHTML = '<div class="empty" style="margin-top:3rem;padding:2rem;text-align:center;">הגיליון לא נמצא. <a href="/archive">לארכיון</a></div>'; return; }
       issue = { id: doc.id, ...doc.data() };
-    } catch (e) { c.innerHTML = '<div class="empty" style="margin-top:3rem;">שגיאה: ' + esc(e.message) + '</div>'; return; }
+    } catch (e) { c.innerHTML = `<div class="empty" style="margin-top:3rem;padding:2rem;text-align:center;">שגיאה: ${esc(e.message)}</div>`; return; }
 
     let articles = [];
     try {
@@ -169,67 +549,57 @@
       snap.forEach(d => articles.push({ id: d.id, ...d.data() }));
     } catch (e) { console.warn(e); }
 
-    const issueLabel = issue.type === 'magazine' ? 'מגזין בחטיבה' : 'עלון השבועי של חטיבת חשמונאים';
+    const lang = issue.language || 'he';
     document.getElementById('pageTitle').textContent = `גיליון ${issue.issueNumber} — פרשת ${issue.parsha || ''} | בחטיבה`;
+    document.getElementById('pageDesc').setAttribute('content', `גיליון ${issue.issueNumber} של ״בחטיבה״ — פרשת ${issue.parsha || ''}`);
+    document.getElementById('ogTitle').setAttribute('content', `גיליון ${issue.issueNumber} — בחטיבה`);
+    if (issue.coverUrl) document.getElementById('ogImage').setAttribute('content', issue.coverUrl.startsWith('http') ? issue.coverUrl : 'https://bachativa.com' + issue.coverUrl);
+
+    const dateStr = issue.date ? new Date(issue.date).toLocaleDateString('he-IL', { day:'numeric', month:'long', year:'numeric' }) : '';
+    const issueTypeLabel = issue.type === 'magazine' ? 'מגזין בחטיבה' : 'עלון בחטיבה';
 
     const heroActions = [];
-    heroActions.push(`<a class="btn btn-gold" href="/print/${esc(issue.id)}" target="_blank">🖨 גרסה להדפסה</a>`);
-    if (issue.pdfHeUrl) heroActions.push(`<a class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,0.5);" href="${esc(issue.pdfHeUrl.startsWith('http')||issue.pdfHeUrl.startsWith('/')?issue.pdfHeUrl:'/'+issue.pdfHeUrl)}" target="_blank">⬇ PDF המקורי</a>`);
+    if (issue.pdfHeUrl) {
+      const url = issue.pdfHeUrl.startsWith('http')||issue.pdfHeUrl.startsWith('/') ? issue.pdfHeUrl : '/'+issue.pdfHeUrl;
+      heroActions.push(`<a href="${esc(url)}" target="_blank">⬇ הורד PDF</a>`);
+    }
+    heroActions.push(`<a class="outline" href="/print/${esc(issue.id)}" target="_blank">🖨 גרסה להדפסה</a>`);
+
+    // Table of contents
+    const toc = articles.length > 1 ? `
+      <div class="toc-strip">
+        <div class="toc-strip-inner">
+          ${articles.map(a => `<a href="#section-${esc(a.type)}">${esc(a.title)}</a>`).join('')}
+        </div>
+      </div>` : '';
 
     let html = `
-      <section class="issue-hero">
-        <div class="eyebrow">${esc(issueLabel)}</div>
-        <h1>גיליון ${esc(issue.issueNumber)}</h1>
-        <div class="parsha">${esc(issue.parsha ? 'פרשת ' + issue.parsha : '')}</div>
+      <header class="issue-masthead">
+        <div class="eyebrow">בס"ד · ${esc(issueTypeLabel)} · ערש"ק פרשת ${esc(issue.parsha || '')}</div>
+        <h1>״<span class="accent">בחטיבה</span>״</h1>
+        <div class="meta">
+          <span>גיליון ${esc(issue.issueNumber)}</span>
+          ${issue.parsha?'<span>·</span><span>פרשת '+esc(issue.parsha)+'</span>':''}
+          ${dateStr?'<span>·</span><span>'+esc(dateStr)+'</span>':''}
+        </div>
         <div class="actions">${heroActions.join('')}</div>
-      </section>
-      <main>`;
+      </header>
+      ${toc}
+      <main class="bulletin-main">`;
 
     if (articles.length === 0) {
-      // Empty issue but has PDF? Embed it
       if (issue.pdfHeUrl) {
         const url = issue.pdfHeUrl.startsWith('http')||issue.pdfHeUrl.startsWith('/') ? issue.pdfHeUrl : '/'+issue.pdfHeUrl;
         html += `
-          <div class="legacy-note">
-            גיליון זה עדיין לא הומר לפורמט אינטרנטי. ה-PDF המקורי מוטמע כאן.
-          </div>
-          <div class="pdf-embed-wrap">
-            <iframe src="${esc(url)}" title="גיליון ${esc(issue.issueNumber)}"></iframe>
-          </div>`;
+          <div class="legacy-note">הגיליון עדיין בעריכה — הכותב/ת מילא/ה רק חלק מהסקציות. ה-PDF המקורי מוטמע כאן בינתיים:</div>
+          <div class="pdf-embed-wrap"><iframe src="${esc(url)}" title="גיליון ${esc(issue.issueNumber)}"></iframe></div>`;
       } else {
-        html += '<div class="empty">לא נוספו כתבות לגיליון זה עדיין.</div>';
+        html += '<div class="empty-section" style="margin:3rem 0;padding:2rem;">לא נוספו סקציות לגיליון זה עדיין. תוכל לעקוב כאן ברגע שהעורך יפרסם.</div>';
       }
     } else {
-      const [feat, ...rest] = articles;
-      const tag = TYPE_LABELS[feat.type] || 'כתבה';
-      html += `
-        <article class="featured">
-          <div class="featured-image">${feat.mainImageUrl ? `<img src="${esc(feat.mainImageUrl)}" loading="lazy">` : ''}</div>
-          <div class="featured-body">
-            <div style="color:var(--olive);font-size:0.82rem;letter-spacing:0.1em;font-weight:700;text-transform:uppercase;margin-bottom:0.5rem;">${esc(tag)}</div>
-            <h2><a href="/article/${esc(feat.id)}">${esc(feat.title)}</a></h2>
-            <p style="color:var(--text-muted);font-size:1rem;line-height:1.6;margin-bottom:1rem;">${esc(feat.subtitle || excerpt(feat.body,160))}</p>
-            ${feat.authorName ? `<div><span class="author-chip">${feat.authorPhotoUrl?`<img src="${esc(feat.authorPhotoUrl)}" alt="">`:''}<span>${esc(feat.authorName)}</span></span></div>` : ''}
-          </div>
-        </article>`;
-      if (rest.length) {
-        html += '<div class="articles-grid">' + rest.map(a => {
-          const t = TYPE_LABELS[a.type] || 'כתבה';
-          return `
-            <article class="article-card">
-              <a href="/article/${esc(a.id)}" class="article-card-image">
-                ${a.mainImageUrl ? `<img src="${esc(a.mainImageUrl)}" loading="lazy">` : ''}
-                <span class="tag">${esc(t)}</span>
-              </a>
-              <div class="article-card-body">
-                <h3><a href="/article/${esc(a.id)}">${esc(a.title)}</a></h3>
-                <p class="article-card-excerpt">${esc(a.subtitle || excerpt(a.body,110))}</p>
-                ${a.authorName ? `<div style="font-size:0.82rem;color:var(--text-light);">${esc(a.authorName)}</div>` : ''}
-              </div>
-            </article>`;
-        }).join('') + '</div>';
-      }
+      html += articles.map(a => renderSection(a, lang)).join('');
     }
+
     html += '</main>';
     c.innerHTML = html;
   }
