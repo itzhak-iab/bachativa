@@ -9,6 +9,25 @@
       ]
     },
     {
+      "collectionGroup": "issues",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "type",        "order": "ASCENDING" },
+        { "fieldPath": "language",    "order": "ASCENDING" },
+        { "fieldPath": "published",   "order": "ASCENDING" },
+        { "fieldPath": "issueNumber", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "issues",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "type",        "order": "ASCENDING" },
+        { "fieldPath": "published",   "order": "ASCENDING" },
+        { "fieldPath": "issueNumber", "order": "DESCENDING" }
+      ]
+    },
+    {
       "collectionGroup": "articles",
       "queryScope": "COLLECTION",
       "fields": [

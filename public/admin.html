@@ -130,8 +130,12 @@
           <option value="torah">דבר תורה</option><option value="photo-of-week">תמונת השבוע</option>
           <option value="gallery">גלריה</option>
         </select></div>
-        <div class="field"><label>גיליון</label><select id="artIssueId"><option value="">— בחר גיליון —</option></select></div>
+        <div class="field"><label>שפה</label><select id="artLanguage">
+          <option value="he">🇮🇱 עברית</option>
+          <option value="en">🇬🇧 English</option>
+        </select></div>
       </div>
+      <div class="field"><label>גיליון</label><select id="artIssueId"><option value="">— בחר גיליון —</option></select></div>
       <div class="field"><label>כותרת</label><input type="text" id="artTitle" required></div>
       <div class="field"><label>תת-כותרת / מבזק</label><input type="text" id="artSubtitle"></div>
       <div class="field-row">
@@ -217,11 +221,19 @@
           <option value="newsletter">📰 עלון שבועי</option>
           <option value="magazine">📖 מגזין חודשי</option>
         </select></div>
-        <div class="field"><label>מספר גיליון</label><input type="number" id="issueNumber" required min="1"></div>
+        <div class="field"><label>שפה</label><select id="issueLanguage">
+          <option value="he">🇮🇱 עברית</option>
+          <option value="en">🇬🇧 English</option>
+        </select></div>
       </div>
       <div class="field-row">
-        <div class="field"><label>פרשה (לעלון) / כותרת (למגזין)</label><input type="text" id="issueParsha" required></div>
+        <div class="field"><label>מספר גיליון</label><input type="number" id="issueNumber" required min="1"></div>
         <div class="field"><label>תאריך (אופציונלי)</label><input type="date" id="issueDate"></div>
+      </div>
+      <div class="field"><label>פרשה (לעלון) / כותרת (למגזין)</label><input type="text" id="issueParsha" required></div>
+      <div id="useTemplateRow" class="field-checkbox" style="background:var(--cream);padding:.7rem 1rem;border-radius:var(--radius-sm);">
+        <input type="checkbox" id="issueUseTemplate" checked>
+        <label for="issueUseTemplate"><strong>השתמש בתבנית בסיסית</strong> — יוצר אוטומטית כתבות placeholder עם הסקציות הקבועות (סיפור השער, דבר תורה, ראיון, תמונת השבוע, מבזקים, חיילים מספרים) לפי סדר העמודים. תוכל לערוך/למחוק כל אחת.</label>
       </div>
       <div class="field"><label>תמונת שער</label>
         <div class="img-up">
@@ -407,6 +419,7 @@
     if (!cachedIssues.length) { list.innerHTML = '<div class="empty">אין גיליונות.</div>'; return; }
     list.innerHTML = cachedIssues.map(n => {
       const typeLabel = n.type === 'magazine' ? '📖 מגזין' : '📰 עלון';
+      const langFlag = (n.language || 'he') === 'en' ? '🇬🇧 EN' : '🇮🇱 HE';
       return `
       <div class="list-row">
         <img class="thumb" src="${esc(n.coverUrl || '/images/logo.png')}" alt="">
@@ -414,6 +427,7 @@
           <h3>גיליון ${esc(n.issueNumber)} — ${esc(n.parsha || '')}</h3>
           <div class="sub">
             <span class="badge badge-gold">${typeLabel}</span>
+            <span class="badge" style="background:#eef;color:#345;">${langFlag}</span>
             <span class="badge ${n.published?'badge-pub':'badge-draft'}">${n.published?'פורסם':'טיוטה'}</span>
             ${n.pdfHeUrl?'· PDF':''}
           </div>
@@ -439,11 +453,12 @@
     const tLab = { article:'כתבה', interview:'ראיון', torah:'דבר תורה', 'photo-of-week':'תמונת השבוע', gallery:'גלריה' };
     list.innerHTML = cachedArticles.map(a => {
       const issue = cachedIssues.find(i => i.id === a.issueId);
+      const langFlag = (a.language || 'he') === 'en' ? '🇬🇧' : '🇮🇱';
       return `
         <div class="list-row">
           <img class="thumb" src="${esc(a.mainImageUrl || '/images/logo.png')}" alt="">
           <div class="info">
-            <h3>${esc(a.title)}</h3>
+            <h3>${langFlag} ${esc(a.title)}</h3>
             <div class="sub">
               <span class="badge ${a.published?'badge-pub':'badge-draft'}">${a.published?'פורסם':'טיוטה'}</span>
               <span class="badge badge-gold">${esc(tLab[a.type]||a.type)}</span>
@@ -606,6 +621,7 @@
     document.getElementById('artModalTitle').textContent = id ? 'עריכת כתבה' : 'כתבה חדשה';
     document.getElementById('artId').value = id || '';
     document.getElementById('artType').value = data?.type || 'article';
+    document.getElementById('artLanguage').value = data?.language || 'he';
     document.getElementById('artTitle').value = data?.title || '';
     document.getElementById('artSubtitle').value = data?.subtitle || '';
     document.getElementById('artOrder').value = data?.order ?? 100;
@@ -659,6 +675,7 @@
     const author = cachedAuthors.find(a => a.id === authorId);
     const data = {
       type: document.getElementById('artType').value,
+      language: document.getElementById('artLanguage').value || 'he',
       issueId: document.getElementById('artIssueId').value || null,
       title: document.getElementById('artTitle').value.trim(),
       subtitle: document.getElementById('artSubtitle').value.trim(),
@@ -729,6 +746,7 @@
     document.getElementById('issueModalTitle').textContent = id ? 'עריכת גיליון' : 'גיליון חדש';
     document.getElementById('issueIdField').value = id || '';
     document.getElementById('issueType').value = data?.type || 'newsletter';
+    document.getElementById('issueLanguage').value = data?.language || 'he';
     document.getElementById('issueNumber').value = data?.issueNumber || '';
     document.getElementById('issueParsha').value = data?.parsha || '';
     document.getElementById('issueDate').value = data?.date ? (typeof data.date === 'string' ? data.date.slice(0,10) : '') : '';
@@ -737,6 +755,9 @@
     document.getElementById('issuePdfEn').value = data?.pdfEnUrl || '';
     document.getElementById('issuePublished').checked = data ? !!data.published : true;
     document.getElementById('issueCoverUrl').value = data?.coverUrl || '';
+    // Template option only when creating new
+    const tplRow = document.getElementById('useTemplateRow');
+    if (id) { tplRow.style.display = 'none'; } else { tplRow.style.display = ''; document.getElementById('issueUseTemplate').checked = true; }
     setImgPreview(document.getElementById('issueCoverPreview'), data?.coverUrl, 'issueCoverUrl', 'issueCoverPreview');
     const pdfPrev = document.getElementById('issuePdfHePreview');
     if (data?.pdfHeUrl) {
@@ -750,15 +771,53 @@
     document.getElementById('issueModal').classList.add('active');
   }
   async function editIssue(id) { try { const d = await db.collection('issues').doc(id).get(); if (d.exists) openIssueEditor(d.data(), id); } catch (e) { alert(e.message); } }
+  // Templates: placeholder articles created when "use template" is checked
+  const NEWSLETTER_TEMPLATE_HE = [
+    { type: 'article',       title: 'סיפור השער',           subtitle: '',                                       order: 1 },
+    { type: 'torah',         title: 'דבר תורה לפרשה',       subtitle: 'פרשת השבוע',                             order: 2 },
+    { type: 'interview',     title: 'ראיון השבוע',           subtitle: '',                                       order: 3 },
+    { type: 'photo-of-week', title: 'תמונת השבוע',           subtitle: '',                                       order: 4 },
+    { type: 'article',       title: 'מבזקים מהחטיבה',        subtitle: 'הסיפורים השבועיים',                     order: 5 },
+    { type: 'article',       title: 'חיילים מספרים',         subtitle: 'מהשטח',                                  order: 6 },
+  ];
+  const NEWSLETTER_TEMPLATE_EN = [
+    { type: 'article',       title: 'Cover Story',            subtitle: '',                                       order: 1 },
+    { type: 'torah',         title: 'Weekly Torah Thought',   subtitle: 'Parshat HaShavua',                       order: 2 },
+    { type: 'interview',     title: 'Interview of the Week',  subtitle: '',                                       order: 3 },
+    { type: 'photo-of-week', title: 'Photo of the Week',      subtitle: '',                                       order: 4 },
+    { type: 'article',       title: 'Brigade Briefs',         subtitle: 'Weekly stories',                         order: 5 },
+    { type: 'article',       title: 'Soldiers Tell',          subtitle: 'From the field',                         order: 6 },
+  ];
+  const MAGAZINE_TEMPLATE_HE = [
+    { type: 'article',   title: 'כתבת השער',     subtitle: '', order: 1 },
+    { type: 'interview', title: 'ראיון העומק',    subtitle: '', order: 2 },
+    { type: 'article',   title: 'דמות בחטיבה',   subtitle: '', order: 3 },
+    { type: 'gallery',   title: 'תמונות מהחטיבה', subtitle: '', order: 4 },
+  ];
+  const MAGAZINE_TEMPLATE_EN = [
+    { type: 'article',   title: 'Cover Feature',       subtitle: '', order: 1 },
+    { type: 'interview', title: 'In-Depth Interview',  subtitle: '', order: 2 },
+    { type: 'article',   title: 'A Brigade Profile',   subtitle: '', order: 3 },
+    { type: 'gallery',   title: 'Photos from the Field', subtitle: '', order: 4 },
+  ];
+
+  function pickTemplate(type, language) {
+    if (type === 'magazine') return language === 'en' ? MAGAZINE_TEMPLATE_EN : MAGAZINE_TEMPLATE_HE;
+    return language === 'en' ? NEWSLETTER_TEMPLATE_EN : NEWSLETTER_TEMPLATE_HE;
+  }
+
   async function saveIssue(e) {
     e.preventDefault();
     const id = document.getElementById('issueIdField').value;
     const issueNumber = parseInt(document.getElementById('issueNumber').value, 10);
     const type = document.getElementById('issueType').value;
-    const docId = id || (type + '-' + issueNumber);
+    const language = document.getElementById('issueLanguage').value || 'he';
+    // Doc id includes language so HE and EN can coexist: e.g. "newsletter-37-he", "newsletter-37-en"
+    const docId = id || (`${type}-${issueNumber}-${language}`);
     const dateStr = document.getElementById('issueDate').value;
+    const useTemplate = !id && document.getElementById('issueUseTemplate').checked;
     const data = {
-      type, issueNumber,
+      type, language, issueNumber,
       parsha: document.getElementById('issueParsha').value.trim(),
       date: dateStr || null,
       pdfHeUrl: document.getElementById('issuePdfHe').value || document.getElementById('issuePdfHeText').value || '',
@@ -771,8 +830,35 @@
     try {
       if (!id) data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
       await db.collection('issues').doc(docId).set(data, { merge:true });
-      closeModal('issueModal'); showMsg('dashMsg','ok', id?'עודכן':'נוסף'); setTimeout(()=>clearMsg('dashMsg'),3000);
+
+      // Auto-create template articles (only for new issues with template enabled)
+      let templateMsg = '';
+      if (useTemplate) {
+        const tpl = pickTemplate(type, language);
+        let created = 0;
+        for (const a of tpl) {
+          await db.collection('articles').add({
+            ...a,
+            language,
+            issueId: docId,
+            body: '<p>[הכנס תוכן כאן]</p>',
+            authorId: null, authorName: '', authorRole: '', authorPhotoUrl: '',
+            mainImageUrl: '', mainImageCaption: '',
+            gallery: [],
+            published: false,    // start as drafts so they don't appear publicly until filled
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          });
+          created++;
+        }
+        templateMsg = ` (+${created} כתבות תבנית כטיוטות — לחץ לערוך, מלא תוכן, ושנה ל-״פורסם״)`;
+      }
+
+      closeModal('issueModal');
+      showMsg('dashMsg','ok', (id?'עודכן':'נוסף') + templateMsg);
+      setTimeout(()=>clearMsg('dashMsg'), 6000);
       await loadIssues();
+      if (useTemplate) await loadArticles();
     } catch (err) { showMsg('issueMsg','err', err.message); }
     finally { btn.disabled = false; }
   }

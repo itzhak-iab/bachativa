@@ -199,6 +199,7 @@
     <ul class="navbar-links" id="navLinks">
       <li><a href="/" class="active">בית</a></li>
       <li><a href="/archive">ארכיון</a></li>
+      <li><a href="#" id="langToggle" style="font-weight:700;">EN ⇄</a></li>
       <li><a href="https://chashmonayim.org" target="_blank" rel="noopener" class="btn-gold" style="padding:0.45rem 1rem;border-radius:6px;color:var(--olive-darkest);text-decoration:none;font-weight:700;">לאתר עמותת החשמונאים ←</a></li>
     </ul>
   </div>
@@ -343,12 +344,24 @@
     if (typeof gtag === 'function') gtag('event', 'switch_pane', { pane: p });
   }
 
+  // Read lang from query param, default 'he'
+  const LANG = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'he';
+  // Update lang toggle target
+  (function() {
+    const t = document.getElementById('langToggle');
+    if (t) { t.textContent = LANG === 'en' ? 'עברית ⇄' : 'EN ⇄'; t.href = '/?lang=' + (LANG === 'en' ? 'he' : 'en'); }
+  })();
+
   // ===== Newsletter loader =====
   async function loadNewsletter() {
     let latestIssue = null;
     let articles = [];
     try {
-      const snap = await db.collection('issues').where('published','==',true).orderBy('issueNumber','desc').limit(1).get();
+      // Try filtered by language first, fall back to any language if no results
+      let snap = await db.collection('issues').where('type','==','newsletter').where('language','==',LANG).where('published','==',true).orderBy('issueNumber','desc').limit(1).get();
+      if (snap.empty) {
+        snap = await db.collection('issues').where('published','==',true).orderBy('issueNumber','desc').limit(1).get();
+      }
       if (!snap.empty) latestIssue = { id: snap.docs[0].id, ...snap.docs[0].data() };
     } catch (e) { console.warn('issues query failed', e); }
 
@@ -443,7 +456,8 @@
     const c = document.getElementById('magazineContent');
     let issues = [];
     try {
-      const snap = await db.collection('issues').where('type','==','magazine').where('published','==',true).orderBy('issueNumber','desc').limit(6).get();
+      let snap = await db.collection('issues').where('type','==','magazine').where('language','==',LANG).where('published','==',true).orderBy('issueNumber','desc').limit(6).get();
+      if (snap.empty) snap = await db.collection('issues').where('type','==','magazine').where('published','==',true).orderBy('issueNumber','desc').limit(6).get();
       snap.forEach(d => issues.push({ id: d.id, ...d.data() }));
     } catch (e) { console.warn(e); }
     if (issues.length === 0) {
