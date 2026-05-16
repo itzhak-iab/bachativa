@@ -1,14 +1,16 @@
 rules_version = '2';
 
-// Firebase Storage - לעתיד, אם נרצה להעלות PDFs דרך admin panel
 service firebase.storage {
   match /b/{bucket}/o {
-    match /newsletters/{allPaths=**} {
+    // Anyone can read /uploads/**; only admins can write (limited to 10MB)
+    match /uploads/{path=**} {
       allow read: if true;
-      allow write: if false;
+      allow write: if request.auth != null
+        && request.auth.token.email != null
+        && request.auth.token.email.lower() in ['i.barkai7@gmail.com','bachativa@gmail.com']
+        && request.resource.size < 10 * 1024 * 1024;
     }
-    match /{allPaths=**} {
-      allow read, write: if false;
-    }
+    // Default deny
+    match /{path=**} { allow read, write: if false; }
   }
 }

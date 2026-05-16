@@ -1,37 +1,23 @@
 rules_version = '2';
 
-// כללי גישה ל-Firestore עבור bachativa.com
-// קריאה ציבורית; כתיבה רק למיילים מורשים מאומתים דרך Firebase Auth
+// Firestore rules for bachativa.com — public read, admin-only writes
 service cloud.firestore {
   match /databases/{database}/documents {
-
     function isAdmin() {
       return request.auth != null
         && request.auth.token.email != null
-        && request.auth.token.email_verified == true
         && request.auth.token.email.lower() in [
           'i.barkai7@gmail.com',
           'bachativa@gmail.com'
         ];
     }
 
-    match /newsletters/{id} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
-
-    match /magazines/{id} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
-
-    match /videos/{id} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
-
-    match /{document=**} {
-      allow read, write: if false;
-    }
+    match /articles/{id}    { allow read: if true; allow write: if isAdmin(); }
+    match /authors/{id}     { allow read: if true; allow write: if isAdmin(); }
+    match /issues/{id}      { allow read: if true; allow write: if isAdmin(); }
+    match /newsletters/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /magazines/{id}   { allow read: if true; allow write: if isAdmin(); }
+    match /videos/{id}      { allow read: if true; allow write: if isAdmin(); }
+    match /{document=**}    { allow read, write: if false; }
   }
 }

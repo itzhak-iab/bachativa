@@ -21,14 +21,25 @@
         ]
       },
       {
-        "source": "/index.html",
+        "source": "theme.css",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=86400" }
+        ]
+      },
+      {
+        "source": "**/*.html",
         "headers": [
           { "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }
         ]
       }
     ],
     "rewrites": [
-      { "source": "**", "destination": "/index.html" }
+      { "source": "/article/**", "destination": "/article.html" },
+      { "source": "/issue/**",   "destination": "/issue.html"   },
+      { "source": "/print/**",   "destination": "/print.html"   },
+      { "source": "/archive",    "destination": "/archive.html" },
+      { "source": "/admin",      "destination": "/admin.html"   },
+      { "source": "**",          "destination": "/index.html"   }
     ],
     "cleanUrls": true,
     "trailingSlash": false

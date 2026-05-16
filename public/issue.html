@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">גיליון | בחטיבה</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Frank+Ruhl+Libre:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DLNEH3K485"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date()); gtag('config', 'G-DLNEH3K485');
+</script>
+
+<style>
+  .issue-hero { background: linear-gradient(135deg, var(--olive-darkest), var(--olive)); color: #fff; padding: 2.8rem 1.5rem; text-align: center; position: relative; }
+  .issue-hero .eyebrow { color: var(--gold); font-size: 0.9rem; letter-spacing: 0.15em; font-weight: 600; }
+  .issue-hero h1 { font-family: 'Frank Ruhl Libre', serif; font-size: clamp(2rem, 5vw, 3.5rem); margin: 0.4rem 0; }
+  .issue-hero .parsha { font-size: 1.2rem; opacity: 0.9; }
+  .issue-hero .actions { margin-top: 1.5rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
+  .featured { background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); display: grid; grid-template-columns: 1.4fr 1fr; margin-bottom: 2.5rem; }
+  .featured-image { aspect-ratio: 16/10; overflow: hidden; background: var(--cream); }
+  .featured-image img { width: 100%; height: 100%; object-fit: cover; }
+  .featured-body { padding: 2rem 1.8rem; display: flex; flex-direction: column; justify-content: center; }
+  .featured h2 { font-family: 'Frank Ruhl Libre', serif; font-size: 2rem; color: var(--olive-darkest); margin-bottom: 0.6rem; }
+  .featured h2 a { color: inherit; text-decoration: none; }
+  .featured h2 a:hover { color: var(--red); }
+  .articles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px,1fr)); gap: 1.5rem; }
+  .article-card { background:#fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); }
+  .article-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+  .article-card-image { aspect-ratio: 16/9; overflow: hidden; background: var(--cream); position: relative; }
+  .article-card-image img { width:100%; height:100%; object-fit:cover; }
+  .article-card-image .tag { position: absolute; top: 0.7rem; right: 0.7rem; background: rgba(74,78,46,0.92); color: #fff; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.72rem; font-weight: 600; }
+  .article-card-body { padding: 1rem 1.1rem 1.1rem; }
+  .article-card h3 { font-family: 'Frank Ruhl Libre', serif; font-size: 1.15rem; color: var(--olive-darkest); margin-bottom: 0.4rem; }
+  .article-card h3 a { color: inherit; text-decoration: none; }
+  .article-card h3 a:hover { color: var(--red); }
+  .article-card-excerpt { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+  @media (max-width: 768px) { .featured { grid-template-columns: 1fr; } .featured-body { padding: 1.2rem; } }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="/" class="navbar-brand">
+      <img src="/images/logo.png" alt="לוגו">
+      <div class="navbar-brand-text"><span class="navbar-brand-title">״בחטיבה״</span><span class="navbar-brand-sub">חטיבת חשמונאים</span></div>
+    </a>
+    <ul class="navbar-links">
+      <li><a href="/">בית</a></li>
+      <li><a href="/archive">ארכיון</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div id="container">
+  <div class="loading" style="margin-top:4rem;"><div class="spinner"></div></div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand"><img src="/images/logo.png" alt="לוגו"><div class="footer-brand-text"><strong>עמותת החשמונאים</strong>ידידי ובוגרי חטיבת החשמונאים</div></div>
+    <ul class="footer-links"><li><a href="/">בית</a></li><li><a href="/archive">ארכיון</a></li><li><a href="https://chashmonayim.org">אתר העמותה</a></li></ul>
+  </div>
+  <div class="footer-bottom">&copy; 2026 עמותת ״רוח חשמונאית״</div>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+<script src="/firebase-config.js"></script>
+<script>
+  firebase.initializeApp(window.FIREBASE_CONFIG);
+  const db = firebase.firestore();
+
+  const TYPE_LABELS = { article:'כתבה', interview:'ראיון', torah:'דבר תורה', 'photo-of-week':'תמונת השבוע', gallery:'גלריה' };
+
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function excerpt(html, n) { const t = String(html||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim(); return t.length>n? t.slice(0,n).trim()+'…' : t; }
+
+  function getIdFromPath() {
+    const m = location.pathname.match(/\/issue\/([^/]+)$/);
+    if (m) return decodeURIComponent(m[1]);
+    return new URLSearchParams(location.search).get('id');
+  }
+
+  async function loadIssue() {
+    const id = getIdFromPath();
+    const c = document.getElementById('container');
+    if (!id) { c.innerHTML = '<div class="empty" style="margin-top:3rem;">לא צוין גיליון. <a href="/archive">לארכיון</a></div>'; return; }
+    let issue;
+    try {
+      const doc = await db.collection('issues').doc(id).get();
+      if (!doc.exists) { c.innerHTML = '<div class="empty" style="margin-top:3rem;">הגיליון לא נמצא.</div>'; return; }
+      issue = { id: doc.id, ...doc.data() };
+    } catch (e) { c.innerHTML = '<div class="empty" style="margin-top:3rem;">שגיאה: ' + esc(e.message) + '</div>'; return; }
+
+    let articles = [];
+    try {
+      const snap = await db.collection('articles').where('issueId','==',issue.id).where('published','==',true).orderBy('order','asc').get();
+      snap.forEach(d => articles.push({ id: d.id, ...d.data() }));
+    } catch (e) { console.warn(e); }
+
+    document.getElementById('pageTitle').textContent = `גיליון ${issue.issueNumber} — פרשת ${issue.parsha} | בחטיבה`;
+
+    const heroActions = [];
+    if (issue.pdfHeUrl) heroActions.push(`<a class="btn btn-gold" href="/${esc(issue.pdfHeUrl.replace(/^\//,''))}" target="_blank">⬇ עלון מודפס (PDF)</a>`);
+    heroActions.push(`<a class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,0.5);" href="/print/${esc(issue.id)}" target="_blank">🖨 גרסה להדפסה</a>`);
+
+    let html = `
+      <section class="issue-hero">
+        <div class="eyebrow">המגזין השבועי של חטיבת חשמונאים</div>
+        <h1>גיליון ${esc(issue.issueNumber)}</h1>
+        <div class="parsha">פרשת ${esc(issue.parsha || '')}</div>
+        <div class="actions">${heroActions.join('')}</div>
+      </section>
+      <main>`;
+
+    if (articles.length === 0) {
+      html += '<div class="empty">לא נוספו כתבות לגיליון זה עדיין.</div>';
+    } else {
+      const [feat, ...rest] = articles;
+      const tag = TYPE_LABELS[feat.type] || 'כתבה';
+      html += `
+        <article class="featured">
+          <div class="featured-image">${feat.mainImageUrl ? `<img src="${esc(feat.mainImageUrl)}" loading="lazy">` : ''}</div>
+          <div class="featured-body">
+            <div style="color:var(--olive);font-size:0.82rem;letter-spacing:0.1em;font-weight:700;text-transform:uppercase;margin-bottom:0.5rem;">${esc(tag)}</div>
+            <h2><a href="/article/${esc(feat.id)}">${esc(feat.title)}</a></h2>
+            <p style="color:var(--text-muted);font-size:1rem;line-height:1.6;margin-bottom:1rem;">${esc(feat.subtitle || excerpt(feat.body,160))}</p>
+            ${feat.authorName ? `<div>${feat.authorPhotoUrl ? `<span class="author-chip"><img src="${esc(feat.authorPhotoUrl)}" alt=""><span>${esc(feat.authorName)}</span></span>` : `<span class="author-chip"><span>${esc(feat.authorName)}</span></span>`}</div>` : ''}
+          </div>
+        </article>`;
+
+      if (rest.length) {
+        html += '<div class="articles-grid">' + rest.map(a => {
+          const t = TYPE_LABELS[a.type] || 'כתבה';
+          return `
+            <article class="article-card">
+              <a href="/article/${esc(a.id)}" class="article-card-image">
+                ${a.mainImageUrl ? `<img src="${esc(a.mainImageUrl)}" loading="lazy">` : ''}
+                <span class="tag">${esc(t)}</span>
+              </a>
+              <div class="article-card-body">
+                <h3><a href="/article/${esc(a.id)}">${esc(a.title)}</a></h3>
+                <p class="article-card-excerpt">${esc(a.subtitle || excerpt(a.body,110))}</p>
+                ${a.authorName ? `<div style="font-size:0.82rem;color:var(--text-light);">${esc(a.authorName)}</div>` : ''}
+              </div>
+            </article>`;
+        }).join('') + '</div>';
+      }
+    }
+    html += '</main>';
+    c.innerHTML = html;
+  }
+
+  loadIssue();
+</script>
+</body>
+</html>

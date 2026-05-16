@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title id="pageTitle">בחטיבה — גרסה להדפסה</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&family=Frank+Ruhl+Libre:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     PRINT-STYLE NEWSLETTER LAYOUT
+     מתחקה אחרי הפריסה הרב-עמודית בעיצוב הירוק זית של ״בחטיבה״
+     ============================================================ */
+  :root {
+    --olive: #5e6238;
+    --olive-dark: #3a3e22;
+    --olive-darkest: #2c2e1f;
+    --cream: #f4ead0;
+    --bg: #f7f3e9;
+    --gold: #c9a96a;
+    --red: #b1241a;
+    --text: #1a1a14;
+    --muted: #555;
+    --border: #d4cdb5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Heebo', sans-serif; background: #ccc; color: var(--text); line-height: 1.55; }
+
+  /* Toolbar at top (hidden in print) */
+  .print-toolbar {
+    background: var(--olive-darkest); color: #fff; padding: 0.8rem 1rem;
+    display: flex; justify-content: center; gap: 0.6rem; position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .print-toolbar button, .print-toolbar a {
+    background: var(--gold); color: var(--olive-darkest); border: none; padding: 0.5rem 1rem;
+    border-radius: 4px; font-family: inherit; font-weight: 700; font-size: 0.9rem; cursor: pointer; text-decoration: none;
+  }
+  .print-toolbar button.secondary, .print-toolbar a.secondary {
+    background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.4);
+  }
+  @media print { .print-toolbar { display: none !important; } }
+
+  /* Page wrapper — simulates A4 */
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 1rem auto;
+    background: var(--olive-darkest);
+    color: #fff;
+    padding: 8mm 8mm 10mm;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    page-break-after: always;
+    position: relative;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* Header — issue meta */
+  .page-header {
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 5mm;
+    margin-bottom: 6mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 8.5pt;
+    color: rgba(255,255,255,0.85);
+  }
+  .page-header .meta-right { display: flex; gap: 1rem; align-items: center; }
+  .page-header .logo-block { display: flex; align-items: center; gap: 0.4rem; }
+  .page-header .logo-block img { height: 22px; }
+
+  /* Newsletter masthead — like the cover */
+  .masthead {
+    text-align: center;
+    margin: 6mm 0 8mm;
+  }
+  .masthead .small-logos {
+    display: flex; justify-content: center; gap: 1rem; margin-bottom: 3mm;
+    align-items: center; opacity: 0.85;
+  }
+  .masthead .small-logos img { height: 28px; }
+  .masthead h1 {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 56pt;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin: 0;
+    font-weight: 900;
+  }
+  .masthead .subtitle { color: var(--gold); font-size: 11pt; font-weight: 500; margin-top: 2mm; letter-spacing: 0.05em; }
+  .masthead .divider { width: 60mm; height: 2px; background: var(--gold); margin: 4mm auto 0; }
+
+  /* 3-column grid for cover */
+  .cover-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5mm;
+    margin-top: 4mm;
+  }
+  .col-article h3 {
+    font-family: 'Frank Ruhl Libre', serif;
+    color: var(--gold);
+    font-size: 13pt;
+    margin-bottom: 2mm;
+    line-height: 1.2;
+  }
+  .col-article p {
+    font-size: 9pt;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.92);
+    text-align: justify;
+    margin-bottom: 1.5mm;
+  }
+  .col-article img {
+    width: 100%;
+    border-radius: 2pt;
+    margin-bottom: 2mm;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .col-article .caption { font-size: 7pt; color: rgba(255,255,255,0.6); margin-bottom: 2mm; font-style: italic; text-align: center; }
+  .col-article .author { font-size: 8pt; color: var(--gold); margin-top: 1mm; }
+
+  /* Internal article page */
+  .article-page-print {
+    background: #fff;
+    color: var(--text);
+    padding: 12mm;
+  }
+  .article-page-print .article-header {
+    border-bottom: 2px solid var(--olive);
+    padding-bottom: 5mm;
+    margin-bottom: 6mm;
+  }
+  .article-page-print .eyebrow {
+    color: var(--red);
+    font-size: 10pt;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 2mm;
+  }
+  .article-page-print h2 {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 28pt;
+    color: var(--olive-darkest);
+    line-height: 1.1;
+    margin-bottom: 3mm;
+  }
+  .article-page-print .subtitle {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 13pt;
+    color: var(--muted);
+    line-height: 1.4;
+    margin-bottom: 4mm;
+  }
+  .article-page-print .author-line {
+    display: flex; align-items: center; gap: 3mm;
+    font-size: 10pt; color: var(--olive);
+    margin-bottom: 3mm;
+  }
+  .article-page-print .author-line img {
+    width: 12mm; height: 12mm; border-radius: 50%; object-fit: cover; border: 1.5pt solid var(--gold);
+  }
+  .article-page-print .hero-image {
+    margin: 5mm 0;
+  }
+  .article-page-print .hero-image img { width: 100%; border-radius: 2pt; }
+  .article-page-print .hero-image .caption { font-size: 8pt; color: var(--muted); padding: 2mm 0; font-style: italic; }
+  .article-page-print .body {
+    columns: 2;
+    column-gap: 7mm;
+    font-size: 10pt;
+    line-height: 1.65;
+    text-align: justify;
+  }
+  .article-page-print .body p { margin-bottom: 2.5mm; }
+  .article-page-print .body p:first-of-type::first-letter {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 32pt;
+    font-weight: 900;
+    color: var(--olive);
+    float: right;
+    line-height: 0.85;
+    margin-left: 1.5mm;
+    margin-top: 0.5mm;
+  }
+  .article-page-print .body h2, .article-page-print .body h3 {
+    font-family: 'Frank Ruhl Libre', serif;
+    color: var(--olive-darkest);
+    margin: 3mm 0 1.5mm;
+  }
+  .article-page-print .body h2 { font-size: 14pt; }
+  .article-page-print .body h3 { font-size: 11pt; }
+  .article-page-print .body blockquote {
+    border-right: 2pt solid var(--gold);
+    padding: 1mm 3mm;
+    background: var(--cream);
+    margin: 2mm 0;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-style: italic;
+    color: var(--olive-dark);
+  }
+
+  /* Page footer */
+  .page-footer {
+    position: absolute;
+    bottom: 5mm; left: 8mm; right: 8mm;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 2mm;
+    display: flex; justify-content: space-between;
+    font-size: 7.5pt;
+    color: rgba(255,255,255,0.55);
+  }
+  .article-page-print .page-footer {
+    border-color: var(--border);
+    color: var(--muted);
+  }
+
+  .empty-state {
+    background: #fff;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    max-width: 600px;
+    margin: 4rem auto;
+    border-radius: 8px;
+  }
+
+  /* Print rules */
+  @page { size: A4; margin: 0; }
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="print-toolbar">
+  <button onclick="window.print()">🖨 הדפס / שמור כ-PDF</button>
+  <a class="secondary" id="backLink" href="/">← חזרה לאתר</a>
+</div>
+
+<div id="container">
+  <div class="empty-state"><h2>טוען…</h2></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+<script src="/firebase-config.js"></script>
+<script>
+  firebase.initializeApp(window.FIREBASE_CONFIG);
+  const db = firebase.firestore();
+
+  const TYPE_LABELS = { article:'כתבה', interview:'ראיון', torah:'דבר תורה', 'photo-of-week':'תמונת השבוע', gallery:'גלריה' };
+
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function clean(html) { return String(html||'').replace(/<script[\s\S]*?<\/script>/gi,'').replace(/\son\w+="[^"]*"/gi,''); }
+  function todayHe() {
+    return new Date().toLocaleDateString('he-IL', { day:'numeric', month:'long', year:'numeric' });
+  }
+  function getIdFromPath() {
+    const m = location.pathname.match(/\/print\/([^/]+)$/);
+    if (m) return decodeURIComponent(m[1]);
+    return new URLSearchParams(location.search).get('id');
+  }
+
+  function pageHeader(issue) {
+    return `<header class="page-header">
+      <div class="meta-right">
+        <span>בס״ד · גיליון ${esc(issue.issueNumber)} · ערש״ק פרשת ${esc(issue.parsha || '')}</span>
+      </div>
+      <div class="logo-block">
+        <span>${esc(todayHe())}</span>
+      </div>
+    </header>`;
+  }
+
+  function coverPage(issue, articles) {
+    const cols = [];
+    // Take first 3 articles for the cover columns
+    const coverArticles = articles.slice(0, 3);
+    for (const a of coverArticles) {
+      const img = a.mainImageUrl ? `<img src="${esc(a.mainImageUrl)}" crossorigin="anonymous">` : '';
+      const cap = a.mainImageCaption ? `<div class="caption">${esc(a.mainImageCaption)}</div>` : '';
+      const body = String(a.body || '').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+      const excerpt = body.length > 380 ? body.slice(0, 380).trim() + '…' : body;
+      cols.push(`
+        <div class="col-article">
+          ${img}${cap}
+          <h3>${esc(a.title)}</h3>
+          <p>${esc(excerpt)}</p>
+          ${a.authorName ? `<div class="author">— ${esc(a.authorName)}</div>` : ''}
+        </div>`);
+    }
+    while (cols.length < 3) cols.push('<div class="col-article"></div>');
+    return `
+      <div class="page">
+        ${pageHeader(issue)}
+        <div class="masthead">
+          <div class="small-logos">
+            <img src="/images/logo.png" alt="חטיבת חשמונאים">
+          </div>
+          <h1>״בחטיבה״</h1>
+          <div class="subtitle">המגזין השבועי של חטיבת חשמונאים</div>
+          <div class="divider"></div>
+        </div>
+        <div class="cover-grid">${cols.join('')}</div>
+        <div class="page-footer">
+          <span>bachativa.com · ${esc(todayHe())}</span>
+          <span>1</span>
+        </div>
+      </div>`;
+  }
+
+  function articlePage(article, issue, pageNum) {
+    const tag = TYPE_LABELS[article.type] || 'כתבה';
+    const hero = article.mainImageUrl ? `
+      <div class="hero-image">
+        <img src="${esc(article.mainImageUrl)}" crossorigin="anonymous">
+        ${article.mainImageCaption ? `<div class="caption">${esc(article.mainImageCaption)}</div>` : ''}
+      </div>` : '';
+    const author = article.authorName ? `
+      <div class="author-line">
+        ${article.authorPhotoUrl ? `<img src="${esc(article.authorPhotoUrl)}" crossorigin="anonymous">` : ''}
+        <div>
+          <strong>${esc(article.authorName)}</strong>
+          ${article.authorRole ? ` · ${esc(article.authorRole)}` : ''}
+        </div>
+      </div>` : '';
+    return `
+      <div class="page article-page-print">
+        <header class="page-header" style="border-color:var(--border);color:var(--muted);">
+          <div class="meta-right">
+            <span>גיליון ${esc(issue.issueNumber)} · פרשת ${esc(issue.parsha || '')}</span>
+          </div>
+          <div class="logo-block">
+            <strong style="color:var(--olive-darkest);">״בחטיבה״</strong>
+          </div>
+        </header>
+        <div class="article-header">
+          <div class="eyebrow">${esc(tag)}</div>
+          <h2>${esc(article.title)}</h2>
+          ${article.subtitle ? `<p class="subtitle">${esc(article.subtitle)}</p>` : ''}
+          ${author}
+        </div>
+        ${hero}
+        <div class="body">${clean(article.body || '')}</div>
+        <div class="page-footer">
+          <span>bachativa.com</span>
+          <span>${pageNum}</span>
+        </div>
+      </div>`;
+  }
+
+  async function loadPrint() {
+    const id = getIdFromPath();
+    const c = document.getElementById('container');
+    if (!id) { c.innerHTML = '<div class="empty-state"><h2>חסר מזהה גיליון</h2></div>'; return; }
+    let issue;
+    try {
+      const doc = await db.collection('issues').doc(id).get();
+      if (!doc.exists) { c.innerHTML = '<div class="empty-state"><h2>הגיליון לא נמצא</h2></div>'; return; }
+      issue = { id: doc.id, ...doc.data() };
+    } catch (e) { c.innerHTML = '<div class="empty-state"><h2>שגיאה</h2><p>' + esc(e.message) + '</p></div>'; return; }
+
+    let articles = [];
+    try {
+      const snap = await db.collection('articles').where('issueId','==',issue.id).where('published','==',true).orderBy('order','asc').get();
+      snap.forEach(d => articles.push({ id: d.id, ...d.data() }));
+    } catch (e) { console.warn(e); }
+
+    document.getElementById('pageTitle').textContent = `בחטיבה — גיליון ${issue.issueNumber} פרשת ${issue.parsha} (הדפסה)`;
+    document.getElementById('backLink').href = '/issue/' + encodeURIComponent(id);
+
+    if (articles.length === 0) {
+      c.innerHTML = '<div class="empty-state"><h2>אין כתבות בגיליון זה עדיין</h2><p>הוסף כתבות בממשק הניהול לפני שאתה מייצא PDF.</p></div>';
+      return;
+    }
+
+    let html = coverPage(issue, articles);
+    articles.forEach((a, i) => { html += articlePage(a, issue, i + 2); });
+    c.innerHTML = html;
+  }
+
+  loadPrint();
+</script>
+</body>
+</html>

@@ -5,231 +5,399 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ניהול | בחטיבה</title>
 <meta name="robots" content="noindex,nofollow">
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="images/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Frank+Ruhl+Libre:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
+
 <style>
-  :root {
-    --primary: #1a2a5e;
-    --primary-dark: #111d42;
-    --gold: #c8a45c;
-    --bg: #f5f3ef;
-    --card: #ffffff;
-    --border: #e5e7eb;
-    --text: #1a1a2e;
-    --muted: #6b7280;
-    --danger: #dc2626;
-    --success: #059669;
-    --shadow: 0 4px 24px rgba(26,42,94,.10);
+  /* Admin-specific */
+  .admin-shell { max-width: 1200px; margin: 1.5rem auto; padding: 0 1.5rem; }
+  .admin-topbar { background: var(--olive-darkest); color: #fff; padding: 0.8rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--gold); }
+  .admin-topbar h1 { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+  .admin-topbar h1 span.brand { color: var(--gold); }
+  .admin-topbar .actions { display: flex; gap: 0.5rem; align-items: center; }
+  .admin-topbar a, .admin-topbar button { color: #fff; background: transparent; border: 1px solid rgba(255,255,255,0.25); padding: 0.4rem 0.85rem; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: 0.85rem; text-decoration: none; }
+  .admin-topbar a:hover, .admin-topbar button:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+  .auth-card { max-width: 440px; margin: 4rem auto; background: #fff; padding: 2.2rem; border-radius: var(--radius); box-shadow: var(--shadow); }
+  .auth-card h2 { color: var(--olive-darkest); font-family: 'Frank Ruhl Libre', serif; margin-bottom: 0.3rem; font-size: 1.7rem; }
+  .auth-card p { color: var(--text-muted); font-size: 0.92rem; margin-bottom: 1.5rem; }
+  .auth-tabs { display: flex; gap: 0.4rem; margin-bottom: 1.2rem; }
+  .auth-tabs button { flex: 1; padding: 0.55rem; background: transparent; border: 1px solid var(--border-strong); border-radius: 6px; cursor: pointer; font-family: inherit; color: var(--text-muted); }
+  .auth-tabs button.active { background: var(--olive); color: #fff; border-color: var(--olive); }
+
+  .tab-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
+  .tab-header h2 { color: var(--olive-darkest); font-family: 'Frank Ruhl Libre', serif; }
+
+  /* List items */
+  .list { display: grid; gap: 0.7rem; }
+  .list-row {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: var(--transition);
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Heebo',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
-  .topbar { background:var(--primary); color:#fff; padding:1rem 2rem; border-bottom:3px solid var(--gold); display:flex; align-items:center; justify-content:space-between; }
-  .topbar h1 { font-size:1.3rem; font-weight:700; }
-  .topbar h1 span { color:var(--gold); }
-  .topbar-actions { display:flex; gap:.6rem; align-items:center; }
-  .topbar a, .topbar button { background:transparent; color:#fff; border:1px solid rgba(255,255,255,.3); padding:.5rem 1rem; border-radius:6px; cursor:pointer; font-family:inherit; font-size:.85rem; text-decoration:none; }
-  .topbar a:hover, .topbar button:hover { background:rgba(255,255,255,.1); }
-
-  main { max-width:1100px; margin:2rem auto; padding:0 1.5rem; }
-
-  /* Auth screen */
-  .auth-card { max-width:420px; margin:4rem auto; background:var(--card); padding:2.5rem; border-radius:14px; box-shadow:var(--shadow); }
-  .auth-card h2 { color:var(--primary); margin-bottom:.4rem; }
-  .auth-card p { color:var(--muted); font-size:.92rem; margin-bottom:1.5rem; }
-  .auth-tabs { display:flex; gap:.5rem; margin-bottom:1.2rem; }
-  .auth-tabs button { flex:1; padding:.6rem; background:transparent; border:1px solid var(--border); border-radius:6px; cursor:pointer; font-family:inherit; color:var(--muted); }
-  .auth-tabs button.active { background:var(--primary); color:#fff; border-color:var(--primary); }
-  .field { margin-bottom:1rem; }
-  .field label { display:block; font-size:.85rem; font-weight:600; margin-bottom:.3rem; color:var(--text); }
-  .field input, .field textarea, .field select { width:100%; padding:.6rem .8rem; border:1px solid var(--border); border-radius:6px; font-family:inherit; font-size:.95rem; }
-  .field input:focus, .field textarea:focus, .field select:focus { outline:none; border-color:var(--primary); }
-  .field-row { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; }
-  .field-checkbox { display:flex; align-items:center; gap:.5rem; margin-bottom:1rem; }
-  .field-checkbox input { width:auto; }
-  .btn { background:var(--primary); color:#fff; border:none; padding:.7rem 1.4rem; border-radius:6px; cursor:pointer; font-family:inherit; font-weight:600; font-size:.95rem; }
-  .btn:hover { background:var(--primary-dark); }
-  .btn:disabled { opacity:.5; cursor:not-allowed; }
-  .btn-secondary { background:#fff; color:var(--primary); border:1px solid var(--primary); }
-  .btn-danger { background:var(--danger); color:#fff; }
-  .btn-sm { padding:.4rem .8rem; font-size:.85rem; }
-  .btn-row { display:flex; gap:.5rem; }
-
-  .msg { padding:.6rem .9rem; border-radius:6px; margin-bottom:1rem; font-size:.9rem; }
-  .msg-err { background:#fef2f2; color:var(--danger); border:1px solid #fecaca; }
-  .msg-ok { background:#ecfdf5; color:var(--success); border:1px solid #a7f3d0; }
-  .msg-info { background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; }
-
-  /* Dashboard */
-  .header-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; }
-  .header-row h2 { color:var(--primary); }
-  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1rem; }
-  .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1rem; box-shadow:0 2px 6px rgba(0,0,0,.04); }
-  .card h3 { color:var(--primary); font-size:1.05rem; margin-bottom:.2rem; }
-  .card .parsha { color:var(--gold); font-weight:600; font-size:.92rem; margin-bottom:.5rem; }
-  .card .meta { font-size:.82rem; color:var(--muted); margin-bottom:.8rem; }
-  .card .links { display:flex; gap:.4rem; font-size:.78rem; margin-bottom:.8rem; flex-wrap:wrap; }
-  .card .links a { color:var(--primary); text-decoration:underline; }
-  .card .actions { display:flex; gap:.4rem; }
-  .badge { display:inline-block; padding:.15rem .5rem; border-radius:4px; font-size:.72rem; font-weight:600; }
-  .badge-pub { background:#ecfdf5; color:var(--success); }
-  .badge-draft { background:#fef3c7; color:#92400e; }
-
-  /* Modal */
-  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; z-index:100; padding:1rem; }
-  .modal-overlay.active { display:flex; }
-  .modal { background:#fff; border-radius:12px; padding:1.5rem; max-width:560px; width:100%; max-height:90vh; overflow-y:auto; }
-  .modal h2 { color:var(--primary); margin-bottom:1rem; }
-  .modal-actions { display:flex; gap:.5rem; justify-content:flex-end; margin-top:1rem; }
-
-  .empty { text-align:center; padding:3rem 1rem; color:var(--muted); }
-  .loading { text-align:center; padding:2rem; color:var(--muted); }
-  .hidden { display:none !important; }
-
-  @media (max-width:600px) {
-    .field-row { grid-template-columns:1fr; }
-    main { padding:0 1rem; margin-top:1rem; }
+  .list-row:hover { border-color: var(--olive); box-shadow: var(--shadow); }
+  .list-row .thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    background: var(--cream);
+    flex-shrink: 0;
   }
+  .list-row .thumb-square { aspect-ratio: 1; }
+  .list-row .info { flex: 1; min-width: 0; }
+  .list-row .info h3 { font-size: 1.05rem; color: var(--olive-darkest); margin-bottom: 0.15rem; }
+  .list-row .info .sub { color: var(--text-muted); font-size: 0.85rem; }
+  .list-row .meta { font-size: 0.78rem; color: var(--text-light); margin-top: 0.2rem; }
+  .list-row .actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
+
+  /* Image upload area */
+  .img-up { position: relative; }
+  .img-up .preview {
+    border: 2px dashed var(--border-strong);
+    border-radius: var(--radius-sm);
+    padding: 1.2rem;
+    text-align: center;
+    background: var(--cream-soft);
+    min-height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+  .img-up .preview:hover { border-color: var(--olive); background: #fff; }
+  .img-up .preview.has-img { padding: 0; border-style: solid; background: #fff; }
+  .img-up img.preview-img { max-height: 200px; max-width: 100%; border-radius: var(--radius-sm); display: block; margin: 0 auto; }
+  .img-up .preview-info { font-size: 0.8rem; color: var(--text-light); }
+  .img-up .progress { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 0.5rem; display: none; }
+  .img-up .progress.active { display: block; }
+  .img-up .progress-bar { height: 100%; background: var(--olive); transition: width 0.2s; width: 0%; }
+  .img-up input[type=file] { display: none; }
+  .img-up .remove-btn { position: absolute; top: 6px; left: 6px; background: rgba(0,0,0,0.65); color: #fff; border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 1rem; }
+
+  /* Author selector */
+  .author-pick { display: flex; gap: 0.5rem; align-items: center; }
+  .author-pick select { flex: 1; }
+
+  /* Wider modal for article editor */
+  .modal-wide { max-width: 820px; }
+  textarea.body-textarea { min-height: 240px; font-family: 'Heebo', monospace; line-height: 1.6; }
+
+  .help-text { font-size: 0.82rem; color: var(--text-light); margin-top: 0.25rem; }
+
+  /* Toolbar for textarea (simple) */
+  .rt-toolbar { display: flex; gap: 0.3rem; margin-bottom: 0.4rem; flex-wrap: wrap; }
+  .rt-toolbar button {
+    background: #fff; border: 1px solid var(--border); padding: 0.35rem 0.6rem;
+    border-radius: 4px; font-family: inherit; font-size: 0.8rem; cursor: pointer; color: var(--text);
+  }
+  .rt-toolbar button:hover { background: var(--cream); border-color: var(--olive); }
+
+  .gallery-thumbs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.6rem; }
+  .gallery-thumb { position: relative; width: 80px; height: 80px; }
+  .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-sm); }
+  .gallery-thumb .rm { position: absolute; top: 2px; left: 2px; background: rgba(0,0,0,0.7); color: #fff; border: none; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; font-size: 0.7rem; }
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <h1>״<span>בחטיבה</span>״ <span style="color:#fff;font-size:.85rem;opacity:.7;margin-right:.5rem;">ניהול</span></h1>
-  <div class="topbar-actions" id="topbarActions"></div>
+<div class="admin-topbar">
+  <h1>״<span class="brand">בחטיבה</span>״ <span style="opacity:.6;font-size:.85rem;">— ניהול</span></h1>
+  <div class="actions" id="topActions"></div>
 </div>
 
-<main>
-
-  <!-- AUTH SCREEN -->
-  <div id="authScreen">
-    <div class="auth-card">
-      <h2>כניסת מנהל</h2>
-      <p>גישה למערכת ניהול הגיליונות. רק כתובת מייל מורשית יכולה להיכנס.</p>
-
-      <div class="auth-tabs">
-        <button id="loginTab" class="active" onclick="switchAuthTab('login')">התחברות</button>
-        <button id="signupTab" onclick="switchAuthTab('signup')">הרשמה ראשונה</button>
+<!-- AUTH -->
+<div class="admin-shell" id="authScreen">
+  <div class="auth-card">
+    <h2>כניסת מנהל</h2>
+    <p>גישה למערכת ניהול תוכן. רק מייל מורשה יכול להיכנס.</p>
+    <div class="auth-tabs">
+      <button id="loginTab" class="active" onclick="switchAuthTab('login')">התחברות</button>
+      <button id="signupTab" onclick="switchAuthTab('signup')">הרשמה ראשונה</button>
+    </div>
+    <div id="authMsg"></div>
+    <form id="authForm" onsubmit="handleAuth(event)">
+      <div class="field">
+        <label>מייל</label>
+        <input type="email" id="authEmail" required autocomplete="email">
       </div>
+      <div class="field">
+        <label>סיסמה</label>
+        <input type="password" id="authPassword" required minlength="6">
+      </div>
+      <button class="btn" type="submit" id="authSubmit" style="width:100%;">התחבר</button>
+    </form>
+  </div>
+</div>
 
-      <div id="authMsg"></div>
-
-      <form id="authForm" onsubmit="handleAuth(event)">
-        <div class="field">
-          <label>מייל</label>
-          <input type="email" id="authEmail" required autocomplete="email">
-        </div>
-        <div class="field">
-          <label>סיסמה (לפחות 6 תווים)</label>
-          <input type="password" id="authPassword" required minlength="6" autocomplete="current-password">
-        </div>
-        <button class="btn" type="submit" id="authSubmit" style="width:100%;">התחבר</button>
-      </form>
-    </div>
+<!-- DASHBOARD -->
+<div class="admin-shell hidden" id="dashboard">
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="articles" onclick="switchTab('articles')">כתבות</button>
+    <button class="tab-btn" data-tab="issues" onclick="switchTab('issues')">גיליונות</button>
+    <button class="tab-btn" data-tab="authors" onclick="switchTab('authors')">סופרים</button>
   </div>
 
-  <!-- DASHBOARD -->
-  <div id="dashboard" class="hidden">
-    <div class="header-row">
+  <div id="dashMsg"></div>
+
+  <!-- Articles -->
+  <div class="tab-pane" id="pane-articles">
+    <div class="tab-header">
+      <h2>כתבות</h2>
+      <button class="btn" onclick="openArticleEditor()">+ כתבה חדשה</button>
+    </div>
+    <div class="list" id="articlesList"><div class="loading"><div class="spinner"></div></div></div>
+  </div>
+
+  <!-- Issues -->
+  <div class="tab-pane hidden" id="pane-issues">
+    <div class="tab-header">
       <h2>גיליונות</h2>
-      <button class="btn" onclick="openEditor()">+ גיליון חדש</button>
+      <button class="btn" onclick="openIssueEditor()">+ גיליון חדש</button>
     </div>
-
-    <div id="dashMsg"></div>
-    <div id="newslettersGrid" class="grid">
-      <div class="loading">טוען…</div>
-    </div>
+    <div class="list" id="issuesList"><div class="loading"><div class="spinner"></div></div></div>
   </div>
 
-</main>
+  <!-- Authors -->
+  <div class="tab-pane hidden" id="pane-authors">
+    <div class="tab-header">
+      <h2>סופרים</h2>
+      <button class="btn" onclick="openAuthorEditor()">+ סופר חדש</button>
+    </div>
+    <div class="list" id="authorsList"><div class="loading"><div class="spinner"></div></div></div>
+  </div>
+</div>
 
-<!-- EDITOR MODAL -->
-<div class="modal-overlay" id="editorModal">
-  <div class="modal">
-    <h2 id="editorTitle">גיליון חדש</h2>
-    <div id="editorMsg"></div>
-    <form id="editorForm" onsubmit="saveNewsletter(event)">
-      <input type="hidden" id="editId" value="">
+<!-- ARTICLE EDITOR MODAL -->
+<div class="modal-overlay" id="articleModal">
+  <div class="modal modal-wide">
+    <h2 id="artModalTitle">כתבה חדשה</h2>
+    <div id="artMsg"></div>
+    <form id="artForm" onsubmit="saveArticle(event)">
+      <input type="hidden" id="artId">
+      <div class="field-row">
+        <div class="field">
+          <label>סוג</label>
+          <select id="artType">
+            <option value="article">כתבה</option>
+            <option value="interview">ראיון / שיח</option>
+            <option value="torah">דבר תורה</option>
+            <option value="photo-of-week">תמונת השבוע</option>
+            <option value="gallery">גלריה</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>גיליון</label>
+          <select id="artIssueId"><option value="">— בחר גיליון —</option></select>
+        </div>
+      </div>
+      <div class="field">
+        <label>כותרת</label>
+        <input type="text" id="artTitle" required>
+      </div>
+      <div class="field">
+        <label>תת-כותרת / מבזק</label>
+        <input type="text" id="artSubtitle" placeholder="לתיאור קצר שיוצג בקלף הכתבה ובעמוד הכתבה">
+      </div>
 
       <div class="field-row">
         <div class="field">
-          <label>מספר גיליון</label>
-          <input type="number" id="fIssueNumber" required min="1">
+          <label>סופר</label>
+          <div class="author-pick">
+            <select id="artAuthorId"><option value="">— ללא / מערכת —</option></select>
+            <button type="button" class="btn btn-outline btn-sm" onclick="openAuthorEditor()">+ חדש</button>
+          </div>
         </div>
         <div class="field">
-          <label>פרשה (בלי "פרשת")</label>
-          <input type="text" id="fParsha" required placeholder="למשל: במדבר">
+          <label>סדר (לפריסה בעמוד הבית)</label>
+          <input type="number" id="artOrder" value="100" min="0">
+          <div class="help-text">מספר נמוך יותר = למעלה. הכתבה במקום 1 נחשבת ל״כתבת השבוע״.</div>
         </div>
       </div>
 
       <div class="field">
-        <label>נתיב תמונת שער</label>
-        <input type="text" id="fCoverUrl" required placeholder="newsletters/covers/cover-37.jpg">
+        <label>תמונה ראשית</label>
+        <div class="img-up" data-target="artMainImageUrl">
+          <input type="hidden" id="artMainImageUrl">
+          <label class="preview" id="artMainImagePreview"><span>לחץ או גרור תמונה לכאן</span></label>
+          <input type="file" accept="image/*" onchange="uploadImage(event, 'art-main', 'artMainImageUrl', 'artMainImagePreview')">
+          <div class="progress"><div class="progress-bar"></div></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>כיתוב לתמונה הראשית (קרדיט / הסבר)</label>
+        <input type="text" id="artMainImageCaption">
       </div>
 
       <div class="field">
-        <label>נתיב PDF בעברית</label>
-        <input type="text" id="fPdfHeUrl" required placeholder="newsletters/bachativa-issue-37-he.pdf">
+        <label>גוף הכתבה (HTML נתמך: &lt;p&gt; &lt;strong&gt; &lt;em&gt; &lt;blockquote&gt; &lt;h2&gt; &lt;h3&gt; &lt;a&gt; &lt;img&gt; &lt;ul&gt; &lt;li&gt;)</label>
+        <div class="rt-toolbar">
+          <button type="button" onclick="wrap('artBody','p')">פסקה</button>
+          <button type="button" onclick="wrap('artBody','h2')">כותרת</button>
+          <button type="button" onclick="wrap('artBody','h3')">כותרת משנה</button>
+          <button type="button" onclick="wrap('artBody','strong')">מודגש</button>
+          <button type="button" onclick="wrap('artBody','em')">נטוי</button>
+          <button type="button" onclick="wrap('artBody','blockquote')">ציטוט</button>
+        </div>
+        <textarea id="artBody" class="body-textarea" placeholder="הקלד או הדבק כאן את גוף הכתבה. כל שורה תהפוך לפסקה אוטומטית; אם תוסיף תגיות HTML הן יישמרו."></textarea>
       </div>
 
       <div class="field">
-        <label>נתיב PDF באנגלית <span style="color:var(--muted);font-weight:400;">(אופציונלי)</span></label>
-        <input type="text" id="fPdfEnUrl" placeholder="newsletters/BaChativa-Issue37-English.pdf">
-      </div>
-
-      <div class="field">
-        <label>כותרת</label>
-        <input type="text" id="fTitle" value="עלון בחטיבה">
+        <label>גלריית תמונות נוספות</label>
+        <div class="img-up">
+          <label class="preview" style="min-height:80px;">
+            <span>+ הוסף תמונה לגלריה</span>
+          </label>
+          <input type="file" accept="image/*" multiple onchange="uploadGallery(event)">
+          <div class="progress"><div class="progress-bar"></div></div>
+        </div>
+        <div class="gallery-thumbs" id="artGalleryThumbs"></div>
       </div>
 
       <div class="field-checkbox">
-        <input type="checkbox" id="fPublished" checked>
-        <label for="fPublished">פורסם (יוצג באתר)</label>
-      </div>
-
-      <div class="msg msg-info" style="font-size:.85rem;">
-        <strong>טיפ:</strong> העלה את קבצי ה-PDF וה-cover ל-<code>public/newsletters/</code> ו-<code>public/newsletters/covers/</code> ב-repo
-        (<a href="https://github.com/itzhak-iab/bachativa" target="_blank">itzhak-iab/bachativa</a>),
-        עשה commit + push, ואז GitHub Action / firebase deploy יעלה אותם אוטומטית.
-        כאן כותבים רק את הנתיבים הסופיים.
+        <input type="checkbox" id="artPublished" checked>
+        <label for="artPublished">פורסם (יוצג באתר)</label>
       </div>
 
       <div class="modal-actions">
-        <button type="button" class="btn btn-secondary" onclick="closeEditor()">בטל</button>
-        <button type="submit" class="btn" id="saveBtn">שמור</button>
+        <button type="button" class="btn btn-outline" onclick="closeArticleEditor()">בטל</button>
+        <button type="submit" class="btn" id="artSaveBtn">שמור</button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- Firebase SDK -->
+<!-- AUTHOR EDITOR MODAL -->
+<div class="modal-overlay" id="authorModal">
+  <div class="modal">
+    <h2 id="authorModalTitle">סופר חדש</h2>
+    <div id="authorMsg"></div>
+    <form id="authorForm" onsubmit="saveAuthor(event)">
+      <input type="hidden" id="authorIdField">
+      <div class="field">
+        <label>שם מלא</label>
+        <input type="text" id="authorName" required>
+      </div>
+      <div class="field">
+        <label>תפקיד / כותר</label>
+        <input type="text" id="authorRole" placeholder="לוחם / רב / מפקד / כותב חיצוני וכו׳">
+      </div>
+      <div class="field">
+        <label>תמונת פרופיל</label>
+        <div class="img-up" data-target="authorPhotoUrl">
+          <input type="hidden" id="authorPhotoUrl">
+          <label class="preview" id="authorPhotoPreview"><span>לחץ או גרור תמונה</span></label>
+          <input type="file" accept="image/*" onchange="uploadImage(event, 'author', 'authorPhotoUrl', 'authorPhotoPreview')">
+          <div class="progress"><div class="progress-bar"></div></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>ביוגרפיה קצרה (אופציונלי)</label>
+        <textarea id="authorBio" rows="3"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeAuthorEditor()">בטל</button>
+        <button type="submit" class="btn" id="authorSaveBtn">שמור</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ISSUE EDITOR MODAL -->
+<div class="modal-overlay" id="issueModal">
+  <div class="modal">
+    <h2 id="issueModalTitle">גיליון חדש</h2>
+    <div id="issueMsg"></div>
+    <form id="issueForm" onsubmit="saveIssue(event)">
+      <input type="hidden" id="issueIdField">
+      <div class="field-row">
+        <div class="field">
+          <label>מספר גיליון</label>
+          <input type="number" id="issueNumber" required min="1">
+        </div>
+        <div class="field">
+          <label>פרשה (בלי "פרשת")</label>
+          <input type="text" id="issueParsha" required placeholder="למשל: במדבר">
+        </div>
+      </div>
+      <div class="field">
+        <label>תמונת שער</label>
+        <div class="img-up" data-target="issueCoverUrl">
+          <input type="hidden" id="issueCoverUrl">
+          <label class="preview" id="issueCoverPreview"><span>לחץ או גרור תמונה</span></label>
+          <input type="file" accept="image/*" onchange="uploadImage(event, 'issue-cover', 'issueCoverUrl', 'issueCoverPreview')">
+          <div class="progress"><div class="progress-bar"></div></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>נתיב ל-PDF (עברית) <span style="font-weight:400;color:var(--text-light);">— אופציונלי, רק לעלון בPDF המקורי</span></label>
+        <input type="text" id="issuePdfHe" placeholder="newsletters/bachativa-issue-37-he.pdf">
+      </div>
+      <div class="field">
+        <label>נתיב ל-PDF (English) — אופציונלי</label>
+        <input type="text" id="issuePdfEn" placeholder="newsletters/BaChativa-Issue37-English.pdf">
+      </div>
+      <div class="field-checkbox">
+        <input type="checkbox" id="issuePublished" checked>
+        <label for="issuePublished">פורסם</label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeIssueEditor()">בטל</button>
+        <button type="submit" class="btn" id="issueSaveBtn">שמור</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
-
 <script>
-  // ============================================================
-  // Allowed admin emails — only these can write to Firestore
-  // (must match firestore.rules)
   // ============================================================
   const ADMIN_EMAILS = ['i.barkai7@gmail.com', 'bachativa@gmail.com'];
 
-  let authMode = 'login'; // 'login' or 'signup'
-  let currentUser = null;
-  let editingId = null;
-
-  // Init Firebase
   firebase.initializeApp(window.FIREBASE_CONFIG);
   const auth = firebase.auth();
   const db = firebase.firestore();
+  const storage = firebase.storage();
 
+  let authMode = 'login';
+  let currentUser = null;
+  let currentTab = 'articles';
+  let cachedIssues = [];
+  let cachedAuthors = [];
+  let cachedArticles = [];
+  let editingArtGallery = []; // array of { url, caption }
+
+  // ----- Helpers -----
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function showMsg(id, kind, text) { document.getElementById(id).innerHTML = `<div class="msg msg-${kind}">${text}</div>`; }
+  function clearMsg(id) { document.getElementById(id).innerHTML = ''; }
+  function fmtDate(ts) {
+    if (!ts) return '';
+    try { const d = ts.toDate ? ts.toDate() : new Date(ts); return d.toLocaleDateString('he-IL'); } catch (e) { return ''; }
+  }
+
+  // ----- Auth -----
   auth.onAuthStateChanged(user => {
     currentUser = user;
     renderTopbar();
     if (user && ADMIN_EMAILS.includes((user.email || '').toLowerCase())) {
       showDashboard();
     } else if (user) {
-      // Logged in but not admin
-      showMsg('authMsg', 'err', 'משתמש זה אינו מורשה לניהול. צא והיכנס עם מייל מורשה.');
+      showMsg('authMsg', 'err', 'משתמש זה אינו מורשה. צא והיכנס עם מייל מורשה.');
       auth.signOut();
     } else {
       showAuth();
@@ -237,9 +405,9 @@
   });
 
   function renderTopbar() {
-    const el = document.getElementById('topbarActions');
+    const el = document.getElementById('topActions');
     if (currentUser && ADMIN_EMAILS.includes((currentUser.email || '').toLowerCase())) {
-      el.innerHTML = `<span style="font-size:.85rem;opacity:.85;">${currentUser.email}</span> <a href="/">לאתר</a> <button onclick="logout()">יציאה</button>`;
+      el.innerHTML = `<span style="font-size:.85rem;opacity:.85;">${esc(currentUser.email)}</span> <a href="/" target="_blank">לאתר</a> <button onclick="logout()">יציאה</button>`;
     } else {
       el.innerHTML = `<a href="/">לאתר</a>`;
     }
@@ -250,47 +418,29 @@
     document.getElementById('loginTab').classList.toggle('active', mode === 'login');
     document.getElementById('signupTab').classList.toggle('active', mode === 'signup');
     document.getElementById('authSubmit').textContent = mode === 'login' ? 'התחבר' : 'הרשם';
-    document.getElementById('authMsg').innerHTML = '';
-    document.getElementById('authPassword').autocomplete = mode === 'login' ? 'current-password' : 'new-password';
-  }
-
-  function showMsg(elId, kind, text) {
-    document.getElementById(elId).innerHTML = `<div class="msg msg-${kind}">${text}</div>`;
-  }
-  function clearMsg(elId) {
-    document.getElementById(elId).innerHTML = '';
+    clearMsg('authMsg');
   }
 
   async function handleAuth(e) {
     e.preventDefault();
     const email = document.getElementById('authEmail').value.trim().toLowerCase();
-    const password = document.getElementById('authPassword').value;
-    if (!ADMIN_EMAILS.includes(email)) {
-      showMsg('authMsg', 'err', 'מייל זה אינו מורשה. הוסף את המייל שלך לרשימה ADMIN_EMAILS ב-admin.html ועדכן את firestore.rules.');
-      return;
-    }
-    const btn = document.getElementById('authSubmit');
-    btn.disabled = true;
+    const pw = document.getElementById('authPassword').value;
+    if (!ADMIN_EMAILS.includes(email)) { showMsg('authMsg', 'err', 'מייל לא מורשה.'); return; }
+    const btn = document.getElementById('authSubmit'); btn.disabled = true;
     try {
-      if (authMode === 'signup') {
-        await auth.createUserWithEmailAndPassword(email, password);
-      } else {
-        await auth.signInWithEmailAndPassword(email, password);
-      }
+      if (authMode === 'signup') await auth.createUserWithEmailAndPassword(email, pw);
+      else await auth.signInWithEmailAndPassword(email, pw);
     } catch (err) {
       const errMap = {
         'auth/user-not-found': 'משתמש לא קיים — לחץ "הרשמה ראשונה"',
         'auth/wrong-password': 'סיסמה שגויה',
         'auth/invalid-credential': 'פרטי כניסה לא נכונים',
         'auth/email-already-in-use': 'משתמש כבר קיים — לחץ "התחברות"',
-        'auth/weak-password': 'הסיסמה חלשה מדי (לפחות 6 תווים)',
+        'auth/weak-password': 'סיסמה חלשה (לפחות 6 תווים)',
       };
       showMsg('authMsg', 'err', errMap[err.code] || err.message);
-    } finally {
-      btn.disabled = false;
-    }
+    } finally { btn.disabled = false; }
   }
-
   function logout() { auth.signOut(); }
 
   function showAuth() {
@@ -300,129 +450,492 @@
   function showDashboard() {
     document.getElementById('authScreen').classList.add('hidden');
     document.getElementById('dashboard').classList.remove('hidden');
-    loadNewsletters();
+    loadAll();
+  }
+
+  // ----- Tabs -----
+  function switchTab(t) {
+    currentTab = t;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === t));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.toggle('hidden', p.id !== 'pane-' + t));
+  }
+
+  // ----- Load all -----
+  async function loadAll() {
+    await Promise.all([loadAuthors(), loadIssues(), loadArticles()]);
+  }
+
+  async function loadAuthors() {
+    try {
+      const snap = await db.collection('authors').orderBy('name').get();
+      cachedAuthors = [];
+      snap.forEach(d => cachedAuthors.push({ id: d.id, ...d.data() }));
+    } catch (e) { console.warn('authors load failed', e); cachedAuthors = []; }
+    renderAuthors();
+  }
+  function renderAuthors() {
+    const list = document.getElementById('authorsList');
+    if (cachedAuthors.length === 0) {
+      list.innerHTML = '<div class="empty">אין סופרים. לחץ "+ סופר חדש".</div>';
+      return;
+    }
+    list.innerHTML = cachedAuthors.map(a => `
+      <div class="list-row">
+        <img class="thumb thumb-square" src="${esc(a.photoUrl || 'images/logo.png')}" alt="">
+        <div class="info">
+          <h3>${esc(a.name)}</h3>
+          <div class="sub">${esc(a.role || '')}</div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-sm" onclick="editAuthor('${esc(a.id)}')">ערוך</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteAuthor('${esc(a.id)}','${esc(a.name)}')">מחק</button>
+        </div>
+      </div>`).join('');
+  }
+
+  async function loadIssues() {
+    try {
+      const snap = await db.collection('issues').orderBy('issueNumber', 'desc').get();
+      cachedIssues = [];
+      snap.forEach(d => cachedIssues.push({ id: d.id, ...d.data() }));
+    } catch (e) { console.warn('issues load failed', e); cachedIssues = []; }
+    renderIssues();
+  }
+  function renderIssues() {
+    const list = document.getElementById('issuesList');
+    if (cachedIssues.length === 0) {
+      list.innerHTML = '<div class="empty">אין גיליונות. לחץ "+ גיליון חדש".</div>';
+      return;
+    }
+    list.innerHTML = cachedIssues.map(n => `
+      <div class="list-row">
+        <img class="thumb" src="${esc(n.coverUrl || 'images/logo.png')}" alt="">
+        <div class="info">
+          <h3>גיליון ${esc(n.issueNumber)} — פרשת ${esc(n.parsha || '')}</h3>
+          <div class="sub">
+            <span class="badge ${n.published ? 'badge-pub' : 'badge-draft'}">${n.published ? 'פורסם' : 'טיוטה'}</span>
+            ${n.pdfHeUrl ? '· PDF עברית' : ''}
+            ${n.pdfEnUrl ? '· PDF אנגלית' : ''}
+          </div>
+        </div>
+        <div class="actions">
+          <a class="btn btn-sm btn-outline" href="/issue/${esc(n.id)}" target="_blank">צפה</a>
+          <button class="btn btn-sm" onclick="editIssue('${esc(n.id)}')">ערוך</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteIssue('${esc(n.id)}',${n.issueNumber})">מחק</button>
+        </div>
+      </div>`).join('');
+  }
+
+  async function loadArticles() {
+    try {
+      const snap = await db.collection('articles').orderBy('issueId').orderBy('order', 'asc').get();
+      cachedArticles = [];
+      snap.forEach(d => cachedArticles.push({ id: d.id, ...d.data() }));
+    } catch (e) {
+      // fall back without compound index
+      try {
+        const snap = await db.collection('articles').get();
+        cachedArticles = [];
+        snap.forEach(d => cachedArticles.push({ id: d.id, ...d.data() }));
+        cachedArticles.sort((a, b) => {
+          const i = (cachedIssues.findIndex(x => x.id === b.issueId) || 0) - (cachedIssues.findIndex(x => x.id === a.issueId) || 0);
+          if (i !== 0) return i;
+          return (a.order || 0) - (b.order || 0);
+        });
+      } catch (e2) { console.warn('articles load failed', e2); cachedArticles = []; }
+    }
+    renderArticles();
+  }
+
+  function renderArticles() {
+    const list = document.getElementById('articlesList');
+    if (cachedArticles.length === 0) {
+      list.innerHTML = '<div class="empty">אין כתבות. לחץ "+ כתבה חדשה".</div>';
+      return;
+    }
+    list.innerHTML = cachedArticles.map(a => {
+      const issue = cachedIssues.find(i => i.id === a.issueId);
+      const author = cachedAuthors.find(au => au.id === a.authorId);
+      const typeLabel = { article:'כתבה', interview:'ראיון', torah:'דבר תורה', 'photo-of-week':'תמונת השבוע', gallery:'גלריה' }[a.type] || a.type;
+      return `
+        <div class="list-row">
+          <img class="thumb" src="${esc(a.mainImageUrl || 'images/logo.png')}" alt="">
+          <div class="info">
+            <h3>${esc(a.title)}</h3>
+            <div class="sub">
+              <span class="badge ${a.published ? 'badge-pub' : 'badge-draft'}">${a.published ? 'פורסם' : 'טיוטה'}</span>
+              <span class="badge badge-gold">${esc(typeLabel)}</span>
+              ${issue ? '· גיליון ' + esc(issue.issueNumber) + ' (פרשת ' + esc(issue.parsha) + ')' : '· ללא גיליון'}
+              ${author ? '· ' + esc(author.name) : ''}
+              · סדר ${esc(a.order || 0)}
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn btn-sm btn-outline" href="/article/${esc(a.id)}" target="_blank">צפה</a>
+            <button class="btn btn-sm" onclick="editArticle('${esc(a.id)}')">ערוך</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteArticle('${esc(a.id)}','${esc(a.title)}')">מחק</button>
+          </div>
+        </div>`;
+    }).join('');
   }
 
   // ============================================================
-  // CRUD on newsletters
+  // IMAGE UPLOAD (Firebase Storage)
   // ============================================================
-  async function loadNewsletters() {
-    const grid = document.getElementById('newslettersGrid');
-    grid.innerHTML = '<div class="loading">טוען…</div>';
-    try {
-      const snap = await db.collection('newsletters').orderBy('issueNumber', 'desc').get();
-      if (snap.empty) {
-        grid.innerHTML = '<div class="empty">אין גיליונות עדיין. לחץ "+ גיליון חדש" כדי להוסיף.</div>';
-        return;
+  async function uploadImage(event, folder, hiddenInputId, previewLabelId) {
+    const file = event.target.files[0];
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) { alert('הקובץ גדול מ-10MB'); return; }
+    const container = event.target.closest('.img-up');
+    const progress = container.querySelector('.progress');
+    const bar = container.querySelector('.progress-bar');
+    const preview = container.querySelector('.preview');
+    progress.classList.add('active');
+    bar.style.width = '0%';
+
+    const safeName = file.name.replace(/[^\w.\-]+/g, '_');
+    const path = `uploads/${folder}/${Date.now()}_${safeName}`;
+    const ref = storage.ref().child(path);
+    const task = ref.put(file);
+
+    task.on('state_changed',
+      snap => { bar.style.width = ((snap.bytesTransferred / snap.totalBytes) * 100) + '%'; },
+      err => {
+        progress.classList.remove('active');
+        alert('שגיאה בהעלאה: ' + err.message);
+      },
+      async () => {
+        progress.classList.remove('active');
+        const url = await ref.getDownloadURL();
+        document.getElementById(hiddenInputId).value = url;
+        preview.classList.add('has-img');
+        preview.innerHTML = `<img class="preview-img" src="${url}"><button type="button" class="remove-btn" onclick="removeImage(event, '${hiddenInputId}', '${previewLabelId}')">×</button>`;
+        event.target.value = '';
       }
-      let html = '';
-      snap.forEach(doc => {
-        const n = doc.data();
-        const id = doc.id;
-        const enLink = n.pdfEnUrl ? `<a href="/${n.pdfEnUrl}" target="_blank">EN</a>` : '';
-        html += `
-          <div class="card">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem;">
-              <h3>גיליון ${n.issueNumber}</h3>
-              <span class="badge ${n.published ? 'badge-pub' : 'badge-draft'}">${n.published ? 'פורסם' : 'טיוטה'}</span>
-            </div>
-            <div class="parsha">פרשת ${n.parsha || ''}</div>
-            <div class="meta">${n.title || 'עלון בחטיבה'}</div>
-            <div class="links">
-              <a href="/${n.coverUrl}" target="_blank">שער</a>
-              <a href="/${n.pdfHeUrl}" target="_blank">HE</a>
-              ${enLink}
-            </div>
-            <div class="actions">
-              <button class="btn btn-sm" onclick="editNewsletter('${id}')">ערוך</button>
-              <button class="btn btn-sm btn-danger" onclick="deleteNewsletter('${id}', ${n.issueNumber})">מחק</button>
-            </div>
-          </div>`;
-      });
-      grid.innerHTML = html;
-    } catch (err) {
-      grid.innerHTML = `<div class="msg msg-err">שגיאה בטעינה: ${err.message}</div>`;
+    );
+  }
+
+  function removeImage(event, hiddenInputId, previewLabelId) {
+    event.preventDefault();
+    event.stopPropagation();
+    document.getElementById(hiddenInputId).value = '';
+    const preview = document.getElementById(previewLabelId);
+    preview.classList.remove('has-img');
+    preview.innerHTML = '<span>לחץ או גרור תמונה לכאן</span>';
+  }
+
+  async function uploadGallery(event) {
+    const files = Array.from(event.target.files || []);
+    if (!files.length) return;
+    const container = event.target.closest('.img-up');
+    const progress = container.querySelector('.progress');
+    const bar = container.querySelector('.progress-bar');
+    progress.classList.add('active');
+
+    let done = 0;
+    for (const file of files) {
+      if (file.size > 10 * 1024 * 1024) { alert('דילגתי על ' + file.name + ' (>10MB)'); continue; }
+      const safeName = file.name.replace(/[^\w.\-]+/g, '_');
+      const path = `uploads/gallery/${Date.now()}_${safeName}`;
+      const ref = storage.ref().child(path);
+      try {
+        await ref.put(file);
+        const url = await ref.getDownloadURL();
+        editingArtGallery.push({ url, caption: '' });
+        renderGalleryThumbs();
+      } catch (err) {
+        alert('שגיאה: ' + err.message);
+      }
+      done++;
+      bar.style.width = (done / files.length * 100) + '%';
     }
+    progress.classList.remove('active');
+    bar.style.width = '0%';
+    event.target.value = '';
   }
 
-  function openEditor(data, id) {
-    editingId = id || null;
-    document.getElementById('editorTitle').textContent = id ? `עריכת גיליון ${data.issueNumber}` : 'גיליון חדש';
-    document.getElementById('editId').value = id || '';
-    document.getElementById('fIssueNumber').value = data?.issueNumber || '';
-    document.getElementById('fParsha').value = data?.parsha || '';
-    document.getElementById('fCoverUrl').value = data?.coverUrl || '';
-    document.getElementById('fPdfHeUrl').value = data?.pdfHeUrl || '';
-    document.getElementById('fPdfEnUrl').value = data?.pdfEnUrl || '';
-    document.getElementById('fTitle').value = data?.title || 'עלון בחטיבה';
-    document.getElementById('fPublished').checked = data ? !!data.published : true;
-    clearMsg('editorMsg');
-    document.getElementById('editorModal').classList.add('active');
+  function renderGalleryThumbs() {
+    const el = document.getElementById('artGalleryThumbs');
+    el.innerHTML = editingArtGallery.map((g, i) =>
+      `<div class="gallery-thumb"><img src="${esc(g.url)}"><button class="rm" onclick="removeGallery(${i})" type="button">×</button></div>`).join('');
   }
-  function closeEditor() {
-    document.getElementById('editorModal').classList.remove('active');
-    editingId = null;
-  }
+  function removeGallery(i) { editingArtGallery.splice(i, 1); renderGalleryThumbs(); }
 
-  async function editNewsletter(id) {
+  // ============================================================
+  // ARTICLE editor
+  // ============================================================
+  function openArticleEditor(data, id) {
+    document.getElementById('artModalTitle').textContent = id ? 'עריכת כתבה' : 'כתבה חדשה';
+    document.getElementById('artId').value = id || '';
+    document.getElementById('artType').value = data?.type || 'article';
+    document.getElementById('artTitle').value = data?.title || '';
+    document.getElementById('artSubtitle').value = data?.subtitle || '';
+    document.getElementById('artOrder').value = data?.order ?? 100;
+    document.getElementById('artBody').value = data?.body || '';
+    document.getElementById('artMainImageCaption').value = data?.mainImageCaption || '';
+    document.getElementById('artPublished').checked = data ? !!data.published : true;
+    document.getElementById('artMainImageUrl').value = data?.mainImageUrl || '';
+    editingArtGallery = (data?.gallery || []).slice();
+    renderGalleryThumbs();
+    // populate issue + author dropdowns
+    fillIssueOptions(data?.issueId);
+    fillAuthorOptions(data?.authorId);
+    // main image preview
+    const previewEl = document.getElementById('artMainImagePreview');
+    if (data?.mainImageUrl) {
+      previewEl.classList.add('has-img');
+      previewEl.innerHTML = `<img class="preview-img" src="${esc(data.mainImageUrl)}"><button type="button" class="remove-btn" onclick="removeImage(event,'artMainImageUrl','artMainImagePreview')">×</button>`;
+    } else {
+      previewEl.classList.remove('has-img');
+      previewEl.innerHTML = '<span>לחץ או גרור תמונה לכאן</span>';
+    }
+    clearMsg('artMsg');
+    document.getElementById('articleModal').classList.add('active');
+  }
+  function closeArticleEditor() { document.getElementById('articleModal').classList.remove('active'); }
+
+  async function editArticle(id) {
     try {
-      const doc = await db.collection('newsletters').doc(id).get();
-      if (!doc.exists) return alert('הגיליון לא נמצא');
-      openEditor(doc.data(), id);
-    } catch (err) {
-      alert('שגיאה: ' + err.message);
-    }
+      const doc = await db.collection('articles').doc(id).get();
+      if (!doc.exists) return alert('הכתבה לא נמצאה');
+      openArticleEditor(doc.data(), id);
+    } catch (err) { alert('שגיאה: ' + err.message); }
   }
 
-  async function saveNewsletter(e) {
+  function fillIssueOptions(selectedId) {
+    const sel = document.getElementById('artIssueId');
+    sel.innerHTML = '<option value="">— בחר גיליון —</option>' + cachedIssues.map(i =>
+      `<option value="${esc(i.id)}" ${i.id === selectedId ? 'selected' : ''}>גיליון ${esc(i.issueNumber)} — ${esc(i.parsha)}</option>`).join('');
+  }
+  function fillAuthorOptions(selectedId) {
+    const sel = document.getElementById('artAuthorId');
+    sel.innerHTML = '<option value="">— ללא / מערכת —</option>' + cachedAuthors.map(a =>
+      `<option value="${esc(a.id)}" ${a.id === selectedId ? 'selected' : ''}>${esc(a.name)}</option>`).join('');
+  }
+
+  // Convert plain text (no HTML tags) → paragraphs
+  function autoFormatBody(text) {
+    text = String(text || '').trim();
+    if (!text) return '';
+    if (/<\w+/.test(text)) return text; // already has HTML
+    return text.split(/\n{2,}|\r\n\r\n/).map(p => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`).join('\n');
+  }
+
+  function wrap(textareaId, tag) {
+    const ta = document.getElementById(textareaId);
+    const start = ta.selectionStart, end = ta.selectionEnd;
+    const sel = ta.value.slice(start, end) || 'טקסט';
+    const before = ta.value.slice(0, start), after = ta.value.slice(end);
+    const newText = `<${tag}>${sel}</${tag}>`;
+    ta.value = before + newText + after;
+    ta.focus();
+    ta.selectionStart = start + tag.length + 2;
+    ta.selectionEnd = start + tag.length + 2 + sel.length;
+  }
+
+  async function saveArticle(e) {
     e.preventDefault();
+    const id = document.getElementById('artId').value;
+    const authorId = document.getElementById('artAuthorId').value || null;
+    const author = cachedAuthors.find(a => a.id === authorId);
     const data = {
-      issueNumber: parseInt(document.getElementById('fIssueNumber').value, 10),
-      parsha: document.getElementById('fParsha').value.trim(),
-      coverUrl: document.getElementById('fCoverUrl').value.trim(),
-      pdfHeUrl: document.getElementById('fPdfHeUrl').value.trim(),
-      pdfEnUrl: document.getElementById('fPdfEnUrl').value.trim(),
-      title: document.getElementById('fTitle').value.trim() || 'עלון בחטיבה',
-      published: document.getElementById('fPublished').checked,
+      type: document.getElementById('artType').value,
+      issueId: document.getElementById('artIssueId').value || null,
+      title: document.getElementById('artTitle').value.trim(),
+      subtitle: document.getElementById('artSubtitle').value.trim(),
+      authorId,
+      authorName: author?.name || '',
+      authorRole: author?.role || '',
+      authorPhotoUrl: author?.photoUrl || '',
+      mainImageUrl: document.getElementById('artMainImageUrl').value,
+      mainImageCaption: document.getElementById('artMainImageCaption').value.trim(),
+      body: autoFormatBody(document.getElementById('artBody').value),
+      gallery: editingArtGallery,
+      order: parseInt(document.getElementById('artOrder').value, 10) || 100,
+      published: document.getElementById('artPublished').checked,
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     };
-    const btn = document.getElementById('saveBtn');
+    const btn = document.getElementById('artSaveBtn');
     btn.disabled = true;
     try {
-      const id = editingId || String(data.issueNumber);
-      if (!editingId) {
+      let docRef;
+      if (id) {
+        docRef = db.collection('articles').doc(id);
+        await docRef.set(data, { merge: true });
+      } else {
         data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+        data.publishedAt = firebase.firestore.FieldValue.serverTimestamp();
+        docRef = await db.collection('articles').add(data);
       }
-      await db.collection('newsletters').doc(id).set(data, { merge: true });
-      closeEditor();
-      showMsg('dashMsg', 'ok', editingId ? 'הגיליון עודכן' : 'גיליון נוסף');
+      closeArticleEditor();
+      showMsg('dashMsg', 'ok', id ? 'הכתבה עודכנה' : 'הכתבה נוספה');
       setTimeout(() => clearMsg('dashMsg'), 3000);
-      loadNewsletters();
+      await loadArticles();
     } catch (err) {
-      showMsg('editorMsg', 'err', 'שגיאה: ' + err.message);
-    } finally {
-      btn.disabled = false;
-    }
+      showMsg('artMsg', 'err', 'שגיאה: ' + err.message);
+    } finally { btn.disabled = false; }
   }
 
-  async function deleteNewsletter(id, issueNumber) {
-    if (!confirm(`למחוק את גיליון ${issueNumber}?`)) return;
+  async function deleteArticle(id, title) {
+    if (!confirm('למחוק את "' + title + '"?')) return;
     try {
-      await db.collection('newsletters').doc(id).delete();
-      showMsg('dashMsg', 'ok', `גיליון ${issueNumber} נמחק`);
+      await db.collection('articles').doc(id).delete();
+      showMsg('dashMsg', 'ok', 'הכתבה נמחקה');
       setTimeout(() => clearMsg('dashMsg'), 3000);
-      loadNewsletters();
-    } catch (err) {
-      showMsg('dashMsg', 'err', 'שגיאה במחיקה: ' + err.message);
-    }
+      await loadArticles();
+    } catch (err) { showMsg('dashMsg', 'err', err.message); }
   }
 
-  // Close modal on overlay click
-  document.getElementById('editorModal').addEventListener('click', e => {
-    if (e.target === document.getElementById('editorModal')) closeEditor();
+  // ============================================================
+  // AUTHOR editor
+  // ============================================================
+  function openAuthorEditor(data, id) {
+    document.getElementById('authorModalTitle').textContent = id ? 'עריכת סופר' : 'סופר חדש';
+    document.getElementById('authorIdField').value = id || '';
+    document.getElementById('authorName').value = data?.name || '';
+    document.getElementById('authorRole').value = data?.role || '';
+    document.getElementById('authorBio').value = data?.bio || '';
+    document.getElementById('authorPhotoUrl').value = data?.photoUrl || '';
+    const previewEl = document.getElementById('authorPhotoPreview');
+    if (data?.photoUrl) {
+      previewEl.classList.add('has-img');
+      previewEl.innerHTML = `<img class="preview-img" src="${esc(data.photoUrl)}"><button type="button" class="remove-btn" onclick="removeImage(event,'authorPhotoUrl','authorPhotoPreview')">×</button>`;
+    } else {
+      previewEl.classList.remove('has-img');
+      previewEl.innerHTML = '<span>לחץ או גרור תמונה</span>';
+    }
+    clearMsg('authorMsg');
+    document.getElementById('authorModal').classList.add('active');
+  }
+  function closeAuthorEditor() { document.getElementById('authorModal').classList.remove('active'); }
+
+  async function editAuthor(id) {
+    try {
+      const doc = await db.collection('authors').doc(id).get();
+      if (!doc.exists) return alert('הסופר לא נמצא');
+      openAuthorEditor(doc.data(), id);
+    } catch (err) { alert(err.message); }
+  }
+
+  async function saveAuthor(e) {
+    e.preventDefault();
+    const id = document.getElementById('authorIdField').value;
+    const data = {
+      name: document.getElementById('authorName').value.trim(),
+      role: document.getElementById('authorRole').value.trim(),
+      bio: document.getElementById('authorBio').value.trim(),
+      photoUrl: document.getElementById('authorPhotoUrl').value,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    };
+    const btn = document.getElementById('authorSaveBtn');
+    btn.disabled = true;
+    try {
+      if (id) {
+        await db.collection('authors').doc(id).set(data, { merge: true });
+      } else {
+        data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+        await db.collection('authors').add(data);
+      }
+      closeAuthorEditor();
+      showMsg('dashMsg', 'ok', id ? 'הסופר עודכן' : 'נוסף סופר');
+      setTimeout(() => clearMsg('dashMsg'), 3000);
+      await loadAuthors();
+    } catch (err) {
+      showMsg('authorMsg', 'err', err.message);
+    } finally { btn.disabled = false; }
+  }
+
+  async function deleteAuthor(id, name) {
+    if (!confirm('למחוק את ' + name + '?')) return;
+    try {
+      await db.collection('authors').doc(id).delete();
+      showMsg('dashMsg', 'ok', 'הסופר נמחק');
+      setTimeout(() => clearMsg('dashMsg'), 3000);
+      await loadAuthors();
+    } catch (err) { showMsg('dashMsg', 'err', err.message); }
+  }
+
+  // ============================================================
+  // ISSUE editor
+  // ============================================================
+  function openIssueEditor(data, id) {
+    document.getElementById('issueModalTitle').textContent = id ? 'עריכת גיליון' : 'גיליון חדש';
+    document.getElementById('issueIdField').value = id || '';
+    document.getElementById('issueNumber').value = data?.issueNumber || '';
+    document.getElementById('issueParsha').value = data?.parsha || '';
+    document.getElementById('issuePdfHe').value = data?.pdfHeUrl || '';
+    document.getElementById('issuePdfEn').value = data?.pdfEnUrl || '';
+    document.getElementById('issuePublished').checked = data ? !!data.published : true;
+    document.getElementById('issueCoverUrl').value = data?.coverUrl || '';
+    const previewEl = document.getElementById('issueCoverPreview');
+    if (data?.coverUrl) {
+      previewEl.classList.add('has-img');
+      previewEl.innerHTML = `<img class="preview-img" src="${esc(data.coverUrl)}"><button type="button" class="remove-btn" onclick="removeImage(event,'issueCoverUrl','issueCoverPreview')">×</button>`;
+    } else {
+      previewEl.classList.remove('has-img');
+      previewEl.innerHTML = '<span>לחץ או גרור תמונה</span>';
+    }
+    clearMsg('issueMsg');
+    document.getElementById('issueModal').classList.add('active');
+  }
+  function closeIssueEditor() { document.getElementById('issueModal').classList.remove('active'); }
+
+  async function editIssue(id) {
+    try {
+      const doc = await db.collection('issues').doc(id).get();
+      if (!doc.exists) return alert('לא נמצא');
+      openIssueEditor(doc.data(), id);
+    } catch (err) { alert(err.message); }
+  }
+
+  async function saveIssue(e) {
+    e.preventDefault();
+    const id = document.getElementById('issueIdField').value;
+    const issueNumber = parseInt(document.getElementById('issueNumber').value, 10);
+    const docId = id || String(issueNumber);
+    const data = {
+      issueNumber,
+      parsha: document.getElementById('issueParsha').value.trim(),
+      pdfHeUrl: document.getElementById('issuePdfHe').value.trim(),
+      pdfEnUrl: document.getElementById('issuePdfEn').value.trim(),
+      coverUrl: document.getElementById('issueCoverUrl').value,
+      published: document.getElementById('issuePublished').checked,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    };
+    const btn = document.getElementById('issueSaveBtn');
+    btn.disabled = true;
+    try {
+      if (!id) data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      await db.collection('issues').doc(docId).set(data, { merge: true });
+      closeIssueEditor();
+      showMsg('dashMsg', 'ok', id ? 'הגיליון עודכן' : 'נוסף גיליון');
+      setTimeout(() => clearMsg('dashMsg'), 3000);
+      await loadIssues();
+    } catch (err) {
+      showMsg('issueMsg', 'err', err.message);
+    } finally { btn.disabled = false; }
+  }
+
+  async function deleteIssue(id, issueNumber) {
+    if (!confirm('למחוק גיליון ' + issueNumber + '?')) return;
+    try {
+      await db.collection('issues').doc(id).delete();
+      showMsg('dashMsg', 'ok', 'הגיליון נמחק');
+      setTimeout(() => clearMsg('dashMsg'), 3000);
+      await loadIssues();
+    } catch (err) { showMsg('dashMsg', 'err', err.message); }
+  }
+
+  // Close modals on overlay click
+  ['articleModal','authorModal','issueModal'].forEach(id => {
+    document.getElementById(id).addEventListener('click', e => {
+      if (e.target.id === id) document.getElementById(id).classList.remove('active');
+    });
   });
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeEditor();
+    if (e.key === 'Escape') {
+      ['articleModal','authorModal','issueModal'].forEach(id => document.getElementById(id).classList.remove('active'));
+    }
   });
 </script>
 

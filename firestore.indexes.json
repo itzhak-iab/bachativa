@@ -1,11 +1,28 @@
 {
   "indexes": [
     {
-      "collectionGroup": "newsletters",
+      "collectionGroup": "issues",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "published", "order": "ASCENDING" },
+        { "fieldPath": "published",   "order": "ASCENDING" },
         { "fieldPath": "issueNumber", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "articles",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "issueId",   "order": "ASCENDING" },
+        { "fieldPath": "published", "order": "ASCENDING" },
+        { "fieldPath": "order",     "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "articles",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "issueId", "order": "ASCENDING" },
+        { "fieldPath": "order",   "order": "ASCENDING" }
       ]
     }
   ],
