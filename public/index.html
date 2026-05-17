@@ -54,7 +54,8 @@
   .top-strip .ticker-label { background: var(--red, #b2241a); color: #fff; font-weight: 800; padding: .15rem .7rem; border-radius: 3px; font-size: .78rem; letter-spacing: .03em; }
   .top-strip .ticker-track { flex: 1; overflow: hidden; }
   .top-strip .ticker-content { display: inline-block; white-space: nowrap; animation: scrollTicker 60s linear infinite; }
-  .top-strip .ticker-content span { margin-inline-end: 3rem; opacity: .92; }
+  .top-strip .ticker-content a, .top-strip .ticker-content span { color: #fff; text-decoration: none; margin-inline-end: 3rem; opacity: .92; transition: opacity .2s; }
+  .top-strip .ticker-content a:hover { opacity: 1; text-decoration: underline; }
   @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-100%); } }
   .top-strip .ticker-content:hover { animation-play-state: paused; }
 
@@ -140,6 +141,14 @@
 
   /* logo bigger in navbar */
   .navbar-brand img { height: 56px; width: 56px; }
+  .navbar-brand-sub { display: none; }
+
+  /* brigade emblem on the LEFT side of navbar */
+  .navbar-emblem { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 6px; transition: var(--transition); margin-inline-start: 0.6rem; }
+  .navbar-emblem:hover { background: rgba(255,255,255,0.08); }
+  .navbar-emblem img { height: 50px; width: 50px; object-fit: contain; background: rgba(94,98,56,0.6); padding: 3px; border-radius: 6px; }
+  .navbar-emblem span { color: #fff; font-weight: 700; font-size: 0.95rem; font-family: 'Frank Ruhl Libre', serif; white-space: nowrap; }
+  @media (max-width: 768px) { .navbar-emblem span { display: none; } .navbar-emblem img { height: 38px; width: 38px; } }
 
   /* current issue chip in header */
   .current-issue-chip { background: var(--olive-dark); color: #fff; padding: 1rem 1.3rem; border-radius: var(--radius); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; box-shadow: var(--shadow); }
@@ -166,10 +175,9 @@
 <nav class="navbar">
   <div class="navbar-inner">
     <a href="/" class="navbar-brand">
-      <img src="/images/logo.png?v=3" alt="חטיבת חשמונאים">
+      <img src="/images/logo.png?v=3" alt="בחטיבה">
       <div class="navbar-brand-text">
         <span class="navbar-brand-title">בחטיבה</span>
-        <span class="navbar-brand-sub">חטיבת חשמונאים</span>
       </div>
     </a>
     <button class="mobile-toggle" id="mobileToggle" aria-label="תפריט"><span></span><span></span><span></span></button>
@@ -177,6 +185,10 @@
       <li><a href="/" class="active">בית</a></li>
       <li><a href="/archive">ארכיון</a></li>
     </ul>
+    <a href="/" class="navbar-emblem">
+      <img src="/images/brigade-emblem.png?v=1" alt="סמל החטיבה">
+      <span>חטיבת החשמונאים</span>
+    </a>
   </div>
 </nav>
 
@@ -292,9 +304,9 @@
 
   // Fallback press updates — used when Firestore `press_updates` is empty
   const FALLBACK_PRESS = [
-    { title: 'גיליון חדש של בחטיבה עלה לאתר', summary: 'צפו במהדורה השבועית החדשה', source: 'internal', date: new Date() },
-    { title: 'פעילות החטיבה זוכה לתשומת לב בתקשורת', summary: 'כיסוי תקשורתי על פעילות חיילי החטיבה', source: 'internal', date: new Date(Date.now()-86400000) },
-    { title: 'חיילי החטיבה במעמד מרגש', summary: 'מאות חיילים השתתפו באירוע', source: 'internal', date: new Date(Date.now()-3*86400000) }
+    { title: 'גיליון חדש של בחטיבה עלה לאתר', summary: 'צפו במהדורה השבועית החדשה', source: 'internal', linkUrl: '/archive', date: new Date() },
+    { title: 'פעילות החטיבה זוכה לתשומת לב בתקשורת', summary: 'כיסוי תקשורתי על פעילות חיילי החטיבה', source: 'internal', linkUrl: '/archive', date: new Date(Date.now()-86400000) },
+    { title: 'חיילי החטיבה במעמד מרגש', summary: 'מאות חיילים השתתפו באירוע', source: 'internal', linkUrl: '/archive', date: new Date(Date.now()-3*86400000) }
   ];
 
   const TYPE_LABELS = {
@@ -517,6 +529,16 @@
   }
 
   // ====== Press feed (side rail + top ticker) ======
+  // Resolve the appropriate clickable href for a press item:
+  //   - External press: external URL (opens in new tab)
+  //   - Internal with linkUrl: internal route (article/issue/video/archive)
+  //   - Internal without linkUrl: no link
+  function pressHref(it) {
+    if (it.source === 'external' && it.url) return { href: it.url, external: true };
+    if (it.linkUrl) return { href: it.linkUrl, external: false };
+    return null;
+  }
+
   async function loadPressFeed() {
     let items = [];
     try {
@@ -528,6 +550,7 @@
           summary: x.summary || '',
           source: x.source || 'internal',
           url: x.url || '',
+          linkUrl: x.linkUrl || '',
           publisher: x.publisher || '',
           date: tsToDate(x.date) || tsToDate(x.createdAt) || new Date()
         });
@@ -539,10 +562,11 @@
     // side rail
     document.getElementById('pressFeed').innerHTML = items.slice(0, 8).map(it => {
       const isExt = it.source === 'external' && it.url;
+      const link = pressHref(it);
       const tag = isExt ? (it.publisher || 'פרסום חיצוני') : 'מבזק פנימי';
       const tagClass = isExt ? 'external' : '';
-      const titleHtml = isExt
-        ? `<a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)} <span class="ext-icon">↗</span></a>`
+      const titleHtml = link
+        ? `<a href="${esc(link.href)}"${link.external ? ' target="_blank" rel="noopener"' : ''}>${esc(it.title)}${link.external ? ' <span class="ext-icon">↗</span>' : ''}</a>`
         : esc(it.title);
       return `
         <div class="rail-item">
@@ -555,9 +579,15 @@
         </div>`;
     }).join('');
 
-    // ticker
-    const tickerHtml = items.map(it => '• ' + esc(it.title)).join('') ;
-    const trackInner = items.map(it => `<span>${esc(it.title)}</span>`).join('');
+    // ticker — wrap each item in a link when one exists
+    const trackInner = items.map(it => {
+      const link = pressHref(it);
+      if (link) {
+        const attrs = link.external ? ' target="_blank" rel="noopener"' : '';
+        return `<a href="${esc(link.href)}"${attrs}>${esc(it.title)}</a>`;
+      }
+      return `<span>${esc(it.title)}</span>`;
+    }).join('');
     // Duplicate for smooth loop
     document.getElementById('tickerContent').innerHTML = trackInner + trackInner;
   }

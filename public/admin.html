@@ -415,6 +415,7 @@
       <div class="field"><label>תקציר קצר</label><textarea id="pressSummary" rows="2" placeholder="משפט-שניים שמופיעים מתחת לכותרת בסרגל"></textarea></div>
       <div class="field" id="pressUrlField"><label>קישור לכתבה החיצונית</label><input type="url" id="pressUrl" placeholder="https://..."></div>
       <div class="field" id="pressPublisherField"><label>שם הפרסום (גוף תקשורת)</label><input type="text" id="pressPublisher" placeholder="למשל: כיכר השבת / מקור ראשון"></div>
+      <div class="field" id="pressLinkUrlField"><label>קישור פנימי באתר (אופציונלי)</label><input type="text" id="pressLinkUrl" placeholder="למשל: /issue/abc123 או /archive או /video/xyz"><div class="help-text">אם המבזק מתייחס לתוכן באתר — תוכל לקשר אליו ישירות. השאר ריק אם לא רלוונטי.</div></div>
       <div class="field-checkbox"><input type="checkbox" id="pressPublished" checked><label for="pressPublished"><strong>פורסם באתר</strong></label></div>
       <div class="modal-actions">
         <button type="button" class="btn btn-outline" onclick="closeModal('pressModal')">בטל</button>
@@ -986,6 +987,7 @@ function openPressEditor(id, defaultSource) {
       document.getElementById('pressSummary').value = p.summary || '';
       document.getElementById('pressUrl').value = p.url || '';
       document.getElementById('pressPublisher').value = p.publisher || '';
+      document.getElementById('pressLinkUrl').value = p.linkUrl || '';
       document.getElementById('pressPublished').checked = !!p.published;
       const d = p.date && p.date.toDate ? p.date.toDate() : (p.date ? new Date(p.date.seconds ? p.date.seconds*1000 : p.date) : new Date());
       document.getElementById('pressDate').value = d.toISOString().slice(0,10);
@@ -1007,6 +1009,7 @@ async function savePress(e) {
     summary: document.getElementById('pressSummary').value.trim(),
     url: document.getElementById('pressUrl').value.trim(),
     publisher: document.getElementById('pressPublisher').value.trim(),
+    linkUrl: document.getElementById('pressLinkUrl').value.trim(),
     date: firebase.firestore.Timestamp.fromDate(new Date(document.getElementById('pressDate').value || Date.now())),
     published: document.getElementById('pressPublished').checked,
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),

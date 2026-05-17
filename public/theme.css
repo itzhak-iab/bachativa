@@ -445,3 +445,9 @@ main { max-width: 1280px; margin: 0 auto; padding: 1.5rem; }
   main { padding: 1rem; }
   .footer-inner { flex-direction: column; text-align: center; }
 }
+
+.navbar-emblem { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 6px; transition: background .2s; margin-inline-start: 0.6rem; }
+.navbar-emblem:hover { background: rgba(255,255,255,0.08); }
+.navbar-emblem img { height: 50px; width: 50px; object-fit: contain; background: rgba(94,98,56,0.6); padding: 3px; border-radius: 6px; }
+.navbar-emblem span { color: #fff; font-weight: 700; font-size: 0.95rem; font-family: 'Frank Ruhl Libre', serif; white-space: nowrap; }
+@media (max-width: 768px) { .navbar-emblem span { display: none; } .navbar-emblem img { height: 38px; width: 38px; } }
