@@ -48,18 +48,15 @@
 <style>
   /* ===== TOP STRIP — date + breaking ticker (like a news site) ===== */
   .top-strip { background: var(--olive-darkest, #2c3220); color: #fff; font-size: .82rem; padding: .4rem 1rem; display: flex; gap: 1.2rem; align-items: center; overflow: hidden; }
-  .top-strip .date { font-weight: 700; opacity: .9; white-space: nowrap; }
+  .top-strip .dates { display: flex; flex-direction: column; gap: 0; line-height: 1.2; white-space: nowrap; }
+  .top-strip .date-greg { font-weight: 700; opacity: .95; font-size: .82rem; }
+  .top-strip .date-heb { opacity: .75; font-size: .74rem; }
   .top-strip .ticker-label { background: var(--red, #b2241a); color: #fff; font-weight: 800; padding: .15rem .7rem; border-radius: 3px; font-size: .78rem; letter-spacing: .03em; }
   .top-strip .ticker-track { flex: 1; overflow: hidden; }
   .top-strip .ticker-content { display: inline-block; white-space: nowrap; animation: scrollTicker 60s linear infinite; }
   .top-strip .ticker-content span { margin-inline-end: 3rem; opacity: .92; }
   @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-100%); } }
   .top-strip .ticker-content:hover { animation-play-state: paused; }
-
-  /* ===== HERO LOGO BANNER ===== */
-  .hero { background: #5e6238; padding: 1.8rem 1.5rem 2rem; text-align: center; overflow: hidden; }
-  .hero img.hero-logo { width: 100%; max-width: 480px; max-height: 280px; object-fit: contain; margin: 0 auto; display: block; }
-  @media (max-width: 768px) { .hero { padding: 1.2rem 1rem 1.5rem; } .hero img.hero-logo { max-width: 88%; max-height: 200px; } }
 
   /* ===== CATEGORY FILTER BAR ===== */
   .filter-bar { background: #fff; border-bottom: 2px solid var(--olive, #4a5234); position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 4px rgba(0,0,0,0.06); }
@@ -183,19 +180,17 @@
   </div>
 </nav>
 
-<!-- TOP STRIP — date + breaking ticker -->
+<!-- TOP STRIP — dates + breaking ticker -->
 <div class="top-strip">
-  <span class="date" id="todayDate"></span>
+  <div class="dates">
+    <span class="date-greg" id="todayDate"></span>
+    <span class="date-heb" id="todayDateHeb"></span>
+  </div>
   <span class="ticker-label">מבזק</span>
   <div class="ticker-track">
     <div class="ticker-content" id="tickerContent">טוען מבזקים…</div>
   </div>
 </div>
-
-<!-- HERO LOGO BANNER -->
-<section class="hero">
-  <img class="hero-logo" src="/images/logo-wide.jpg?v=3" alt="בחטיבה — חטיבת חשמונאים">
-</section>
 
 <!-- CATEGORY FILTERS -->
 <div class="filter-bar">
@@ -259,7 +254,7 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <img src="/images/logo.png?v=3" alt="חטיבת חשמונאים">
+      <img src="/images/brigade-emblem.png?v=1" alt="סמל חטיבת חשמונאים" style="background:#5e6238;padding:4px;border-radius:6px;">
       <div class="footer-brand-text">
         <strong>עמותת החשמונאים</strong>
         ידידי ובוגרי חטיבת החשמונאים
@@ -328,8 +323,14 @@
     return date.toLocaleDateString('he-IL');
   }
   function setTodayDate() {
+    const now = new Date();
     const opts = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-    document.getElementById('todayDate').textContent = new Date().toLocaleDateString('he-IL', opts);
+    document.getElementById('todayDate').textContent = now.toLocaleDateString('he-IL', opts);
+    try {
+      const hOpts = { day: 'numeric', month: 'long', year: 'numeric' };
+      const hebDate = new Intl.DateTimeFormat('he-IL-u-ca-hebrew', hOpts).format(now);
+      document.getElementById('todayDateHeb').textContent = hebDate.replace(/\s+תקופה.*$/, '');
+    } catch (e) { document.getElementById('todayDateHeb').style.display = 'none'; }
   }
 
   // ====== State ======
