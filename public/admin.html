@@ -127,6 +127,7 @@
     <button class="tab-btn active" data-tab="newsletter" onclick="switchTab('newsletter')">📰 עלון בחטיבה</button>
     <button class="tab-btn" data-tab="magazine" onclick="switchTab('magazine')">📖 מגזין בחטיבה</button>
     <button class="tab-btn" data-tab="videos" onclick="switchTab('videos')">🎬 סרטונים</button>
+    <button class="tab-btn" data-tab="press" onclick="switchTab('press')">📡 מבזקים</button>
     <button class="tab-btn" data-tab="authors" onclick="switchTab('authors')" style="opacity:.7;">✍️ סופרים</button>
   </div>
 
@@ -167,6 +168,19 @@
       </div>
     </div>
     <div id="videosList"><div class="loading"><div class="spinner"></div></div></div>
+  </div>
+
+  <!-- Press updates tab -->
+  <div class="tab-pane hidden" id="pane-press">
+    <div class="tab-header">
+      <h2>מבזקים ועדכונים תקשורתיים</h2>
+      <div class="tab-actions">
+        <button class="btn" onclick="openPressEditor(null, 'internal')">+ מבזק פנימי</button>
+        <button class="btn btn-outline" onclick="openPressEditor(null, 'external')">+ קישור לפרסום חיצוני</button>
+      </div>
+    </div>
+    <p class="help-text" style="margin-bottom:1rem;">מבזקים מופיעים בסרגל הצדדי של עמוד הבית וברצועה הנעה למעלה. מבזק פנימי = עדכון של החטיבה. קישור חיצוני = פרסום בתקשורת חיצונית עם קישור לכתבה המקורית.</p>
+    <div id="pressList"><div class="loading"><div class="spinner"></div></div></div>
   </div>
 
   <!-- Authors tab -->
@@ -383,6 +397,33 @@
   </div>
 </div>
 
+<!-- PRESS UPDATE EDITOR -->
+<div class="modal-overlay" id="pressModal">
+  <div class="modal">
+    <h2 id="pressModalTitle">מבזק חדש</h2>
+    <div id="pressMsg"></div>
+    <form id="pressForm" onsubmit="savePress(event)">
+      <input type="hidden" id="pressIdField">
+      <div class="field-row">
+        <div class="field"><label>סוג</label><select id="pressSource" required onchange="togglePressFields()">
+          <option value="internal">מבזק פנימי (תוכן של החטיבה)</option>
+          <option value="external">קישור לפרסום חיצוני (תקשורת)</option>
+        </select></div>
+        <div class="field"><label>תאריך</label><input type="date" id="pressDate" required></div>
+      </div>
+      <div class="field"><label>כותרת</label><input type="text" id="pressTitle" required placeholder="למשל: ׳חיילי החטיבה במעמד הסיום׳"></div>
+      <div class="field"><label>תקציר קצר</label><textarea id="pressSummary" rows="2" placeholder="משפט-שניים שמופיעים מתחת לכותרת בסרגל"></textarea></div>
+      <div class="field" id="pressUrlField"><label>קישור לכתבה החיצונית</label><input type="url" id="pressUrl" placeholder="https://..."></div>
+      <div class="field" id="pressPublisherField"><label>שם הפרסום (גוף תקשורת)</label><input type="text" id="pressPublisher" placeholder="למשל: כיכר השבת / מקור ראשון"></div>
+      <div class="field-checkbox"><input type="checkbox" id="pressPublished" checked><label for="pressPublished"><strong>פורסם באתר</strong></label></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeModal('pressModal')">בטל</button>
+        <button type="submit" class="btn" id="pressSaveBtn">שמור</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
@@ -448,7 +489,7 @@ const TYPE_LABELS_EN = {
 };
 
 let authMode = 'login', currentUser = null;
-let allIssues = [], allArticles = [], allAuthors = [], allVideos = [];
+let allIssues = [], allArticles = [], allAuthors = [], allVideos = [], allPress = [];
 let editingArtGallery = [];
 let expandedIssueIds = new Set();
 
@@ -501,7 +542,12 @@ function switchTab(t) {
 }
 
 // ===== LOAD =====
-async function loadAll() { await Promise.all([loadAuthors(), loadIssues(), loadArticles(), loadVideos()]); }
+async function loadAll() { await Promise.all([loadAuthors(), loadIssues(), loadArticles(), loadVideos(), loadPress()]); }
+async function loadPress() {
+  try { const s = await db.collection('press_updates').orderBy('date','desc').get(); allPress=[]; s.forEach(d => allPress.push({id:d.id,...d.data()})); }
+  catch(e){ try { const s2 = await db.collection('press_updates').get(); allPress=[]; s2.forEach(d => allPress.push({id:d.id,...d.data()})); } catch(e2){console.warn(e2);} }
+  renderPress();
+}
 async function loadIssues() { try { const s = await db.collection('issues').orderBy('issueNumber','desc').get(); allIssues=[]; s.forEach(d => allIssues.push({id:d.id,...d.data()})); } catch(e){console.warn(e);} renderIssues('newsletter'); renderIssues('magazine'); }
 async function loadArticles() { try { const s = await db.collection('articles').orderBy('order','asc').get(); allArticles=[]; s.forEach(d => allArticles.push({id:d.id,...d.data()})); } catch(e){console.warn(e);} renderIssues('newsletter'); renderIssues('magazine'); }
 async function loadAuthors() { try { const s = await db.collection('authors').orderBy('name').get(); allAuthors=[]; s.forEach(d => allAuthors.push({id:d.id,...d.data()})); } catch(e){console.warn(e);} renderAuthors(); }
@@ -898,6 +944,88 @@ async function deleteVideo(id, title) {
   catch (err) { showMsg('dashMsg','err', err.message); }
 }
 
+// ===== PRESS UPDATES =====
+function renderPress() {
+  const c = document.getElementById('pressList');
+  if (!allPress.length) { c.innerHTML = `<div class="empty">אין מבזקים עדיין. לחץ ״+״ ליצירת מבזק פנימי או הוספת קישור לפרסום חיצוני.</div>`; return; }
+  c.innerHTML = allPress.map(p => {
+    const d = p.date && p.date.toDate ? p.date.toDate() : (p.date ? new Date(p.date.seconds ? p.date.seconds*1000 : p.date) : null);
+    const dateStr = d ? d.toLocaleDateString('he-IL') : '';
+    const isExt = p.source === 'external';
+    const badge = isExt ? `<span class="lang-badge en">פרסום חיצוני</span>` : `<span class="lang-badge he">מבזק פנימי</span>`;
+    const pubStatus = p.published ? '✅ פורסם' : '⚪ טיוטה';
+    const urlPart = isExt && p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noopener" style="font-size:.78rem;color:var(--olive);text-decoration:underline;">↗ פתח</a>` : '';
+    return `<div class="list-row">
+      <div class="info">
+        <h3>${esc(p.title)} ${badge}</h3>
+        <div class="sub">${esc(p.publisher||'')} · ${esc(dateStr)} · ${pubStatus} ${urlPart}</div>
+        ${p.summary ? `<div style="font-size:.85rem;color:var(--text-muted);margin-top:.25rem;">${esc(p.summary)}</div>` : ''}
+      </div>
+      <div class="actions">
+        <button class="btn btn-outline btn-sm" onclick="openPressEditor('${p.id}')">✎</button>
+        <button class="btn btn-outline btn-sm" style="color:var(--danger);border-color:var(--danger);" onclick="deletePress('${p.id}','${esc(p.title)}')">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function togglePressFields() {
+  const isExt = document.getElementById('pressSource').value === 'external';
+  document.getElementById('pressUrlField').style.display = isExt ? '' : 'none';
+  document.getElementById('pressPublisherField').style.display = isExt ? '' : 'none';
+}
+function openPressEditor(id, defaultSource) {
+  document.getElementById('pressModalTitle').textContent = id ? 'עריכת מבזק' : 'מבזק חדש';
+  document.getElementById('pressForm').reset();
+  document.getElementById('pressIdField').value = id || '';
+  clearMsg('pressMsg');
+  if (id) {
+    const p = allPress.find(x => x.id === id);
+    if (p) {
+      document.getElementById('pressSource').value = p.source || 'internal';
+      document.getElementById('pressTitle').value = p.title || '';
+      document.getElementById('pressSummary').value = p.summary || '';
+      document.getElementById('pressUrl').value = p.url || '';
+      document.getElementById('pressPublisher').value = p.publisher || '';
+      document.getElementById('pressPublished').checked = !!p.published;
+      const d = p.date && p.date.toDate ? p.date.toDate() : (p.date ? new Date(p.date.seconds ? p.date.seconds*1000 : p.date) : new Date());
+      document.getElementById('pressDate').value = d.toISOString().slice(0,10);
+    }
+  } else {
+    document.getElementById('pressSource').value = defaultSource || 'internal';
+    document.getElementById('pressDate').value = new Date().toISOString().slice(0,10);
+    document.getElementById('pressPublished').checked = true;
+  }
+  togglePressFields();
+  openModal('pressModal');
+}
+async function savePress(e) {
+  e.preventDefault();
+  const id = document.getElementById('pressIdField').value;
+  const data = {
+    source: document.getElementById('pressSource').value,
+    title: document.getElementById('pressTitle').value.trim(),
+    summary: document.getElementById('pressSummary').value.trim(),
+    url: document.getElementById('pressUrl').value.trim(),
+    publisher: document.getElementById('pressPublisher').value.trim(),
+    date: firebase.firestore.Timestamp.fromDate(new Date(document.getElementById('pressDate').value || Date.now())),
+    published: document.getElementById('pressPublished').checked,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  };
+  const btn = document.getElementById('pressSaveBtn'); btn.disabled = true;
+  try {
+    if (id) await db.collection('press_updates').doc(id).set(data, { merge:true });
+    else { data.createdAt = firebase.firestore.FieldValue.serverTimestamp(); await db.collection('press_updates').add(data); }
+    closeModal('pressModal'); showMsg('dashMsg','ok', id?'עודכן':'נוסף'); setTimeout(()=>clearMsg('dashMsg'),3000);
+    await loadPress();
+  } catch (err) { showMsg('pressMsg','err', err.message); }
+  finally { btn.disabled = false; }
+}
+async function deletePress(id, title) {
+  if (!confirm('למחוק "' + title + '"?')) return;
+  try { await db.collection('press_updates').doc(id).delete(); showMsg('dashMsg','ok','נמחק'); setTimeout(()=>clearMsg('dashMsg'),3000); await loadPress(); }
+  catch (err) { showMsg('dashMsg','err', err.message); }
+}
+
 // ===== UPLOAD HELPERS =====
 async function uploadImage(event, folder, hiddenInputId, previewLabelId) {
   const file = event.target.files[0]; if (!file) return;
@@ -999,10 +1127,10 @@ function renderGalleryThumbs() {
 }
 
 // Close modals on overlay click + Esc
-['articleModal','authorModal','videoModal','newIssueModal'].forEach(id => {
+['articleModal','authorModal','videoModal','newIssueModal','pressModal'].forEach(id => {
   document.getElementById(id).addEventListener('click', e => { if (e.target.id === id) closeModal(id); });
 });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') ['articleModal','authorModal','videoModal','newIssueModal'].forEach(id => closeModal(id)); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') ['articleModal','authorModal','videoModal','newIssueModal','pressModal'].forEach(id => closeModal(id)); });
 </script>
 
 </body>

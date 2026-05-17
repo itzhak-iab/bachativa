@@ -17,7 +17,8 @@ service cloud.firestore {
     match /issues/{id}      { allow read: if true; allow write: if isAdmin(); }
     match /newsletters/{id} { allow read: if true; allow write: if isAdmin(); }
     match /magazines/{id}   { allow read: if true; allow write: if isAdmin(); }
-    match /videos/{id}      { allow read: if true; allow write: if isAdmin(); }
-    match /{document=**}    { allow read, write: if false; }
+    match /videos/{id}        { allow read: if true; allow write: if isAdmin(); }
+    match /press_updates/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /{document=**}      { allow read, write: if false; }
   }
 }
