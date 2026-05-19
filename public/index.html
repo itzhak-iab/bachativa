@@ -46,6 +46,18 @@
 </script>
 
 <style>
+  /* ===== DEV BANNER ===== */
+  .dev-banner {
+    background: repeating-linear-gradient(45deg, #fdd835, #fdd835 14px, #fbc02d 14px, #fbc02d 28px);
+    color: #3a2900;
+    text-align: center;
+    font-weight: 700;
+    font-size: .85rem;
+    padding: .45rem 1rem;
+    border-bottom: 2px solid #c99500;
+  }
+  .dev-banner strong { font-weight: 900; }
+
   /* ===== TOP STRIP — date + breaking ticker (like a news site) ===== */
   .top-strip { background: var(--olive-darkest, #2c3220); color: #fff; font-size: .82rem; padding: .4rem 1rem; display: flex; gap: 1.2rem; align-items: center; overflow: hidden; }
   .top-strip .dates { display: flex; flex-direction: column; gap: 0; line-height: 1.2; white-space: nowrap; }
@@ -60,84 +72,114 @@
   .top-strip .ticker-content:hover { animation-play-state: paused; }
 
   /* ===== CATEGORY FILTER BAR ===== */
-  .filter-bar { background: #fff; border-bottom: 2px solid var(--olive, #4a5234); position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 4px rgba(0,0,0,0.06); }
+  .filter-bar { background: #fff; border-bottom: 3px solid var(--olive-darkest, #2c3220); position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
   .filter-bar-inner { max-width: 1320px; margin: 0 auto; display: flex; overflow-x: auto; scrollbar-width: none; padding: 0 .5rem; }
   .filter-bar-inner::-webkit-scrollbar { display: none; }
-  .filter-chip { background: transparent; border: none; padding: 0.95rem 1.2rem; cursor: pointer; font-family: inherit; font-weight: 600; font-size: .98rem; color: var(--text-muted, #6b6e58); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: var(--transition); white-space: nowrap; display: flex; align-items: center; gap: 0.4rem; }
-  .filter-chip:hover { color: var(--olive); background: var(--cream-soft, #f6f3e9); }
-  .filter-chip.active { color: var(--olive-darkest, #2c3220); border-bottom-color: var(--gold, #c8a45c); background: var(--cream, #fbf6ec); }
+  .filter-chip { background: transparent; border: none; padding: 1rem 1.4rem; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 1rem; color: var(--text-muted, #6b6e58); border-bottom: 4px solid transparent; margin-bottom: -3px; transition: var(--transition); white-space: nowrap; display: flex; align-items: center; gap: 0.4rem; position: relative; }
+  .filter-chip:hover { color: var(--olive-darkest); background: var(--cream-soft, #f6f3e9); }
+  .filter-chip.active { color: var(--olive-darkest, #2c3220); border-bottom-color: var(--red, #b2241a); background: transparent; }
+  .filter-chip.active::before { content:''; position:absolute; top:0; left:50%; transform:translateX(-50%); width:24px; height:3px; background: var(--red); border-radius:0 0 3px 3px; }
 
   /* ===== MAIN LAYOUT: 2-column news grid ===== */
-  .news-wrap { max-width: 1320px; margin: 1.5rem auto; padding: 0 1.2rem; display: grid; grid-template-columns: 1fr 320px; gap: 2rem; align-items: start; }
+  .news-wrap { max-width: 1320px; margin: 1.2rem auto; padding: 0 1.2rem; display: grid; grid-template-columns: 1fr 320px; gap: 2rem; align-items: start; }
   @media (max-width: 1024px) { .news-wrap { grid-template-columns: 1fr; } }
 
-  /* ===== LEAD STORY (hero card) ===== */
-  .lead-story { background: #fff; border-radius: var(--radius, 8px); overflow: hidden; box-shadow: var(--shadow, 0 2px 8px rgba(0,0,0,.08)); margin-bottom: 1.8rem; display: grid; grid-template-columns: 1.5fr 1fr; transition: var(--transition); }
-  .lead-story:hover { box-shadow: var(--shadow-hover, 0 8px 24px rgba(0,0,0,.12)); }
+  /* ===== LEAD STORY (hero card) — large editorial ===== */
+  .lead-story { background: #fff; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.08); margin-bottom: 1.8rem; display: grid; grid-template-columns: 1.4fr 1fr; transition: var(--transition); border: 1px solid var(--border); border-top: 3px solid var(--red); }
+  .lead-story:hover { box-shadow: 0 8px 24px rgba(0,0,0,.14); }
   .lead-image { aspect-ratio: 16/10; overflow: hidden; background: linear-gradient(135deg, var(--olive-dark, #3d4530), var(--olive, #4a5234)); position: relative; }
   .lead-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
-  .lead-story:hover .lead-image img { transform: scale(1.04); }
-  .lead-image .ribbon { position: absolute; top: 1rem; right: 1rem; background: var(--red, #b2241a); color: #fff; padding: 0.35rem 0.9rem; border-radius: 4px; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.05em; }
-  .lead-body { padding: 2rem 1.8rem; display: flex; flex-direction: column; justify-content: center; }
-  .lead-eyebrow { color: var(--olive); font-size: 0.82rem; font-weight: 800; letter-spacing: 0.12em; margin-bottom: 0.6rem; text-transform: uppercase; display: flex; align-items: center; gap: .5rem; }
-  .lead-eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); display: inline-block; animation: livePulse 2s infinite; }
+  .lead-story:hover .lead-image img { transform: scale(1.03); }
+  .lead-image .ribbon { position: absolute; top: 0; right: 0; background: var(--red, #b2241a); color: #fff; padding: 0.45rem 1rem; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.05em; display:flex; align-items:center; gap:.4rem; }
+  .lead-image .ribbon::before { content:''; width:6px; height:6px; background:#fff; border-radius:50%; animation:livePulse 1.4s infinite; }
+  .lead-body { padding: 1.8rem 1.6rem; display: flex; flex-direction: column; justify-content: center; }
+  .lead-eyebrow { color: var(--red); font-size: 0.78rem; font-weight: 900; letter-spacing: 0.14em; margin-bottom: 0.6rem; text-transform: uppercase; display: flex; align-items: center; gap: .5rem; }
   @keyframes livePulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
-  .lead-body h2 { font-family: 'Frank Ruhl Libre', serif; font-size: clamp(1.7rem, 3vw, 2.5rem); line-height: 1.15; color: var(--olive-darkest); margin-bottom: 0.7rem; font-weight: 700; }
+  .lead-body h2 { font-family: 'Frank Ruhl Libre', serif; font-size: clamp(1.9rem, 3.3vw, 2.7rem); line-height: 1.1; color: var(--olive-darkest); margin-bottom: 0.7rem; font-weight: 900; letter-spacing:-.02em; }
   .lead-body h2 a { color: inherit; text-decoration: none; }
   .lead-body h2 a:hover { color: var(--red); }
-  .lead-excerpt { color: var(--text-muted); font-size: 1.02rem; line-height: 1.65; margin-bottom: 1rem; }
-  .lead-meta { display: flex; align-items: center; gap: 0.8rem; margin-top: auto; padding-top: 0.9rem; border-top: 1px solid var(--border); font-size: .88rem; color: var(--text-muted); }
+  .lead-excerpt { color: var(--text-muted); font-size: 1.05rem; line-height: 1.65; margin-bottom: 1rem; }
+  .lead-meta { display: flex; align-items: center; gap: 0.8rem; margin-top: auto; padding-top: 0.9rem; border-top: 1px solid var(--border); font-size: .85rem; color: var(--text-muted); }
 
-  /* ===== CHRONOLOGICAL FEED ===== */
-  .feed-header { display: flex; align-items: center; justify-content: space-between; margin: 1.5rem 0 1rem; padding-bottom: .6rem; border-bottom: 2px solid var(--olive); }
-  .feed-header h2 { font-family: 'Frank Ruhl Libre', serif; color: var(--olive-darkest); font-size: 1.45rem; }
-  .feed-header .count { color: var(--text-muted); font-size: .9rem; }
+  /* ===== SECTION HEADER (between blocks) ===== */
+  .section-divider { display:flex; align-items:center; gap:.8rem; margin: 1.6rem 0 1rem; }
+  .section-divider .red-mark { width:6px; height:24px; background:var(--red); }
+  .section-divider h2 { font-family: 'Frank Ruhl Libre', serif; color: var(--olive-darkest); font-size: 1.6rem; font-weight:900; letter-spacing:-.01em; }
+  .section-divider .count { margin-inline-start:auto; color: var(--text-muted); font-size: .85rem; font-weight:600; }
+  .section-divider::after { content:''; flex:1; height:1px; background: var(--olive-darkest); opacity:.2; margin-inline-start:.4rem; }
 
-  .feed-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.5rem; }
-  .feed-card { background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); display: flex; flex-direction: column; position: relative; }
-  .feed-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+  /* ===== TOP HIGHLIGHTS (2-up just after lead) ===== */
+  .top-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.5rem; }
+  @media (max-width: 700px) { .top-pair { grid-template-columns: 1fr; } }
+  .pair-card { background:#fff; border:1px solid var(--border); transition: var(--transition); display: grid; grid-template-columns: 130px 1fr; }
+  .pair-card:hover { border-color: var(--olive-darkest); box-shadow: 0 4px 14px rgba(0,0,0,.08); }
+  .pair-card .img { aspect-ratio: 1/1; overflow: hidden; position: relative; background: var(--cream); }
+  .pair-card .img img { width:100%; height:100%; object-fit:cover; }
+  .pair-card .img .chip { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,.78); color:#fff; padding: 2px 8px; font-size: .68rem; font-weight: 700; }
+  .pair-card .body { padding: .8rem 1rem; display:flex; flex-direction:column; }
+  .pair-card h3 { font-family: 'Frank Ruhl Libre', serif; font-size: 1.12rem; line-height: 1.25; color: var(--olive-darkest); font-weight: 700; margin-bottom: .35rem; }
+  .pair-card h3 a { color: inherit; text-decoration: none; }
+  .pair-card h3 a:hover { color: var(--red); }
+  .pair-card .meta { font-size: .76rem; color: var(--text-light); margin-top: auto; }
+
+  /* ===== CHRONOLOGICAL FEED — dense news grid ===== */
+  .feed-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem 1.4rem; }
+  .feed-card { background: #fff; border: 1px solid var(--border); overflow: hidden; transition: var(--transition); display: flex; flex-direction: column; position: relative; }
+  .feed-card:hover { border-color: var(--olive-darkest); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.08); }
   .feed-card-image { aspect-ratio: 16/9; overflow: hidden; background: var(--cream); position: relative; display: block; }
   .feed-card-image img { width: 100%; height: 100%; object-fit: cover; }
   .feed-card-image.placeholder { background: linear-gradient(135deg, var(--olive-dark), var(--olive)); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.7); font-size: 2.2rem; }
-  .feed-card-image .type-chip { position: absolute; top: 0.7rem; right: 0.7rem; background: rgba(255,255,255,.95); color: var(--olive-darkest); padding: 0.25rem 0.65rem; border-radius: 4px; font-size: 0.74rem; font-weight: 700; }
-  .feed-card-image .type-chip.video { background: rgba(178,36,26,.95); color: #fff; }
+  .feed-card-image .type-chip { position: absolute; top: 0; right: 0; background: rgba(0,0,0,.82); color: #fff; padding: 0.3rem 0.7rem; font-size: 0.72rem; font-weight: 800; letter-spacing: .03em; }
+  .feed-card-image .type-chip.video { background: var(--red); color: #fff; }
   .feed-card-image .type-chip.magazine { background: var(--gold); color: var(--olive-darkest); }
   .feed-card-image .play-mark { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-  .feed-card-image .play-mark svg { width: 56px; height: 56px; background: rgba(178,36,26,0.92); border-radius: 50%; padding: 14px; box-shadow: 0 4px 14px rgba(0,0,0,0.35); }
-  .feed-card-body { padding: 1.1rem 1.05rem 1.2rem; display: flex; flex-direction: column; flex: 1; }
-  .feed-card h3 { font-family: 'Frank Ruhl Libre', serif; font-size: 1.18rem; line-height: 1.25; color: var(--olive-darkest); margin-bottom: 0.45rem; font-weight: 700; }
+  .feed-card-image .play-mark svg { width: 56px; height: 56px; background: rgba(178,36,26,0.94); border-radius: 50%; padding: 14px; box-shadow: 0 4px 14px rgba(0,0,0,0.4); }
+  .feed-card-body { padding: 0.95rem 1rem 1.05rem; display: flex; flex-direction: column; flex: 1; }
+  .feed-card h3 { font-family: 'Frank Ruhl Libre', serif; font-size: 1.18rem; line-height: 1.22; color: var(--olive-darkest); margin-bottom: 0.4rem; font-weight: 800; letter-spacing:-.005em; }
   .feed-card h3 a { color: inherit; text-decoration: none; }
   .feed-card h3 a:hover { color: var(--red); }
-  .feed-card .excerpt { color: var(--text-muted); font-size: 0.9rem; line-height: 1.55; margin-bottom: 0.7rem; flex: 1; }
-  .feed-card .meta { display: flex; align-items: center; gap: .55rem; font-size: 0.82rem; color: var(--text-light); padding-top: 0.55rem; border-top: 1px solid var(--border); margin-top: auto; }
-  .feed-card .meta .when { margin-inline-start: auto; opacity: .7; }
+  .feed-card .excerpt { color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin-bottom: 0.6rem; flex: 1; }
+  .feed-card .meta { display: flex; align-items: center; gap: .55rem; font-size: 0.78rem; color: var(--text-light); padding-top: 0.5rem; border-top: 1px solid var(--border); margin-top: auto; }
+  .feed-card .meta .when { margin-inline-start: auto; opacity: .8; }
 
   .show-more { text-align: center; margin-top: 1.8rem; }
 
-  /* ===== SIDE RAIL: PRESS / BREAKING ===== */
+  /* ===== SIDE RAIL: PRESS / BREAKING / MOST READ ===== */
   .side-rail { display: flex; flex-direction: column; gap: 1.2rem; position: sticky; top: 70px; max-height: calc(100vh - 90px); overflow-y: auto; padding-left: .3rem; }
   .side-rail::-webkit-scrollbar { width: 6px; }
   .side-rail::-webkit-scrollbar-thumb { background: var(--olive); border-radius: 3px; }
 
-  .rail-card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-  .rail-head { background: linear-gradient(135deg, var(--olive-darkest), var(--olive)); color: #fff; padding: .9rem 1.1rem; display: flex; align-items: center; gap: .6rem; font-family: 'Frank Ruhl Libre', serif; font-size: 1.15rem; font-weight: 700; }
+  .rail-card { background: #fff; border: 1px solid var(--border); overflow: hidden; }
+  .rail-head { background: var(--olive-darkest); color: #fff; padding: .8rem 1.1rem; display: flex; align-items: center; gap: .6rem; font-family: 'Frank Ruhl Libre', serif; font-size: 1.1rem; font-weight: 800; border-bottom: 3px solid var(--red); }
   .rail-head .live-dot { width: 9px; height: 9px; background: var(--red); border-radius: 50%; animation: livePulse 1.4s infinite; }
-  .rail-body { padding: .8rem 1rem 1rem; }
-  .rail-item { padding: .8rem 0; border-bottom: 1px dashed var(--border); }
+  .rail-body { padding: .4rem 1rem .8rem; }
+  .rail-item { padding: .75rem 0; border-bottom: 1px dashed var(--border); }
   .rail-item:last-child { border-bottom: none; padding-bottom: .3rem; }
-  .rail-item .ri-meta { display: flex; align-items: center; gap: .5rem; font-size: .76rem; color: var(--text-light); margin-bottom: .25rem; }
-  .rail-item .ri-source { background: var(--olive-soft, #e8e5d0); color: var(--olive-darkest); padding: .1rem .45rem; border-radius: 3px; font-weight: 700; font-size: .72rem; }
+  .rail-item .ri-meta { display: flex; align-items: center; gap: .5rem; font-size: .74rem; color: var(--text-light); margin-bottom: .25rem; }
+  .rail-item .ri-source { background: var(--olive-soft, #e8e5d0); color: var(--olive-darkest); padding: .12rem .5rem; font-weight: 800; font-size: .68rem; letter-spacing:.02em; }
   .rail-item .ri-source.external { background: #d4e3ea; color: #154360; }
-  .rail-item h4 { font-size: .98rem; line-height: 1.35; color: var(--olive-darkest); font-weight: 600; margin-bottom: .25rem; }
+  .rail-item h4 { font-size: .98rem; line-height: 1.35; color: var(--olive-darkest); font-weight: 700; margin-bottom: .25rem; font-family: 'Frank Ruhl Libre', serif; }
   .rail-item h4 a { color: inherit; text-decoration: none; }
   .rail-item h4 a:hover { color: var(--red); text-decoration: underline; }
-  .rail-item p { font-size: .85rem; color: var(--text-muted); line-height: 1.45; }
+  .rail-item p { font-size: .82rem; color: var(--text-muted); line-height: 1.45; }
   .rail-item .ext-icon { display: inline-block; margin-inline-start: .2rem; font-size: .78rem; opacity: .7; }
 
-  .rail-cta { background: var(--cream); padding: 1rem; text-align: center; border-radius: var(--radius); box-shadow: var(--shadow); }
-  .rail-cta strong { color: var(--olive-darkest); font-family: 'Frank Ruhl Libre', serif; display: block; margin-bottom: .35rem; font-size: 1.05rem; }
-  .rail-cta p { font-size: .85rem; color: var(--text-muted); margin-bottom: .6rem; }
+  /* "Most read" list (numbered) */
+  .rail-list { padding: .3rem 1rem .8rem; }
+  .rail-list-item { display: grid; grid-template-columns: 32px 1fr; gap: .6rem; padding: .7rem 0; border-bottom: 1px dashed var(--border); }
+  .rail-list-item:last-child { border-bottom: none; }
+  .rail-list-item .rank { font-family: 'Frank Ruhl Libre', serif; font-size: 1.7rem; font-weight: 900; color: var(--red); line-height: 1; opacity: .9; }
+  .rail-list-item .title { font-size: .92rem; line-height: 1.3; color: var(--olive-darkest); font-weight: 600; }
+  .rail-list-item .title a { color: inherit; text-decoration: none; }
+  .rail-list-item .title a:hover { color: var(--red); }
+  .rail-list-item .when { display: block; font-size: .72rem; color: var(--text-light); margin-top: .2rem; }
+
+  .rail-cta { background: var(--olive-darkest); color: #fff; padding: 1.1rem; text-align: center; border-top: 3px solid var(--red); }
+  .rail-cta strong { color: #fff; font-family: 'Frank Ruhl Libre', serif; display: block; margin-bottom: .35rem; font-size: 1.1rem; }
+  .rail-cta p { font-size: .85rem; color: rgba(255,255,255,.78); margin-bottom: .7rem; }
   .rail-cta .btn-row { display: flex; gap: .4rem; justify-content: center; flex-wrap: wrap; }
+  .rail-cta .btn { background: #25D366; color:#fff; border: none; font-weight:700; }
+  .rail-cta .btn.btn-outline { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.45); }
 
   /* logo bigger in navbar */
   .navbar-brand img { height: 56px; width: 56px; }
@@ -170,6 +212,9 @@
 </style>
 </head>
 <body>
+
+<!-- DEV BANNER -->
+<div class="dev-banner">⚠ <strong>האתר עדיין בפיתוח</strong> — תוכן ועיצוב יתעדכנו בקרוב</div>
 
 <!-- NAVBAR -->
 <nav class="navbar">
@@ -230,8 +275,12 @@
     <!-- LEAD STORY (newest item) -->
     <div id="leadStory"></div>
 
+    <!-- TOP PAIR — next 2 highlights right under the lead -->
+    <div class="top-pair" id="topPair"></div>
+
     <!-- chronological feed -->
-    <div class="feed-header">
+    <div class="section-divider">
+      <span class="red-mark"></span>
       <h2 id="feedTitle">הפיד החדשותי</h2>
       <span class="count" id="feedCount"></span>
     </div>
@@ -240,7 +289,7 @@
     </div>
   </main>
 
-  <!-- SIDE RAIL — breaking news / press updates -->
+  <!-- SIDE RAIL — breaking news / press updates / most read -->
   <aside class="side-rail">
     <div class="rail-card">
       <div class="rail-head">
@@ -252,12 +301,19 @@
       </div>
     </div>
 
-    <div class="rail-cta">
+    <div class="rail-card">
+      <div class="rail-head">🔥 הנקרא ביותר</div>
+      <div class="rail-list" id="mostRead">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+
+    <div class="rail-card rail-cta">
       <strong>קבל עדכונים</strong>
       <p>הצטרף לקבוצת הוואטסאפ לעדכון על תכנים חדשים</p>
       <div class="btn-row">
-        <a class="btn btn-primary btn-sm" href="https://chat.whatsapp.com/GtnA5TVKyn1GpxQwiiSIdb" target="_blank" rel="noopener">📱 הצטרף לקבוצה</a>
-        <a class="btn btn-outline btn-sm" href="mailto:bachativa@gmail.com">✉ שלח עדכון</a>
+        <a class="btn btn-sm" href="https://chat.whatsapp.com/GtnA5TVKyn1GpxQwiiSIdb" target="_blank" rel="noopener">📱 הצטרף</a>
+        <a class="btn btn-outline btn-sm" href="mailto:bachativa@gmail.com">✉ עדכון</a>
       </div>
     </div>
   </aside>
@@ -462,24 +518,64 @@
 
     if (items.length === 0) {
       document.getElementById('leadStory').innerHTML = '';
+      document.getElementById('topPair').innerHTML = '';
       document.getElementById('feedGrid').innerHTML = `
         <div class="coming-soon">
           <h3>בקרוב</h3>
           <p>תכנים חדשים בקטגוריה זו יתווספו ויופיעו כאן.</p>
         </div>`;
+      renderMostRead();
       return;
     }
 
     // Lead = newest
     renderLead(items[0]);
 
-    // Rest = chronological feed
-    const rest = items.slice(1);
+    // Top pair = next 2 highlights
+    const pair = items.slice(1, 3);
+    document.getElementById('topPair').innerHTML = pair.map(renderPairCard).join('');
+
+    // Rest = chronological feed (after the lead + top pair)
+    const rest = items.slice(3);
     if (rest.length === 0) {
       document.getElementById('feedGrid').innerHTML = '';
     } else {
       document.getElementById('feedGrid').innerHTML = rest.map(renderCard).join('');
     }
+
+    renderMostRead();
+  }
+
+  function renderPairCard(it) {
+    const isVideo = it.isVideo;
+    const chip = isVideo ? 'וידאו' : (it.kind === 'magazine' ? 'מגזין' : (it.kind === 'newsletter' ? 'עלון' : 'תוכן'));
+    const img = it.mainImageUrl
+      ? `<img src="${esc(it.mainImageUrl)}" alt="" loading="lazy">`
+      : `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(255,255,255,.5);font-size:2rem;background:linear-gradient(135deg,var(--olive-dark),var(--olive));">${isVideo ? '🎬' : '📰'}</div>`;
+    return `
+      <article class="pair-card">
+        <a href="${esc(it.link)}" class="img">${img}<span class="chip">${esc(chip)}</span></a>
+        <div class="body">
+          <h3><a href="${esc(it.link)}">${esc(it.title)}</a></h3>
+          <div class="meta">${esc(timeAgo(it.createdAt))}</div>
+        </div>
+      </article>`;
+  }
+
+  function renderMostRead() {
+    // Most-read = top 5 newsletter/magazine items by recency (excluding videos)
+    const top = allItems.filter(x => !x.isVideo).slice(0, 5);
+    const el = document.getElementById('mostRead');
+    if (!el) return;
+    if (top.length === 0) { el.innerHTML = '<p style="color:var(--text-muted);font-size:.85rem;padding:.5rem 0;">אין תכנים זמינים עדיין.</p>'; return; }
+    el.innerHTML = top.map((it, i) => `
+      <div class="rail-list-item">
+        <div class="rank">${i+1}</div>
+        <div class="title">
+          <a href="${esc(it.link)}">${esc(it.title)}</a>
+          <span class="when">${esc(TYPE_LABELS[it.kind] || '')} · ${esc(timeAgo(it.createdAt))}</span>
+        </div>
+      </div>`).join('');
   }
 
   function renderLead(it) {
